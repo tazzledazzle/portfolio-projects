@@ -1,0 +1,7 @@
+cc_library(
+    visibility,
+    name = "cpp_lib",
+    srcs = ["src/lib.cpp"],
+    hdrs = ["include/lib.h"],
+    visibility = ["//visibility:public"],
+)
