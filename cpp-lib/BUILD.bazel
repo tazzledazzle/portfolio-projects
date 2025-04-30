@@ -2,5 +2,6 @@ cc_library(
     name = "cpp_lib",
     srcs = ["src/lib.cpp"],
     hdrs = ["include/lib.h"],
+    includes = ["include"],
     visibility = ["//visibility:public"],
 )
