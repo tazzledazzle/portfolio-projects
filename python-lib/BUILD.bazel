@@ -1,0 +1,10 @@
+py_library(
+    name = "python_lib",
+    srcs = ["lib.py"],
+)
+
+py_binary(
+    name = "py_bin",
+    srcs = ["main.py"],
+    deps = [":python_lib"],
+)
