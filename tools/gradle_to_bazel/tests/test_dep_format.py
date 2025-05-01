@@ -1,6 +1,5 @@
 import pytest
-
-fmt = lambda dep: dep.rsplit(':', 1)[0].replace('.', '_').replace(':', '_').replace('-', '_')
+from migrate import convert_gradle_dep_to_bazel as fmt
 
 def test_empty_string():
     assert fmt('') == ''

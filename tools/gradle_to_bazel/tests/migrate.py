@@ -1,6 +1,8 @@
 import re
 import argparse
 
+DEPENDENCY_REGEX = re.compile(r'\s*implementation\s*\([\"\'](.*)[\"\']\)')
+
 def migrate_gradle_to_bazel(input_path: str, output_path: str):
     """
     Very basic migration function to convert a Gradle build file to a Bazel build file.
@@ -11,13 +13,20 @@ def migrate_gradle_to_bazel(input_path: str, output_path: str):
         output_path (str): Path to the Bazel build file.
     """
     deps = []
-    with open(input_path, 'r') as f:
+    with (open(input_path, 'r') as f):
         for line in f:
-            m = re.match(r'\s*implementation\("([\w\.-]+:[\w\.-]+:[\d\.]+)"\)', line)
+            m = DEPENDENCY_REGEX.match(line)
         if m:
-            print("Matched coordinate:", m.group(1))
+            deps.append(m.group(1))
+    for dep in deps:
+        print(f"Found dependency: {dep}")
+    if len(deps) > 0:
+        write_bazel_deps(deps, output_path)
+
+
+def write_bazel_deps(deps, output_path):
     with open(output_path, 'w') as out:
-        out.write('load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_binary")\n')
+        out.write('load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")\n')
         out.write('\n')
         out.write('kt_jvm_library(\n')
         out.write('    name = "kotlin_lib",\n')
@@ -55,19 +64,23 @@ def declare_maven_artifacts(deps):
         )
     """
     # for the BUILD file we reference the maven_install rule
+    # todo: parse the project_name
     """
-        java_library(
-            name = "my_library",
+        kt_jvm_library(
+            name = "{project_name}",
             srcs = glob(["src/main/kotlin/**/*.kt"]),
             deps = [
-                "@maven//:{group_id}_{artifact_id}", 
+    """
+    for dep in deps:
+        print(f'        "@maven//:{convert_gradle_dep_to_bazel(dep)}",')
+    """
             ]
         )
     """
 
 def convert_gradle_dep_to_bazel(dep):
     # dep = "com.google.guava:guava:30.1-jre"
-    return dep.rsplit(":", 1)[0].replace(':', '_').replace('.', '_')
+    return dep.rsplit(":", 1)[0].replace(':', '_').replace('.', '_').replace('-', '_')
 
 def main():
     parser = argparse.ArgumentParser(description="Migrate Gradle Kotlin DSL build file to Bazel build file.")
