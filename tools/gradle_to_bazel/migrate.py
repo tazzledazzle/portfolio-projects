@@ -1,4 +1,5 @@
 import re
+import argparse
 
 def migrate_gradle_to_bazel(input_path: str, output_path: str):
     """
@@ -12,9 +13,9 @@ def migrate_gradle_to_bazel(input_path: str, output_path: str):
     deps = []
     with open(input_path, 'r') as f:
         for line in f:
-            m = re.match(r"\s*implementation\("([\w\.-]+:[\w\.-]+:[\d\.]+)"\)", line)
-            if m:
-                deps.append(m.group(1))
+            m = re.match(r'\s*implementation\("([\w\.-]+:[\w\.-]+:[\d\.]+)"\)', line)
+        if m:
+            print("Matched coordinate:", m.group(1))
     with open(output_path, 'w') as out:
         out.write('load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kt_jvm_library")\n')
         out.write('kt_jvm_library(\n')

@@ -1,3 +1,7 @@
+"""
+# Custom Bazel rules for building multi-language binaries
+"""
+
 def _multi_lang_binary_impl(ctx):
     output = ctx.actions.declare_file(ctx.label.name + ".zip")
     inputs = [f.path for f in ctx.files.srcs]
