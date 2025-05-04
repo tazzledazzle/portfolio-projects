@@ -15,7 +15,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "projgen=cli:cli",
+            "projgen=cli",
         ],
     },
     classifiers=[

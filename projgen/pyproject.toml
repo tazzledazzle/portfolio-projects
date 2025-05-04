@@ -7,7 +7,7 @@ name = "projgen"
 version = "0.1.0"
 description = "CLI tool to scaffold Bazel/Gradle projects with opinionated defaults."
 authors = [
-    { name = "Your Name", email = "you@example.com" }
+    { name = "Terence Schumacher", email = "terenceschumacher@gmail.com" }
 ]
 readme = "README.md"
 requires-python = ">=3.10"
