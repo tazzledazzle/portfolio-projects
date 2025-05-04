@@ -1,1 +1,1 @@
-from .scaffold import scaffold_project
+from scaffold import scaffold_project
