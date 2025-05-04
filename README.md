@@ -161,4 +161,7 @@ my-app/
 - [ ] Write unit tests & integration tests 
 - [ ] Publish to PyPI and add project README
 
-
+### to install and test
+```shell
+    pip install -e .
+```
