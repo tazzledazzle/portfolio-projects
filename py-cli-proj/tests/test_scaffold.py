@@ -4,7 +4,7 @@ import tempfile
 import unittest
 
 
-from generators.scaffold import scaffold_project
+from generators import scaffold_project
 
 DEFAULTS = {
     # Default build system: bazel, gradle, or both
