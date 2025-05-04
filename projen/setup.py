@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="projgen",
-    version="0.1.0",
+    version="1",
     description="CLI tool to scaffold Bazel/Gradle projects with opinionated defaults.",
     author="Terence Schumacher",
     author_email="terenceschumacher@gmail.com",
