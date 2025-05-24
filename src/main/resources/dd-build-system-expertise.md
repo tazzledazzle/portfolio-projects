@@ -30,7 +30,7 @@ Build a demonstration monorepo featuring Kotlin, C++, and Python modules, integr
 ## 4. Architecture & Components
 
 4.1 Repo Layout
-
+```
 /
 ├── WORKSPACE
 ├── BUILD.bazel (root-level aggregates)
@@ -63,23 +63,23 @@ Build a demonstration monorepo featuring Kotlin, C++, and Python modules, integr
 │   ├── github_actions.yml
 │   ├── scripts/
 └── README.md
-
+```
 4.2 Key Components
-	•	Custom Rules:
-	•	Starlark .bzl files for each language.
-	•	Macros for multi-language targets (e.g., Kotlin-JVM calling C++ via JNI).
-	•	Built-in options for sanitizer enablement (using Bazel config_setting/select()).
-	•	Migration Tool:
-	•	Python CLI: analyze, translate, verify commands.
-	•	Parses build.gradle using regex or via Kotlin DSL AST.
-	•	Emits Bazel BUILD stubs with preserved source/test/resources structure.
-	•	Sanitizer Reporting:
-	•	Bazel test targets with sanitizer flags.
-	•	Scripts to parse sanitizer output into structured JSON.
-	•	Summarized HTML/Markdown/JSON reports for CI artifacts.
-	•	CI Pipeline:
-	•	Runs builds and tests for all modules with and without sanitizers.
-	•	Publishes migration reports and sanitizer logs as build artifacts.
+*	Custom Rules:
+*	Starlark .bzl files for each language.
+*	Macros for multi-language targets (e.g., Kotlin-JVM calling C++ via JNI).
+*	Built-in options for sanitizer enablement (using Bazel config_setting/select()).
+*	Migration Tool:
+*	Python CLI: analyze, translate, verify commands.
+*	Parses build.gradle using regex or via Kotlin DSL AST.
+*	Emits Bazel BUILD stubs with preserved source/test/resources structure.
+*	Sanitizer Reporting:
+*	Bazel test targets with sanitizer flags.
+*	Scripts to parse sanitizer output into structured JSON.
+*	Summarized HTML/Markdown/JSON reports for CI artifacts.
+*	CI Pipeline:
+*	Runs builds and tests for all modules with and without sanitizers.
+*	Publishes migration reports and sanitizer logs as build artifacts.
 
 ⸻
 
