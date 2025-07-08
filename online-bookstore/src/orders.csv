@@ -1,0 +1,5 @@
+order_id, user_id, book_id, quantity, order_date, status, total_cents
+1, 101, 1, 2, 2023-10-01, completed, 2198
+2, 102, 3, 1, 2023-10-02, pending, 899
+3, 103, 5, 3, 2023-10-03, completed, 2997
+4, 103, 2, 1, 2023-10-03, completed, 799
