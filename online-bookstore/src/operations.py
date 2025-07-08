@@ -56,5 +56,28 @@ def write_order_into_csv(order: OrderWithID):
 def create_order(order: Order) -> OrderWithID:
     """Create a new order and write it to the CSV file."""
     order.id = get_next_id()
-    write_order_into_csv(order)
-    return order
+    order_with_id = OrderWithID(
+        id=order.id,
+        **order.model_dump()
+    )
+    write_order_into_csv(order_with_id)
+    return order_with_id
+
+def remove_order(order_id: int) -> bool:
+    """Remove an order by its ID from the CSV file."""
+    try:
+        with open(ORDER_DATABASE_FILENAME, mode='r', newline='', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            orders = list(reader)
+
+        with open(ORDER_DATABASE_FILENAME, mode='w', newline='', encoding='utf-8') as file:
+            writer = csv.DictWriter(file, fieldnames=orders[0].keys())
+            writer.writeheader()
+            for order in orders:
+                if int(order['id']) != order_id:
+                    writer.writerow(order)
+
+        return True
+    except FileNotFoundError:
+        print(f"Database file {ORDER_DATABASE_FILENAME} not found.")
+        return False
