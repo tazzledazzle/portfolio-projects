@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, WebSocket
 from fastapi.security import OAuth2PasswordRequestForm
 from models import (
     Book,
@@ -106,3 +106,17 @@ def read_users_me(
     current_user: User = Depends(get_user_from_token),
 ):
     return current_user
+
+### WebSocket endpoint for real-time updates
+@app.websocket("/ws")
+async def ws_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        while True:
+            data = await websocket.receive_text()
+            # Here you can handle the incoming data and send updates
+            await websocket.send_text(f"Message received: {data}")
+    except Exception as e:
+        print(f"WebSocket error: {e}")
+    finally:
+        await websocket.close()
