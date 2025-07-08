@@ -22,6 +22,31 @@ def read_all_books() -> list[BookWithID]:
         print(f"Database file {BOOK_DATABASE_FILENAME} not found.")
     return books
 
+def read_all_orders() -> list[OrderWithID]:
+    """Read all orders from the CSV file."""
+    orders = []
+    try:
+        with open(ORDER_DATABASE_FILENAME, mode='r', newline='', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                order = OrderWithID(**row)
+                orders.append(order)
+    except FileNotFoundError:
+        print(f"Database file {ORDER_DATABASE_FILENAME} not found.")
+    return orders
+
+def read_order(order_id: int) -> Optional[OrderWithID]:
+    """Read an order by its ID from the CSV file."""
+    try:
+        with open(ORDER_DATABASE_FILENAME, mode='r', newline='', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if int(row['id']) == order_id:
+                    return OrderWithID(**row)
+    except FileNotFoundError:
+        print(f"Database file {ORDER_DATABASE_FILENAME} not found.")
+    return None
+
 def read_book_by_id(book_id: int) -> Optional[BookWithID]:
     """Read a book by its ID from the CSV file."""
     try:
@@ -66,9 +91,7 @@ def create_order(order: Order) -> OrderWithID:
 def remove_order(order_id: int) -> bool:
     """Remove an order by its ID from the CSV file."""
     try:
-        with open(ORDER_DATABASE_FILENAME, mode='r', newline='', encoding='utf-8') as file:
-            reader = csv.DictReader(file)
-            orders = list(reader)
+        orders = read_all_orders()
 
         with open(ORDER_DATABASE_FILENAME, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(file, fieldnames=orders[0].keys())
