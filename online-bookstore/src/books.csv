@@ -1,0 +1,22 @@
+id,title,authors,published_year,isbn,price,categories,description,cover_image_url,rating
+1,The Great Gatsby,F. Scott Fitzgerald,1925,9780743273565,10.99,Fiction,"A novel set in the Roaring Twenties that explores themes of decadence and excess.",https://example.com/great-gatsby.jpg,4.2
+2,To Kill a Mockingbird,Harper Lee,1960,9780061120084,7.99,Fiction,"A novel about racial injustice in the Deep South, seen through the eyes of a young girl.",https://example.com/to-kill-a-mockingbird.jpg,4.3
+3,1984,George Orwell,1949,9780451524935,8.99,Dystopian,"A dystopian novel that delves into totalitarianism and surveillance.",https://example.com/1984.jpg,4.5
+4,The Catcher in the Rye,J.D. Salinger,1951,9780316769488,6.99,Fiction,"A story about teenage alienation and loss of innocence.",https://example.com/catcher-in-the-rye.jpg,4.0
+5,Brave New World,Aldous Huxley,1932,9780060850524,9.99,Dystopian,"A dystopian novel that explores a future society driven by technological advancements and consumerism.",https://example.com/brave-new-world.jpg,4.1
+6,The Hobbit,J.R.R. Tolkien,1937,9780345339683,12.99,Fantasy,"A fantasy novel about the adventures of Bilbo Baggins in Middle-earth.",https://example.com/the-hobbit.jpg,4.8
+7,The Catch-22,Joseph Heller,1961,9781451626650,11.99,Fiction,"A satirical novel set during World War II that critiques bureaucracy and war.",https://example.com/catcher-22.jpg,4.4
+8,The Alchemist,Paulo Coelho,1988,9780062315007,14.99,Fiction,"A philosophical novel about a shepherd's journey to discover his personal legend.",https://example.com/the-alchemist.jpg,4.6
+9,The Picture of Dorian Gray,Oscar Wilde,1890,9780141439570,10.49,Fiction,"A novel about a young man's Faustian bargain with his own portrait.",https://example.com/picture-of-dorian-gray.jpg,4.0
+10,The Lord of the Rings,J.R.R. Tolkien,1954,9780544003415,15.99,Fantasy,"An epic fantasy novel that follows the quest to destroy the One Ring.",https://example.com/lord-of-the-rings.jpg,4.9
+11,The Chronicles of Narnia,C.S. Lewis,1950,9780066238500,13.99,Fantasy,"A series of seven fantasy novels set in the magical land of Narnia.",https://example.com/chronicles-of-narnia.jpg,4.7
+12,The Grapes of Wrath,John Steinbeck,1939,9780143039433,9.49,Fiction,"A novel about the struggles of a family during the Great Depression.",https://example.com/grapes-of-wrath.jpg,4.3
+13,The Old Man and the Sea,Ernest Hemingway,1952,9780684830490,8.99,Fiction,"A short novel about an aging fisherman and his struggle to catch a giant marlin.",https://example.com/old-man-and-the-sea.jpg,4.1
+14,The Bell Jar,Sylvia Plath,1963,9780060837020,7.49,Fiction,"A semi-autobiographical novel about a young woman's descent into mental illness.",https://example.com/bell-jar.jpg,4.0
+15,The Road,Cormac McCarthy,2006,9780307387899,10.99,Dystopian,"A post-apocalyptic novel about a father and son's journey through a desolate landscape.",https://example.com/the-road.jpg,4.5
+16,The Fault in Our Stars,John Green,2012,9780142424179,9.99,Young Adult,"A novel about two teenagers who fall in love while dealing with cancer.",https://example.com/fault-in-our-stars.jpg,4.4
+17,Pride and Prejudice,Jane Austen,1813,9780141439518,6.99,Romance,"A classic novel about the romantic entanglements of Elizabeth Bennet and Mr. Darcy.",https://example.com/pride-and-prejudice.jpg,4.6
+18,The Diary of a Young Girl,Anne Frank,1947,9780553296983,7.99,Non-Fiction,"The diary of a Jewish girl hiding from the Nazis during World War II.",https://example.com/diary-of-a-young-girl.jpg,4.8
+19,The Hitchhiker's Guide to the Galaxy,Douglas Adams,1979,9780345391803,8.49,Science Fiction,"A comedic science fiction series that follows the misadventures of Arthur Dent.",https://example.com/hitchhikers-guide.jpg,4.2
+20,The Shining,Stephen King,1977,9780307743657,9.99,Horror,"A horror novel about a family staying in an isolated hotel with a dark past.",https://example.com/the-shining.jpg,4.3
+21,The Da Vinci Code,Dan Brown,2003,9780307474278,11.99,Mystery,"A mystery thriller that follows symbologist Robert Langdon as he uncovers secrets hidden in famous artworks.",https://example.com/da-vinci-code.jpg,4.1

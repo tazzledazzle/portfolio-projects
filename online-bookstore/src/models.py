@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 
 ## todo: add field validations and constraints as needed
 class Book(BaseModel):
+    id: int
     title: str = Field(..., min_length=1, max_length=200)
     authors: list[str] = Field(..., min_items=1)
     published_year: int = Field(..., ge=0)
@@ -18,13 +19,13 @@ class Inventory(BaseModel):
     book_id: int
     quantity: int
 
-class Orders(BaseModel):
+class Order(BaseModel):
     order_id: int
     user_id: int
     order_date: str
     total_amount: float
 
-class OrderWithID(Orders):
+class OrderWithID(Order):
     id: int
 
 class OrderItems(BaseModel):
