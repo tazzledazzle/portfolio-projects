@@ -21,82 +21,83 @@ ProjGen is a Python package designed to simplify the process of creating and man
 ### 1. Purpose
 
 Create a Python-based CLI tool (e.g. projgen) to scaffold new projects with Bazel and/or Gradle, providing opinionated defaults for:
-* Directory layout 
-* CI integration 
-* Test framework configuration 
-* Linting/config 
-* README/license/gitignore boilerplate 
-* Multi-language build support 
-* Observability instrumentation
+
+Directory layout:
+
+- CI integration 
+- Test framework configuration 
+- Linting/config 
+- README/license/gitignore boilerplate 
+- Multi-language build support 
+- Observability instrumentation
 
 ### 2. Technology Stack
 
-* Language: Python 3.10+ 
-* CLI Framework: Click 
-* Templating: Jinja2 
-* Packaging: Poetry or setuptools
+- Language: Python 3.10+ 
+- CLI Framework: Click 
+- Templating: Jinja2 
+- Packaging: Poetry or setuptools
 
 ### 3. CLI UX & Commands
 
 `projgen init <project-name>`
 
-#### Options:
+#### Options
 
-```
+```shell
 --build [bazel|gradle|both] (default: both)
 --language <lang> (required) # [java, kotlin, groovy, cpp, c, python, rust, node, typescript]
 --license <license-id> (default: MIT)
 --ci <ci-provider> (default: github)
 ```
 
-#### Flags:
-```
+#### Flags
+
+```shell
 --overwrite (replace existing files)
 --no-telemetry (disable usage reporting)
 ```
+
 ### 4. Opinionated Defaults
 
 #### Directory Layout
 
 Gradle:
-```
+
+```shell
 src/main/<lang>/
 src/test/<lang>/
 ```
+
 Bazel:
-```
+
+```shell
 WORKSPACE
 src/
 BUILD.bazel
 //… packages per feature
 ```
+
 ## CI Integration
 
 GitHub Actions workflow (`.github/workflows/ci.yml`) running `bazel test` and/or `./gradlew check`
 
 ## Test Framework
 
-Java/Kotlin/Groovy: JUnit 5, Kotest, Spock
+- Java/Kotlin/Groovy: JUnit 5, Kotest, Spock
+- Python: unittest & pytest
+- Node/TypeScript: Jest
+- Rust: cargo test
+- C/C++: Google Test, CppUnit
 
-Python: unittest & pytest
+## **Linting/Config**
 
-Node/TypeScript: Jest
+- Gradle: Spotless + Checkstyle configs
+- Bazel: buildifier + bazelisk wrapper script
+- Python: black + flake8
+- Node: eslint + prettier
 
-Rust: cargo test
-
-C/C++: Google Test, CppUnit
-
-**Linting/Config**
-
-Gradle: Spotless + Checkstyle configs
-
-Bazel: buildifier + bazelisk wrapper script
-
-Python: black + flake8
-
-Node: eslint + prettier
-
-#### Boilerplate Files
+### Boilerplate Files
 
 README.md with project name, description placeholder
 
@@ -123,7 +124,8 @@ Provide telemetry/ directory with per-language configuration and docs
 Example: exported traces to a Zipkin endpoint or Prometheus metrics endpoint
 
 ## 7. Internal Architecture
-```
+
+```shell
 projgen/
 ├── cli.py            # Click entrypoint
 ├── generators/       # Modules for each build system & language
@@ -131,16 +133,20 @@ projgen/
 ├── config.py         # Defaults & mappings
 └── telemetry.py      # Optional usage reporting
 ```
+
 ## 8. Example Usage
-```
+
+```shell
 projgen init my-app \
 --build both \
 --language kotlin \
 --license Apache-2.0 \
 --ci github
 ```
+
 #### Generates:
-```
+
+```shell
 my-app/
 ├── README.md
 ├── LICENSE
@@ -153,6 +159,7 @@ my-app/
 ├── settings.gradle.kts
 └── .github/workflows/ci.yml
 ```
+
 ## 9. Next Steps
 
 - [ ] Validate UX flow & flags 
@@ -162,6 +169,7 @@ my-app/
 - [ ] Publish to PyPI and add project README
 
 ### to install and test
+
 ```shell
     pip install -e .
 ```
