@@ -30,3 +30,30 @@ java_binary(
     name = "java-maven",
     main_class = "com.example.myproject.App",
 ) 
+
+oci_image(
+    name = "image",
+    base = "@distroless_java",
+    entrypoint = [
+        "java",
+        "-jar",
+        "/java-maven-deploy.jar",
+    ],
+    tars = [
+        ":layer"
+    ],
+)
+
+tar(
+    name = "layer",
+    srcs = ["java-maven-deploy.jar"],
+)
+
+container_structure_test(
+    name = "container_test",
+    configs = ["container-structure-test.yaml"],
+    image = ":image",
+    tags = [
+        "requires-docker",
+    ]
+)
