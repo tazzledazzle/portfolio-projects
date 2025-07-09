@@ -1,0 +1,17 @@
+plugins {
+//     id 'kotlin' version '2.2.0'
+    id 'application'
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("com.rabbitmq:amqp-client:5.25.0")
+    implementation("io.ktor:ktor-client-core:2.3.4")
+    implementation("io.ktor:ktor-client-cio:2.3.4")
+    implementation("io.ktor:ktor-client-serialization:2.3.4")
+}
+
