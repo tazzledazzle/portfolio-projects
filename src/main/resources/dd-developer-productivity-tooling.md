@@ -2,7 +2,8 @@
 
 ## Overview
 
-Create a CLI tool (Python or Rust) that scaffolds new projects (Bazel or Gradle) with opinionated defaults, or build an IntelliJ plugin that detects and highlights stale dependencies.
+Create a CLI tool (Python or Rust) that scaffolds new projects (Bazel or Gradle) with opinionated defaults, 
+or build an IntelliJ plugin that detects and highlights stale dependencies.
 
 ## Goals and Objectives
 
