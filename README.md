@@ -18,6 +18,6 @@ There should be 10 of them defined in design documents under `src/main/resources
 
 ## Other Projects in Here
 - [ws-chat-fast](ws-chat-fast/README.md)
-- projgen
+- [projgen](projgen/README.md)
 - rabbit-mq
 - online-bookstore
