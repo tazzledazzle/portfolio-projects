@@ -19,5 +19,6 @@ There should be 10 of them defined in design documents under `src/main/resources
 ## Other Projects in Here
 - [ws-chat-fast](ws-chat-fast/README.md)
 - [projgen](projgen/README.md)
-- rabbit-mq
-- online-bookstore
+- [rabbit-mq](rabbit-mq/README.md)
+- [online-bookstore](online-bookstore/README.md)
+- [bazel-multibuild](bazel-multibuild/README.md)
