@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
     implementation 'org.apache.commons:commons-text'
+    implementation 'com.google.code.gson:gson:2.10.1'
     implementation project(':utilities')
     implementation("com.rabbitmq:amqp-client:5.25.0")
     implementation("io.ktor:ktor-client-core:2.3.5")

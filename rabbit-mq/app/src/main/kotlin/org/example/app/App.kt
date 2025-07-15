@@ -42,7 +42,7 @@ fun main() {
     val executorService = Executors.newFixedThreadPool(10)
     // add it to the connections
     val otherConnection = factory.newConnection(executorService)
-`   // writing serialized JSON to a queue
+  // writing serialized JSON to a queue
     val myJsonQueue = "myJsonQueue"
     channel.queueDeclare(myJsonQueue, false, false, false, null)
     val book = Book("The Catcher in the Rye", "J.D. Salinger", 1951)
