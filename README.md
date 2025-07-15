@@ -16,3 +16,8 @@ There should be 10 of them defined in design documents under `src/main/resources
  - dd-performance-benchmarking-n-tuning.md
  - dd-streaming-data-demo.md
 
+## Other Projects in Here
+- [ws-chat-fast](ws-chat-fast/README.md)
+- projgen
+- rabbit-mq
+- online-bookstore
