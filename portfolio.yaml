@@ -1,0 +1,41 @@
+projects:
+  - id: ws-chat-fast
+    name: "WebSocket Chat (FastAPI)"
+    problem: "Low-latency chat demo"
+    stack: ["Python", "FastAPI", "Redis"]
+    highlights: ["Auto reconnection", "Metrics"]
+    status: "stable"
+    path: "ws-chat-fast"
+    tags: ["DX","perf","distributed"]
+  - id: projgen
+    name: "Project Generator"
+    problem: "Scaffold new projects easily"
+    stack: ["Python", "Jinja2", "Typer"]
+    highlights: ["CLI UX", "Template system"]
+    status: "beta"
+    path: "projgen"
+    tags: ["tooling","DX"]
+  - id: rabbit-mq
+    name: "RabbitMQ Demo"
+    problem: "Message queue patterns"
+    stack: ["Python", "RabbitMQ", "Docker"]
+    highlights: ["Pub/Sub", "Work queues"]
+    status: "stable"
+    path: "rabbit-mq"
+    tags: ["distributed","messaging"]
+  - id: online-bookstore
+    name: "Online Bookstore"
+    problem: "E-commerce microservices"
+    stack: ["Java", "Spring Boot", "PostgreSQL"]
+    highlights: ["REST API", "Database design"]
+    status: "stable"
+    path: "online-bookstore"
+    tags: ["microservices","api"]
+  - id: bazel-multibuild
+    name: "Bazel Multi-Build"
+    problem: "Polyglot build system"
+    stack: ["Bazel", "Java", "Python"]
+    highlights: ["Build optimization", "Cross-language"]
+    status: "beta"
+    path: "bazel-multibuild"
+    tags: ["build-systems","tooling"]

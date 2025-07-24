@@ -1,0 +1,13 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: stable
+    hooks:
+      - id: black
+  - repo: https://github.com/pycqa/ruff
+    rev: stable
+    hooks:
+      - id: ruff
+  - repo: https://github.com/pinterest/ktlint
+    rev: v0.47.1
+    hooks:
+      - id: ktlint

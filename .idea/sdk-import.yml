@@ -1,0 +1,4 @@
+import:
+- module: portfolio-project
+  path: /Users/terenceschumacher/IdeaProjects/portfolio-project/.gradle/python/MacOSX/Miniconda3-py312_24.9.2-0/envs/python-3.12.8/bin/python
+  type: PYTHON

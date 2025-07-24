@@ -1,0 +1,11 @@
+projects:
+  - id: ws-chat-fast
+    command: "cd ws-chat-fast && docker compose up --build"
+  - id: projgen
+    command: "cd projgen && python -m projgen"
+  - id: rabbit-mq
+    command: "cd rabbit-mq && docker compose up"
+  - id: online-bookstore
+    command: "cd online-bookstore && docker compose up"
+  - id: bazel-multibuild
+    command: "cd bazel-multibuild && bazel build //..."

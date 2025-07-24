@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ $# -lt 1 ]; then
+  echo "Usage: $0 <project-id> [args]"
+  exit 1
+fi
+PROJECT=$1
+shift
+
+CONFIG="tools/run.yaml"
+CMD=$(yq e ".projects[] | select(.id==\"$PROJECT\").command" "$CONFIG")
+
+if [ -z "$CMD" ]; then
+  echo "No entry for project '$PROJECT' in $CONFIG"
+  exit 1
+fi
+
+echo "Running '$PROJECT' → $CMD $*"
+eval "$CMD $*"
