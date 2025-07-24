@@ -1,0 +1,91 @@
+projects:
+  - id: ws-chat-fast
+    name: "WebSocket Chat (FastAPI)"
+    problem: "Low-latency real-time chat application"
+    stack: ["Python", "FastAPI", "WebSocket", "Redis"]
+    highlights:
+      - "Real-time communication with WebSocket"
+      - "Scalable architecture using Redis for message brokering"
+      - "FastAPI for high performance and easy development"
+    path: "ws-chat-fast"
+    status: "stable"
+  - id: projgen
+    name: "Project Generator"
+    problem: "Automated project scaffolding tool"
+    stack: ["Python", "Click", "Jinja2"]
+    highlights:
+      - "Generates boilerplate code for various project types"
+      - "Customizable templates for different frameworks"
+      - "CLI tool for easy usage"
+    path: "projgen"
+    status: "stable"
+  - id: bazel-multibuild
+    name: "Bazel Multi-Build"
+    problem: "Efficient multi-target builds with Bazel"
+    stack: ["Bazel", "Python", "React", "Java", "Go", "Typescript"]
+    highlights:
+      - "Optimizes build times for large projects"
+      - "Supports multiple build targets"
+      - "Integrates with existing Bazel workflows"
+      - "Cross-language support for diverse tech stacks"
+      - "Example projects in Python, React, Java, Go, and Typescript"
+    path: "bazel-multibuild"
+    status: "stable"
+  - id: rabbit-mq
+    name: "RabbitMQ Example"
+    problem: "Message queuing and asynchronous processing"
+    stack: ["Python", "RabbitMQ", "Celery"]
+    highlights:
+      - "Demonstrates RabbitMQ for message queuing"
+      - "Uses Celery for task management"
+      - "Example of asynchronous processing in Python"
+      - "Scalable architecture for background tasks"
+    path: "rabbit-mq"
+    status: "stable"
+
+  - id: fastapi-graphql
+    name: "FastAPI GraphQL"
+    problem: "GraphQL API with FastAPI"
+    stack: ["Python", "FastAPI", "GraphQL", "SQLAlchemy"]
+    highlights:
+      - "GraphQL API built with FastAPI"
+      - "Uses SQLAlchemy for database interactions"
+      - "Supports complex queries and mutations"
+      - "High performance and easy to extend"
+      - "Example of integrating GraphQL with FastAPI"
+    path: "fastapi-graphql"
+    status: "pending"
+  - id: online-bookstore
+    name: "Online Bookstore"
+    problem: "E-commerce platform for books"
+    stack: ["Python", "Django", "React", "PostgreSQL"]
+    highlights:
+      - "Full-stack e-commerce application"
+      - "Django for backend and React for frontend"
+      - "PostgreSQL for robust database management"
+      - "User authentication and product management features"
+      - "Responsive design for a seamless user experience"
+    path: "online-bookstore"
+    status: "in-progress"
+
+  - id: data-visualization
+    name: "Data Visualization Dashboard"
+    problem: "Interactive data visualization tool"
+    stack: ["Python", "Dash", "Plotly", "Pandas"]
+    highlights:
+      - "Interactive dashboard for data analysis"
+      - "Uses Dash and Plotly for visualization"
+      - "Supports real-time data updates"
+      - "Example of integrating Pandas for data manipulation"
+      - "Customizable visualizations for different datasets"
+    path: "data-visualization"
+    status: "pending"
+  - id: forgex
+    name: "ForgeX"
+    problem: "ForgeX is a platform for building and deploying AI applications"
+    stack: ["Python", "FastAPI", "Docker", "Kubernetes"]
+    highlights:
+      - "Streamlined development and deployment of AI applications"
+      - "Supports Docker and Kubernetes for containerization and orchestration"
+      - "FastAPI for building high-performance APIs"
+      - "Example projects showcasing AI model integration"
