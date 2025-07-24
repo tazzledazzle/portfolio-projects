@@ -16,6 +16,7 @@ This portfolio includes projects covering:
 ## Quick Start
 
 Each project includes:
+
 - Design documentation
 - Implementation code
 - Setup instructions
@@ -32,6 +33,7 @@ Use the portfolio runner tool:
 ```
 
 Available project IDs:
+
 - `ws-chat-fast`
 - `projgen`
 - `rabbit-mq`
