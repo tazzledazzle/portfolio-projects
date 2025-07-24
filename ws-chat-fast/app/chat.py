@@ -3,8 +3,6 @@ from fastapi.responses import HTMLResponse
 
 import logging
 
-from fastapi import APIRouter, Request, WebSocket, WebSocketDisconnect
-from fastapi.responses import HTMLResponse
 
 from app.templating import templates
 from app.ws_manager import ConnectionManager
