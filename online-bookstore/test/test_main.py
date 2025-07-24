@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 from main import app
 from fastapi.testclient import TestClient
 
@@ -43,7 +46,8 @@ def test_get_book():
 def test_get_non_existent_book():
     response = client.get("/v1/books/9999")
     assert response.status_code == 404
-    assert response.json() == {"detail": "Book not found"}
+    response_data = response.json()
+    assert response_data["detail"] == "Book not found"
 
 def test_create_order():
     order_data = {

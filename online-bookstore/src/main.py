@@ -36,14 +36,15 @@ def get_books():
 @app.get("/v1/books/{book_id}", response_model=BookWithID)
 def get_book(book_id: int):
     """Get a book by ID."""
-    book = read_order(book_id)
+    from operations import read_book_by_id
+    book = read_book_by_id(book_id)
     if not book:
         raise HTTPException(status_code=404, detail="Book not found")
     return book
 
 
 @app.post("/v1/orders", response_model=OrderWithID)
-def create_order(order: Order):
+def create_order_endpoint(order: Order):
     """Create a new order."""
     return create_order(order)
 
@@ -66,13 +67,18 @@ def search_books(query: str):
 
 
 ## custom error handler for 404 Not Found
+from fastapi.responses import JSONResponse
+
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request, exc):
-    return {
-        "status_code": exc.status_code,
-        "detail": exc.detail,
-        "message": "Resource not found"
-    }
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "status_code": exc.status_code,
+            "detail": exc.detail,
+            "message": "Resource not found"
+        }
+    )
 
 
 @app.post("/token")
