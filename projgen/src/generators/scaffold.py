@@ -46,14 +46,180 @@ def scaffold_project(project_name, build_system="both", language="python",
 
 def _create_common_files(project_path, project_name, license_id):
     """Create common project files."""
-    # README.md
-    (project_path / "README.md").write_text(f"# {project_name}\n\nProject description here.\n")
+    # README.md with better template
+    readme_content = f"""# {project_name}
+
+## Description
+
+Add your project description here.
+
+## Getting Started
+
+### Prerequisites
+
+- List your prerequisites here
+
+### Installation
+
+```bash
+# Add installation instructions
+```
+
+### Usage
+
+```bash
+# Add usage examples
+```
+
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+## License
+
+This project is licensed under the {license_id} License - see the [LICENSE](LICENSE) file for details.
+"""
+    (project_path / "README.md").write_text(readme_content)
     
-    # LICENSE
-    (project_path / "LICENSE").write_text(f"{license_id} License\n\nCopyright (c) 2025\n")
+    # Enhanced LICENSE
+    license_content = _get_license_text(license_id)
+    (project_path / "LICENSE").write_text(license_content)
     
-    # .gitignore
-    (project_path / ".gitignore").write_text("*.pyc\n__pycache__/\n.DS_Store\n")
+    # Enhanced .gitignore
+    gitignore_content = _get_gitignore_content()
+    (project_path / ".gitignore").write_text(gitignore_content)
+
+
+def _get_license_text(license_id: str) -> str:
+    """Get full license text."""
+    if license_id == "MIT":
+        return """MIT License
+
+Copyright (c) 2025
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+    elif license_id == "Apache-2.0":
+        return """Apache License
+Version 2.0, January 2004
+http://www.apache.org/licenses/
+
+Copyright 2025
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
+    else:
+        return f"{license_id} License\n\nCopyright (c) 2025\n"
+
+
+def _get_gitignore_content() -> str:
+    """Get comprehensive .gitignore content."""
+    return """# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+target/
+
+# Gradle
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Bazel
+bazel-*
+
+# Testing
+.coverage
+.pytest_cache/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+
+# Temporary files
+*.tmp
+*.temp
+"""
 
 
 def _create_source_structure(project_path, language):
