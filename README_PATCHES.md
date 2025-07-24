@@ -59,7 +59,7 @@ done
 ## Next Steps After Applying
 
 1. **Review changes**: `git status` and `git diff --cached`
-2. **Complete placeholder content**: 
+2. **Complete placeholder content**:
    - Fill in actual MIT license text in LICENSE file
    - Complete any YAML configurations
    - Verify Python scripts are complete

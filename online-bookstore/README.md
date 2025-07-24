@@ -3,7 +3,7 @@
 ## **1. Requirements**
 
 ### **Functional**
-   
+
 1. **Catalog Browsing**: List books by category, author, bestseller, new releases.
 2. **Search**: Full‐text search over title, author, description; faceted by genre, price, rating.
 3. **Book Details**: View metadata (title, author, ISBN, description, reviews), availability, price.
@@ -99,7 +99,8 @@
  | quantity INT |  |
 | **Inventory** |
 | book_id PK (FK) |
-| stock INT | 
+| stock INT |
+
 **Search Index** documents mirror book metadata plus popularity signals.
 
 ---
@@ -152,6 +153,7 @@ GET    /v1/orders/{order_id}     → order status/history
 | --- | --- | --- |
 | Inventory updates | Two-phase commit on checkout | Asynchronous reservation + compensating rollback |
 | Catalog freshness | Immediate reflecting of edits | Indexed/Cache refresh lag (~sec) |
+
 - Use **synchronous inventory** decrement to prevent oversell, accepting slight checkout latency.
 - Use **async catalog updates** to Elasticsearch & cache to maximize read throughput.
 

@@ -41,6 +41,7 @@ All 10 patches have been successfully implemented by manually creating the files
 - **docs/index.md**: Documentation homepage
 
 ## ✅ PR07: Portfolio Runner Tool
+
 - **tools/run**: Executable script to run projects
 - **tools/run.yaml**: Project command configuration
 

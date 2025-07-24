@@ -42,24 +42,28 @@ CLI tool for scaffolding new projects with templates.
 ## Recent Improvements (v2.0)
 
 ### Interactive Setup
+
 - Full interactive mode with `--interactive` flag
 - Smart prompts for missing arguments
 - Configuration validation with detailed error reporting
 - Preview and confirmation before generation
 
 ### Enhanced Validation
+
 - Template syntax validation using Jinja2
 - Project configuration validation
 - Comprehensive error and warning reporting
 - Manifest file validation for plugin templates
 
 ### Plugin Architecture
+
 - Base `ProjectPlugin` class for extensibility
 - Built-in plugins for Docker and MkDocs documentation
 - Plugin manager for loading external plugins
 - Post-generation hooks for advanced customization
 
 ### Additional Features
+
 - Enhanced file templates with better defaults
 - Comprehensive .gitignore generation
 - Full license text generation (MIT, Apache-2.0, etc.)
