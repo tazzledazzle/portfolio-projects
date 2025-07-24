@@ -2,13 +2,15 @@
 
 ## Issues Found and Fixed
 
-### ✅ Fixed Issues:
+### ✅ Fixed Issues
+
 - **pr01.patch**: Removed stray ``` at end of .gitattributes
 - **pr04.patch**: Already valid (CI workflow)
 - **pr06.patch**: Fixed incomplete GitHub Pages deployment
 - **pr10.patch**: Removed duplicate tags field in YAML
 
-### ⚠️ Remaining Issues:
+### ⚠️ Remaining Issues
+
 Most patches contain placeholder content that needs to be completed:
 
 - **pr01.patch**: MIT License shows "(Full MIT License text continues)" - needs actual license text
@@ -22,18 +24,21 @@ Most patches contain placeholder content that needs to be completed:
 ## How to Apply Patches
 
 ### Option 1: Apply Valid Patches Only
+
 ```bash
 # Apply the patches that are syntactically correct
 git apply pr04.fixed.patch  # CI workflows
 ```
 
 ### Option 2: Use the Custom Script
+
 ```bash
 # Use the provided script (handles custom format)
 ./apply_patches.sh
 ```
 
 ### Option 3: Manual Application
+
 ```bash
 # Apply each patch manually and fix issues as they arise
 for i in 01 02 03 04 05 06 07 08 09 10; do
@@ -45,6 +50,7 @@ done
 ```
 
 ### Option 4: Interactive Application
+
 ```bash
 # Review each patch before applying
 ./validate_patches.sh  # Check which are valid first

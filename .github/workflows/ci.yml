@@ -10,10 +10,10 @@ jobs:
   detect-changes:
     runs-on: ubuntu-latest
     outputs:
-      python: ${{ steps.filter.outputs.python }}
-      kotlin: ${{ steps.filter.outputs.kotlin }}
-      bazel:  ${{ steps.filter.outputs.bazel }}
-      docs:   ${{ steps.filter.outputs.docs }}
+      python-changed: ${{ steps.filter.outputs.python }}
+      kotlin-changed: ${{ steps.filter.outputs.kotlin }}
+      bazel-changed:  ${{ steps.filter.outputs.bazel }}
+      docs-changed:   ${{ steps.filter.outputs.docs }}
     steps:
       - uses: actions/checkout@v4
       - id: filter
@@ -34,7 +34,7 @@ jobs:
 
   python:
     needs: detect-changes
-    if: needs.detect-changes.outputs.python == 'true'
+    if: needs.detect-changes.outputs.python-changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -50,7 +50,7 @@ jobs:
 
   kotlin:
     needs: detect-changes
-    if: needs.detect-changes.outputs.kotlin == 'true'
+    if: needs.detect-changes.outputs.kotlin-changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -59,7 +59,7 @@ jobs:
 
   bazel:
     needs: detect-changes
-    if: needs.detect-changes.outputs.bazel == 'true'
+    if: needs.detect-changes.outputs.bazel-changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -68,7 +68,7 @@ jobs:
 
   docs:
     needs: detect-changes
-    if: needs.detect-changes.outputs.docs == 'true'
+    if: needs.detect-changes.outputs.docs-changed == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
