@@ -46,7 +46,7 @@ jobs:
       - run: ruff check .
       - run: mypy .
       - run: pytest -q --cov=.
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v5
 
   kotlin:
     needs: detect-changes
