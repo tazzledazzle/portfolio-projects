@@ -1,13 +1,10 @@
 """Plugin system for projgen."""
 
-import os
-import sys
 import importlib
 import importlib.util
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Callable
+from typing import Dict, List, Any, Optional
 from abc import ABC, abstractmethod
-import yaml
 
 
 class ProjectPlugin(ABC):

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-import yaml, sys, pathlib
+import yaml
+import sys
+import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 manifest = yaml.safe_load((ROOT / "portfolio.yaml").read_text())

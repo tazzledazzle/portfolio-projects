@@ -1,6 +1,6 @@
 import csv
 from typing import Optional
-from models import Book, BookWithID, Order, OrderWithID
+from models import BookWithID, Order, OrderWithID
 
 import os
 

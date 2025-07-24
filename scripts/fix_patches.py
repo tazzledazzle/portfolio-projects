@@ -4,7 +4,6 @@ Fix patch files by ensuring proper Git patch format.
 Adds blank lines between different file patches.
 """
 
-import re
 import sys
 from pathlib import Path
 
