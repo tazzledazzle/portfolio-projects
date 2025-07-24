@@ -1,0 +1,57 @@
+diff --git a/scripts/gen_readme_table.py b/scripts/gen_readme_table.py
+new file mode 100644
+index 0000000..12345ab
+--- /dev/null
++++ b/scripts/gen_readme_table.py
+@@ -0,0 +1,50 @@
++#!/usr/bin/env python3
++import yaml, sys, pathlib
++
++ROOT = pathlib.Path(__file__).resolve().parents[1]
++manifest = yaml.safe_load((ROOT / "portfolio.yaml").read_text())
++
++header = "| Name | Problem | Stack | Highlights | Status | Link |\n|---|---|---|---|---|---|\n"
++rows = []
++for p in manifest["projects"]:
++    rows.append(
++        f"| {p['name']} | {p['problem']} | {', '.join(p['stack'])} "
++        f"| {', '.join(p['highlights'])} | {p['status']} | [{p['path']}](./{p['path']}) |"
++    )
++
++table = header + "\n".join(rows) + "\n"
++
++readme = (ROOT / "README.md").read_text().splitlines()
++out, in_block = [], False
++for line in readme:
++    if line.strip() == "<!-- PROJECTS_TABLE_START -->":
++        in_block = True
++        out.append(line)
++        out.append(table)
++        continue
++    if line.strip() == "<!-- PROJECTS_TABLE_END -->":
++        in_block = False
++        out.append(line)
++        continue
++    if not in_block:
++        out.append(line)
++
++new_text = "\n".join(out) + "\n"
++if "--check" in sys.argv:
++    if new_text != (ROOT / "README.md").read_text():
++        print("README.md out of date. Run scripts/gen_readme_table.py", file=sys.stderr)
++        sys.exit(1)
++else:
++    (ROOT / "README.md").write_text(new_text)
+diff --git a/README.md b/README.md
+index 1111111..2222222
+--- a/README.md
++++ b/README.md
+@@ -2,6 +2,12 @@
+ ## Portfolio Projects
+ 
++<!-- PROJECTS_TABLE_START -->
++<!-- auto-generated, do not edit -->
++
++<!-- PROJECTS_TABLE_END -->
++
+ (rest of README...)

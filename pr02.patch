@@ -1,0 +1,61 @@
+*** Begin Patch: PR02 docs/ia-rename-and-manifest ***
+diff --git a/src/main/resources/ws-chat-fast.md b/docs/design-docs/ws-chat-fast/design.md
+similarity index 100%
+rename from src/main/resources/ws-chat-fast.md
+rename to docs/design-docs/ws-chat-fast/design.md
+diff --git a/src/main/resources/projgen.md b/docs/design-docs/projgen/design.md
+similarity index 100%
+rename from src/main/resources/projgen.md
+rename to docs/design-docs/projgen/design.md
+diff --git a/src/main/resources/rabbit-mq.md b/docs/design-docs/rabbit-mq/design.md
+similarity index 100%
+rename from src/main/resources/rabbit-mq.md
+rename to docs/design-docs/rabbit-mq/design.md
+diff --git a/src/main/resources/online-bookstore.md b/docs/design-docs/online-bookstore/design.md
+similarity index 100%
+rename from src/main/resources/online-bookstore.md
+rename to docs/design-docs/online-bookstore/design.md
+diff --git a/src/main/resources/bazel-multibuild.md b/docs/design-docs/bazel-multibuild/design.md
+similarity index 100%
+rename from src/main/resources/bazel-multibuild.md
+rename to docs/design-docs/bazel-multibuild/design.md
+diff --git a/docs/templates/design_doc_template.md b/docs/templates/design_doc_template.md
+new file mode 100644
+index 0000000..abcdef1
+--- /dev/null
++++ b/docs/templates/design_doc_template.md
+@@ -0,0 +1,9 @@
++# <Title>
++
++## Context
++## Problem & Goals
++## Constraints & Risks
++## Architecture & Alternatives
++## Trade-offs
++## Results & Metrics
++## What I'd change next time
+diff --git a/portfolio.yaml b/portfolio.yaml
+new file mode 100644
+index 0000000..abcdef2
+--- /dev/null
++++ b/portfolio.yaml
+@@ -0,0 +1,20 @@
++projects:
++  - id: ws-chat-fast
++    name: "WebSocket Chat (FastAPI)"
++    problem: "Low-latency chat demo"
++    stack: ["Python", "FastAPI", "Redis"]
++    highlights: ["Auto reconnection", "Metrics"]
++    status: "stable"
++    path: "ws-chat-fast"
++    tags: ["DX","perf","distributed"]
++  - id: projgen
++    name: "Project Generator"
++    problem: "Scaffold new projects easily"
++    stack: ["Python", "Jinja2", "Typer"]
++    highlights: ["CLI UX", "Template system"]
++    status: "beta"
++    path: "projgen"
++    tags: ["tooling","DX"]
++  # ... (add remaining projects similarly)
+*** End Patch: PR02 docs/ia-rename-and-manifest ***

@@ -1,0 +1,47 @@
+diff --git a/PORTFOLIO.md b/PORTFOLIO.md
+new file mode 100644
+index 0000000..888bbb8
+--- /dev/null
++++ b/PORTFOLIO.md
+@@ -0,0 +1,30 @@
++# Portfolio Competency Mapping
++
++| Competency                | Projects                                       |
++|---------------------------|------------------------------------------------|
++| Build Systems             | ws-chat-fast, bazel-multibuild                 |
++| Developer Experience (DX) | projgen, ws-chat-fast                          |
++| Microservices             | ws-chat-fast, rabbit-mq                        |
++| Observability             | ws-chat-fast (metrics), observability-stack    |
++| CI/CD                     | GitHub Actions workflows                       |
++| Documentation             | docs/design-docs/*, mkdocs site                |
++| Security                  | CodeQL, SECURITY.md                             |
++
++*See [README.md](README.md#portfolio-competency-mapping) for 2-minute tour.*
+diff --git a/portfolio.yaml b/portfolio.yaml
+index abcdef2..abcdef9
+--- a/portfolio.yaml
++++ b/portfolio.yaml
+@@ -2,8 +2,9 @@ projects:
+   - id: ws-chat-fast
+     name: "WebSocket Chat (FastAPI)"
+     problem: "Low-latency chat demo"
+     stack: ["Python", "FastAPI", "Redis"]
+     highlights: ["Auto reconnection", "Metrics"]
+     status: "stable"
+     path: "ws-chat-fast"
++    tags: ["DX","perf","distributed"]
+   - id: projgen
+     name: "Project Generator"
+     problem: "Scaffold new projects easily"
+diff --git a/README.md b/README.md
+index 3333333..4444444
+--- a/README.md
++++ b/README.md
+@@ -8,14 +8,16 @@ ## Portfolio Projects
+ <!-- PROJECTS_TABLE_START -->
+ <!-- auto-generated, do not edit -->
+ <!-- PROJECTS_TABLE_END -->
++
++Learn how each project aligns with key competencies in [PORTFOLIO.md](PORTFOLIO.md).
+ 
+ (rest of README...)

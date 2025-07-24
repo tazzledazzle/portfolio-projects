@@ -1,0 +1,54 @@
+diff --git a/.devcontainer/devcontainer.json b/.devcontainer/devcontainer.json
+new file mode 100644
+index 0000000..abc1234
+--- /dev/null
++++ b/.devcontainer/devcontainer.json
+@@ -0,0 +1,30 @@
++{
++  "name": "Portfolio Dev Container",
++  "image": "mcr.microsoft.com/vscode/devcontainers/base:ubuntu",
++  "features": {
++    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
++  },
++  "postCreateCommand": "make bootstrap"
++}
+diff --git a/Makefile b/Makefile
+new file mode 100644
+index 0000000..def5678
+--- /dev/null
++++ b/Makefile
+@@ -0,0 +1,20 @@
++# Makefile for repo
++bootstrap:
++	python3 -m pip install -r requirements.txt
++	just install-hooks
++
++lint:
++	ruff .
++	ktlintCheck
++
++test:
++	pytest
++	./gradlew test
++
++docs:
++	mkdocs build
+diff --git a/.pre-commit-config.yaml b/.pre-commit-config.yaml
+new file mode 100644
+index 0000000..a1b2c3d
+--- /dev/null
++++ b/.pre-commit-config.yaml
+@@ -0,0 +1,15 @@
++repos:
++  - repo: https://github.com/psf/black
++    rev: stable
++    hooks:
++      - id: black
++  - repo: https://github.com/pycqa/ruff
++    rev: stable
++    hooks:
++      - id: ruff
++  - repo: https://github.com/pinterest/ktlint
++    rev: v0.47.1
++    hooks:
++      - id: ktlint
