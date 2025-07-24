@@ -1,6 +1,5 @@
 """Project scaffolding functionality."""
 
-import os
 import shutil
 from pathlib import Path
 

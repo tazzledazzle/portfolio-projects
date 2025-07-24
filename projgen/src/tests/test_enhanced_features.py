@@ -6,10 +6,9 @@ import unittest
 from pathlib import Path
 
 import sys
-import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from projgen.validation import TemplateValidator, ValidationError
+from projgen.validation import TemplateValidator
 from projgen.plugins import PluginManager, DockerPlugin, DocsPlugin
 
 

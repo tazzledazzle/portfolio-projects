@@ -1,9 +1,8 @@
 """Template validation for projgen."""
 
-import os
 import re
 from pathlib import Path
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 from jinja2 import Environment, FileSystemLoader, TemplateSyntaxError
 import yaml
 

@@ -1,18 +1,16 @@
-from fastapi import FastAPI, HTTPException, Depends, WebSocket
+from fastapi.responses import JSONResponse, FastAPI, HTTPException, Depends, WebSocket
 from fastapi.security import OAuth2PasswordRequestForm
 from models import (
-    Book,
     BookWithID,
-    Inventory,
     Order,
     OrderWithID,
-    OrderItems,
 )
 from operations import read_all_books, read_order, create_order
 
 from security import (
     User,
     UserInDB,
+    get_user_from_token,
     fake_token_generator,
     fakely_hash_password,
     fake_users_db
@@ -67,7 +65,6 @@ def search_books(query: str):
 
 
 ## custom error handler for 404 Not Found
-from fastapi.responses import JSONResponse
 
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request, exc):
@@ -106,7 +103,6 @@ async def login(
         "token_type": "bearer"
     }
 
-from security import get_user_from_token
 @app.get("/users/me", response_model=User)
 def read_users_me(
     current_user: User = Depends(get_user_from_token),

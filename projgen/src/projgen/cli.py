@@ -7,7 +7,7 @@ import click
 
 from .config import DEFAULTS
 from .interactive import interactive_setup, prompt_for_missing_args
-from .validation import TemplateValidator, ValidationError
+from .validation import TemplateValidator
 from .plugins import PluginManager
 from generators.scaffold import scaffold_project
 from .telemetry import init_telemetry, record_event
