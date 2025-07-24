@@ -22,7 +22,7 @@ Each project includes:
 - Setup instructions
 - Key learnings
 
-Use the navigation menu to explore individual projects or visit the [competency mapping](../PORTFOLIO.md) to see how projects align with technical skills.
+Use the navigation menu to explore individual projects or visit the [competency mapping](project://PORTFOLIO.md) to see how projects align with technical skills.
 
 ## Running Projects
 

@@ -2,13 +2,14 @@ site_name: Portfolio Projects
 nav:
   - Home: index.md
   - Projects:
-    - WebSocket Chat: docs/design-docs/ws-chat-fast/design.md
-    - Project Generator: docs/design-docs/projgen/design.md
-    - RabbitMQ Demo: docs/design-docs/rabbit-mq/design.md
-    - Online Bookstore: docs/design-docs/online-bookstore/design.md
-    - Bazel Multi-Build: docs/design-docs/bazel-multibuild/design.md
+    - WebSocket Chat: design-docs/ws-chat-fast/design.md
+    - Project Generator: design-docs/projgen/design.md
+    - RabbitMQ Demo: design-docs/rabbit-mq/design.md
+    - Online Bookstore: design-docs/online-bookstore/design.md
+    - Bazel Multi-Build: design-docs/bazel-multibuild/design.md
+    - Competency Matrix: project://PORTFOLIO.md
 theme:
-  name: material
+  name: mkdocs
   features:
     - navigation.instant
 markdown_extensions:
