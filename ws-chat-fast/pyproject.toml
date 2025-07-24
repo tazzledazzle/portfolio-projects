@@ -1,0 +1,19 @@
+[project]
+name = "ws-chat-fast"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "redis",
+    "prometheus-client",
+    "websockets",
+    "httpx",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
