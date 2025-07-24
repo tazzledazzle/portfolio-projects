@@ -70,6 +70,7 @@
 ---
 
 ## **4. Data Models**
+
 > Currently representing database storage as a CSV
 
 | **Books** |  
