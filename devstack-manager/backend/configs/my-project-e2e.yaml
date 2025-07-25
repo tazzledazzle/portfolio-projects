@@ -1,0 +1,50 @@
+profile:
+  name: "my-project-e2e"
+  description: "End-to-end testing environment"
+  version: "1.0"
+
+services:
+  - name: "api-server"
+    type: "docker"
+    image: "my-api:test"
+    ports: ["8080:8080"]
+    environment:
+      NODE_ENV: "test"
+      DATABASE_URL: "postgresql://test:testpass@database:5432/testdb"
+    health_check:
+      endpoint: "/health"
+      interval: 10
+
+  - name: "database"
+    type: "docker"
+    image: "postgres:15"
+    ports: ["5433:5432"]
+    environment:
+      POSTGRES_DB: "testdb"
+      POSTGRES_USER: "test"
+      POSTGRES_PASSWORD: "testpass"
+
+  - name: "mock-external-api"
+    type: "mock"
+    ports: ["9001:9001"]
+    mock_config:
+      routes:
+        "/external/data":
+          method: "GET"
+          status: 200
+          body:
+            data: ["item1", "item2", "item3"]
+        "/external/webhook":
+          method: "POST"
+          status: 202
+          body:
+            message: "Webhook received"
+
+hooks:
+  pre_start:
+    - "echo 'Setting up E2E test environment...'"
+  post_start:
+    - "echo 'Running database migrations...'"
+    - "sleep 10 && curl -f http://localhost:8080/health"
+  post_stop:
+    - "echo 'Cleaning up test data...'"

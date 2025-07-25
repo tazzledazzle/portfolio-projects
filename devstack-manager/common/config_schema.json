@@ -1,0 +1,153 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DevStack Manager Configuration Schema",
+  "type": "object",
+  "properties": {
+    "profile": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Profile name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Profile description"
+        },
+        "version": {
+          "type": "string",
+          "default": "1.0"
+        }
+      },
+      "required": ["name"]
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Service name"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["docker", "vm", "mock"],
+            "description": "Service type"
+          },
+          "image": {
+            "type": "string",
+            "description": "Docker image (for docker type)"
+          },
+          "ports": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {"type": "integer"},
+                {"type": "string"}
+              ]
+            },
+            "description": "Port mappings"
+          },
+          "volumes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Volume mounts"
+          },
+          "environment": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Environment variables"
+          },
+          "watch": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Paths to watch for hot reload"
+          },
+          "hot_reload": {
+            "type": "boolean",
+            "default": false,
+            "description": "Enable hot reloading"
+          },
+          "health_check": {
+            "type": "object",
+            "properties": {
+              "endpoint": {
+                "type": "string"
+              },
+              "interval": {
+                "type": "integer",
+                "default": 30
+              }
+            }
+          },
+          "mock_config": {
+            "type": "object",
+            "properties": {
+              "routes": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "method": {
+                      "type": "string",
+                      "enum": ["GET", "POST", "PUT", "DELETE", "PATCH"]
+                    },
+                    "status": {
+                      "type": "integer",
+                      "default": 200
+                    },
+                    "headers": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    },
+                    "body": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": ["name", "type"]
+      }
+    },
+    "hooks": {
+      "type": "object",
+      "properties": {
+        "pre_start": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "post_start": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pre_stop": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "post_stop": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "required": ["profile", "services"]
+}

@@ -1,0 +1,73 @@
+profile:
+  name: "my-project-dev"
+  description: "Development environment for my project"
+  version: "1.0"
+
+services:
+  - name: "api-server"
+    type: "docker"
+    image: "node:18-alpine"
+    ports: ["8080:8080"]
+    volumes: 
+      - "./src:/app/src"
+      - "./package.json:/app/package.json"
+    environment:
+      NODE_ENV: "development"
+      PORT: "8080"
+    watch:
+      - "./src"
+    hot_reload: true
+    health_check:
+      endpoint: "/health"
+      interval: 30
+
+  - name: "database"
+    type: "docker"
+    image: "postgres:15"
+    ports: ["5432:5432"]
+    environment:
+      POSTGRES_DB: "myapp"
+      POSTGRES_USER: "dev"
+      POSTGRES_PASSWORD: "devpass"
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+
+  - name: "redis"
+    type: "docker"
+    image: "redis:7-alpine"
+    ports: ["6379:6379"]
+
+  - name: "mock-auth"
+    type: "mock"
+    ports: ["9000:9000"]
+    mock_config:
+      routes:
+        "/auth/login":
+          method: "POST"
+          status: 200
+          headers:
+            "Content-Type": "application/json"
+          body:
+            token: "fake-jwt-token"
+            user:
+              id: 1
+              email: "dev@example.com"
+        "/auth/verify":
+          method: "GET"
+          status: 200
+          body:
+            valid: true
+            user:
+              id: 1
+              email: "dev@example.com"
+
+hooks:
+  pre_start:
+    - "echo 'Starting development environment...'"
+  post_start:
+    - "echo 'Development environment started successfully'"
+    - "sleep 5 && curl -f http://localhost:8080/health || echo 'API not ready yet'"
+  pre_stop:
+    - "echo 'Stopping development environment...'"
+  post_stop:
+    - "echo 'Development environment stopped'"

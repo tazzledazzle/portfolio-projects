@@ -1,0 +1,8 @@
+name: my-project-dev
+services:
+  - name: api-server
+    image: my-api:dev
+    ports: [8080]
+  - name: redis
+    image: redis
+    ports: [6379]

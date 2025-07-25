@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar styles */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Terminal styles */
+.terminal-container {
+  background: #1e1e1e;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.terminal-container .xterm {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+/* Status indicators */
+.status-running {
+  @apply bg-green-100 text-green-800;
+}
+
+.status-stopped {
+  @apply bg-red-100 text-red-800;
+}
+
+.status-starting {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.status-error {
+  @apply bg-red-100 text-red-800;
+}
+
+/* Animation for loading states */
+.pulse-slow {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Log viewer styles */
+.log-line {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 2px 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.log-line:hover {
+  background-color: #f8f9fa;
+}
+
+.log-line.error {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+.log-line.warning {
+  background-color: #fffbeb;
+  color: #d97706;
+}
