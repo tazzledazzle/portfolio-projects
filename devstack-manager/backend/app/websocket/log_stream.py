@@ -1,13 +1,32 @@
 from fastapi import WebSocket, WebSocketDisconnect
 import asyncio
-import docker
 import json
 from typing import AsyncGenerator
 
+try:
+    import docker
+    DOCKER_AVAILABLE = True
+except ImportError:
+    DOCKER_AVAILABLE = False
+    docker = None
+
 class LogStreamer:
     def __init__(self):
-        self.client = docker.from_env()
+        self.client = None
         self.active_connections = {}
+    
+    def _get_docker_client(self):
+        """Lazy initialization of Docker client"""
+        if not DOCKER_AVAILABLE:
+            return None
+            
+        if self.client is None:
+            try:
+                self.client = docker.from_env()
+            except Exception as e:
+                print(f"Failed to initialize Docker client: {e}")
+                self.client = None
+        return self.client
     
     async def stream_logs(self, websocket: WebSocket, container_name: str):
         """WebSocket endpoint for streaming container logs"""
@@ -63,7 +82,12 @@ class LogStreamer:
     async def _stream_container_logs(self, container_name: str) -> AsyncGenerator[str, None]:
         """Stream logs from a Docker container"""
         try:
-            container = self.client.containers.get(container_name)
+            client = self._get_docker_client()
+            if not client:
+                yield "Docker client not available"
+                return
+            
+            container = client.containers.get(container_name)
             
             # Stream logs in real-time
             for line in container.logs(stream=True, follow=True, tail=0):
@@ -78,7 +102,11 @@ class LogStreamer:
     def _get_recent_logs(self, container_name: str, lines: int = 100) -> list:
         """Get recent logs from a container"""
         try:
-            container = self.client.containers.get(container_name)
+            client = self._get_docker_client()
+            if not client:
+                return ["Docker client not available"]
+            
+            container = client.containers.get(container_name)
             logs = container.logs(tail=lines, timestamps=True).decode('utf-8')
             return logs.split('\n') if logs else []
         except docker.errors.NotFound:

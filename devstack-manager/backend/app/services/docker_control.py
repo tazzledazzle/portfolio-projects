@@ -1,16 +1,39 @@
-import docker
+try:
+    import docker
+    DOCKER_AVAILABLE = True
+except ImportError:
+    DOCKER_AVAILABLE = False
+    docker = None
+
 import json
 from typing import List, Dict, Optional
 from datetime import datetime
 
 class DockerService:
     def __init__(self):
-        self.client = docker.from_env()
+        self.client = None
+    
+    def _get_docker_client(self):
+        """Lazy initialization of Docker client"""
+        if not DOCKER_AVAILABLE:
+            return None
+            
+        if self.client is None:
+            try:
+                self.client = docker.from_env()
+            except Exception as e:
+                print(f"Failed to initialize Docker client: {e}")
+                self.client = None
+        return self.client
     
     def list_containers(self) -> List[Dict]:
         """List all containers with detailed information"""
         try:
-            containers = self.client.containers.list(all=True)
+            client = self._get_docker_client()
+            if not client:
+                return [{"error": "Docker client not available"}]
+            
+            containers = client.containers.list(all=True)
             result = []
             
             for container in containers:
@@ -31,7 +54,11 @@ class DockerService:
     def start_container(self, name: str) -> Dict:
         """Start a container"""
         try:
-            container = self.client.containers.get(name)
+            client = self._get_docker_client()
+            if not client:
+                return {"status": "error", "message": "Docker client not available"}
+            
+            container = client.containers.get(name)
             container.start()
             return {
                 "status": "started",
@@ -46,7 +73,11 @@ class DockerService:
     def stop_container(self, name: str) -> Dict:
         """Stop a container"""
         try:
-            container = self.client.containers.get(name)
+            client = self._get_docker_client()
+            if not client:
+                return {"status": "error", "message": "Docker client not available"}
+            
+            container = client.containers.get(name)
             container.stop()
             return {
                 "status": "stopped",
@@ -61,7 +92,11 @@ class DockerService:
     def restart_container(self, name: str) -> Dict:
         """Restart a container"""
         try:
-            container = self.client.containers.get(name)
+            client = self._get_docker_client()
+            if not client:
+                return {"status": "error", "message": "Docker client not available"}
+            
+            container = client.containers.get(name)
             container.restart()
             return {
                 "status": "restarted",
@@ -76,7 +111,11 @@ class DockerService:
     def get_container_status(self, name: str) -> Dict:
         """Get detailed status of a container"""
         try:
-            container = self.client.containers.get(name)
+            client = self._get_docker_client()
+            if not client:
+                return {"error": "Docker client not available"}
+            
+            container = client.containers.get(name)
             stats = container.stats(stream=False)
             
             return {
@@ -98,7 +137,11 @@ class DockerService:
     def get_container_logs(self, name: str, lines: int = 100) -> List[str]:
         """Get recent logs from a container"""
         try:
-            container = self.client.containers.get(name)
+            client = self._get_docker_client()
+            if not client:
+                return ["Docker client not available"]
+            
+            container = client.containers.get(name)
             logs = container.logs(tail=lines, timestamps=True).decode('utf-8')
             return logs.split('\n') if logs else []
         except docker.errors.NotFound:
@@ -109,7 +152,11 @@ class DockerService:
     def create_container_from_config(self, config: Dict) -> Dict:
         """Create a container from configuration"""
         try:
-            container = self.client.containers.run(
+            client = self._get_docker_client()
+            if not client:
+                return {"status": "error", "message": "Docker client not available"}
+            
+            container = client.containers.run(
                 image=config.get("image"),
                 name=config.get("name"),
                 ports=self._parse_ports(config.get("ports", [])),
