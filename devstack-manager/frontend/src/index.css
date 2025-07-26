@@ -69,12 +69,12 @@
 
 .log-line.error {
   background-color: #fef2f2;
-  color: #dc2626;
+  color: #F472B6;
 }
 
 .log-line.warning {
   background-color: #fffbeb;
-  color: #d97706;
+  color: #22d3ee;
 }
 
 /*
