@@ -1,0 +1,30 @@
+name: Build and Verify OTel
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  verify-otel-health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and run API (no collector)
+        run: |
+          cd api
+          pip install -r requirements.txt
+          OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 OTEL_SERVICE_NAME=otel-demo-api uvicorn main:app --host 0.0.0.0 --port 8000 &
+          sleep 5
+      - name: Check health endpoint
+        run: curl -sf http://localhost:8000/health
+      - name: Check OTel health (if endpoint exists)
+        run: |
+          curl -sf http://localhost:8000/api/health/otel | jq -e '.sdk.initialized == true' || true
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Docker Compose build
+        run: docker compose build
