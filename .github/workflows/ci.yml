@@ -15,7 +15,7 @@ jobs:
       bazel-changed:  ${{ steps.filter.outputs.bazel }}
       docs-changed:   ${{ steps.filter.outputs.docs }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - id: filter
         uses: dorny/paths-filter@v3
         with:
@@ -37,7 +37,7 @@ jobs:
     if: needs.detect-changes.outputs.python-changed == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -53,7 +53,7 @@ jobs:
     if: needs.detect-changes.outputs.kotlin-changed == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: gradle/actions/setup-gradle@v4
       - run: ./gradlew ktlintCheck detekt test --no-daemon
 
@@ -62,7 +62,7 @@ jobs:
     if: needs.detect-changes.outputs.bazel-changed == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: bazelbuild/setup-bazelisk@v3
       - run: bazel build //...
 
@@ -71,7 +71,7 @@ jobs:
     if: needs.detect-changes.outputs.docs-changed == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
