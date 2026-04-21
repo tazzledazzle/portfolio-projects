@@ -29,7 +29,7 @@ jobs:
           python-version: '3.12'
       - run: pip install mkdocs mkdocs-material
       - run: mkdocs build --site-dir site
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: site
   deploy:
