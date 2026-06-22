@@ -287,3 +287,11 @@ projects:
     status: "beta"
     path: "dev-ex/platform-changelog-migration-generator"
     tags: ["DX", "tooling"]
+  - id: forgex
+    name: "ForgeX (Planned)"
+    problem: "Polyglot repo generator product spec"
+    stack: ["Specification", "Gradle", "Bazel"]
+    highlights: ["Unified scaffolding vision", "Not yet implemented"]
+    status: "planned"
+    path: "forgex"
+    tags: ["tooling", "planned"]

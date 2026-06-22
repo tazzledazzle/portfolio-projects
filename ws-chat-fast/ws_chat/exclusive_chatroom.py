@@ -10,11 +10,11 @@ from fastapi import (
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 
-from app.security import (
+from ws_chat.security import (
     fake_token_resolver,
     get_username_from_token,
 )
-from app.ws_manager import ConnectionManager
+from ws_chat.ws_manager import ConnectionManager
 
 router = APIRouter()
 

@@ -64,4 +64,23 @@ for dir in dev-ex/*/; do
   run_pytest "$dir"
 done
 
+echo "==> npm test in dev-ex/tooling-adoption-tracker"
+(
+  cd dev-ex/tooling-adoption-tracker
+  npm install --silent
+  make test
+)
+
+# Developer environment tooling
+for dir in dev-env/*/; do
+  case "$dir" in
+    */devcontainer-feature-library/) continue ;;
+    */local-service-mesh/) continue ;;
+    */onboarding-automation-cli/) continue ;;
+  esac
+  run_pytest "$dir"
+done
+
+run_pytest ws-chat-fast
+
 echo "Portfolio pytest matrix complete."

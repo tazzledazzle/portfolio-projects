@@ -1,4 +1,4 @@
-.PHONY: install build dev
+.PHONY: install build dev test
 
 install:
 	npm install
@@ -8,3 +8,6 @@ build:
 
 dev:
 	npm run dev
+
+test: build
+	npm test

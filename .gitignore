@@ -63,3 +63,4 @@ node_modules/
 ### Local data / runtime artifacts ###
 chroma_data/
 .ai-code-assistant/
+site/

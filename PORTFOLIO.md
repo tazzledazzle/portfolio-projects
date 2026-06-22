@@ -3,6 +3,7 @@
 | Competency | Projects |
 |------------|----------|
 | Build Systems | bazel-multibuild, modular-jvm-build, projgen |
+| Tooling | projgen, forgex (planned), bazel-multibuild |
 | Developer Experience (DX) | projgen, dev-ex/*, dev-env/* |
 | Microservices | workflow-api-demo, rabbit-mq, online-bookstore, local-service-mesh |
 | Observability | otel-demo-stack, observability, pipeline-telemetry-exporter |

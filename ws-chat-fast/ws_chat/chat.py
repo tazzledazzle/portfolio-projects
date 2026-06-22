@@ -4,8 +4,8 @@ from fastapi.responses import HTMLResponse
 import logging
 
 
-from app.templating import templates
-from app.ws_manager import ConnectionManager
+from ws_chat.templating import templates
+from ws_chat.ws_manager import ConnectionManager
 
 conn_manager = ConnectionManager()
 logger = logging.getLogger("uvicorn")

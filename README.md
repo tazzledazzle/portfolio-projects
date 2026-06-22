@@ -45,6 +45,7 @@
 | Tooling Adoption Tracker | Measure tool rollout adoption | TypeScript, Node | Funnel metrics, Telemetry | beta | [dev-ex/tooling-adoption-tracker](./dev-ex/tooling-adoption-tracker) |
 | Inner Loop Friction Scorer | Composite developer friction score | Python, CI telemetry | Friction taxonomy, Scoring | beta | [dev-ex/inner-loop-friction-scorer](./dev-ex/inner-loop-friction-scorer) |
 | Platform Changelog Generator | API diff changelogs and migrations | Python, AST | Breaking changes, Rewriters | beta | [dev-ex/platform-changelog-migration-generator](./dev-ex/platform-changelog-migration-generator) |
+| ForgeX (Planned) | Polyglot repo generator product spec | Specification, Gradle, Bazel | Unified scaffolding vision, Not yet implemented | planned | [forgex](./forgex) |
 
 <!-- PROJECTS_TABLE_END -->
 
