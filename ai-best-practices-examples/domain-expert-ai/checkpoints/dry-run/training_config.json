@@ -1,0 +1,16 @@
+{
+  "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "train_file": "data/processed/train.jsonl",
+  "val_file": "data/processed/val.jsonl",
+  "epochs": 1,
+  "batch_size": 2,
+  "learning_rate": 0.0002,
+  "lora": {
+    "r": 8,
+    "alpha": 16,
+    "dropout": 0.05
+  },
+  "max_length": 768,
+  "dry_run": true,
+  "status": "dry_run"
+}

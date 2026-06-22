@@ -1,4 +1,7 @@
-load("@rules_java//java:defs.bzl", "java_binary", "java_test", "java_library")
+load("@aspect_bazel_lib//lib:tar.bzl", "tar")
+load("@container_structure_test//:defs.bzl", "container_structure_test")
+load("@rules_java//java:defs.bzl", "java_binary", "java_library", "java_test")
+load("@rules_oci//oci:defs.bzl", "oci_image")
 
 package(default_visibility = ["//visibility:public"])
 

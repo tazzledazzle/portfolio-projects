@@ -1,0 +1,9 @@
+{
+  "input_rows": 10,
+  "accepted_records": 4,
+  "rejected_records": 6,
+  "rejection_reasons": {
+    "citation_issue": 2,
+    "duplicate_question": 4
+  }
+}

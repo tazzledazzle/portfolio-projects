@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "inner-loop-friction-scorer"
+version = "0.1.0"
+description = "Composite inner-loop friction scoring from CI and Git telemetry."
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.7.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

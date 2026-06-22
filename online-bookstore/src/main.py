@@ -1,4 +1,5 @@
-from fastapi.responses import JSONResponse, FastAPI, HTTPException, Depends, WebSocket
+from fastapi import Depends, FastAPI, HTTPException, WebSocket
+from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from models import (
     BookWithID,

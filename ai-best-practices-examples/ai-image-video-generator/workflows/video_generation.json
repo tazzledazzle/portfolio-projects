@@ -1,0 +1,5 @@
+{
+  "name": "video_generation",
+  "description": "Reference ComfyUI graph placeholder for image-to-video workflow.",
+  "nodes": []
+}

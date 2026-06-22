@@ -1,0 +1,28 @@
+{
+  "profile": "balanced",
+  "base_model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "train_file": "data/processed/train.jsonl",
+  "val_file": "data/processed/val.jsonl",
+  "epochs": 2,
+  "batch_size": 2,
+  "learning_rate": 0.0002,
+  "lora": {
+    "r": 8,
+    "alpha": 16,
+    "dropout": 0.05
+  },
+  "max_length": 512,
+  "max_steps": -1,
+  "grad_accum_steps": 1,
+  "warmup_ratio": 0.03,
+  "weight_decay": 0.0,
+  "logging_steps": 10,
+  "eval_strategy": "epoch",
+  "save_strategy": "epoch",
+  "seed": 42,
+  "use_4bit": "auto",
+  "target_modules": null,
+  "dry_run": true,
+  "template_strategy": "direct",
+  "status": "dry_run"
+}

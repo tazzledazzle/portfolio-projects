@@ -1,0 +1,5 @@
+features:
+  - id: otel-collector
+  - id: local-kafka
+  - id: local-postgres-seed
+  - id: local-keycloak

@@ -1,0 +1,7 @@
+severityMap:
+  ERROR: critical
+  WARNING: high
+  INFO: medium
+playbooks:
+  cwe-79: "https://example.internal/security/playbooks/xss"
+  cwe-89: "https://example.internal/security/playbooks/sqli"

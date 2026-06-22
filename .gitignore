@@ -43,3 +43,23 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Python ###
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+*.egg-info/
+dist/
+*.egg
+
+### Node ###
+node_modules/
+
+### Local data / runtime artifacts ###
+chroma_data/
+.ai-code-assistant/
