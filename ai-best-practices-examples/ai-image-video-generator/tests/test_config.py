@@ -1,4 +1,3 @@
-import os
 
 from ai_image_video_generator.config import AppConfig
 from ai_image_video_generator.config import get_quality_profile

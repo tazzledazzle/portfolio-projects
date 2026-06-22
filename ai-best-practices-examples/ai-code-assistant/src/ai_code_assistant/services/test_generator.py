@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from ai_code_assistant.adapters.llm_adapter import LLMAdapter
-from ai_code_assistant.services.ast_analysis import AnalysisFacts, analyze_source
+from ai_code_assistant.services.ast_analysis import analyze_source
 
 
 @dataclass(frozen=True)

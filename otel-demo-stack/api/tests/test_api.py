@@ -1,6 +1,5 @@
 """Tests for OTel Demo API endpoints."""
 
-import pytest
 from fastapi.testclient import TestClient
 
 # Import app after optional env to avoid OTLP connection issues in tests

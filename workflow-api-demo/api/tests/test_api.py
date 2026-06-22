@@ -1,6 +1,6 @@
 """Tests for Workflow API: health and models. Mocks get_redis/get_db so no real services needed."""
 
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 import pytest
 from fastapi.testclient import TestClient
 from pydantic import ValidationError

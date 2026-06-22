@@ -11,7 +11,7 @@ from ai_code_assistant.policy import load_policy
 from ai_code_assistant.redaction import redact_mapping
 from ai_code_assistant.risk import evaluate_risk, score_write_action
 from ai_code_assistant.services.repo_scanner import scan_python_files
-from ai_code_assistant.services.test_generator import generate_for_file, generate_pyramid_for_file
+from ai_code_assistant.services.test_generator import generate_pyramid_for_file
 from ai_code_assistant.security import build_policy
 
 

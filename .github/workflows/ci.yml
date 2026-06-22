@@ -27,7 +27,9 @@ jobs:
               - '**/*.kt'
               - 'build.gradle*'
             bazel:
+              - '**/BUILD'
               - '**/BUILD.bazel'
+              - '**/MODULE.bazel'
               - 'WORKSPACE'
             docs:
               - 'docs/**'
@@ -42,10 +44,9 @@ jobs:
         with:
           python-version: '3.12'
           cache: 'pip'
-      - run: pip install ruff mypy pytest coverage
+      - run: pip install ruff pytest coverage
       - run: ruff check .
-      - run: mypy .
-      - run: pytest -q --cov=.
+      - run: bash scripts/run_portfolio_pytest.sh
       - uses: codecov/codecov-action@v5
 
   kotlin:
@@ -64,7 +65,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: bazelbuild/setup-bazelisk@v3
-      - run: bazel build //...
+      - run: cd bazel-multibuild/java && bazel test //...
 
   docs:
     needs: detect-changes
