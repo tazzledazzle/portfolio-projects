@@ -1,5 +1,7 @@
 plugins {
     kotlin("jvm") version "2.3.0"
+    kotlin("multiplatform") version "2.3.0" apply false
+
 }
 
 group = "com.tazzledazzle"
@@ -10,6 +12,7 @@ repositories {
 }
 
 dependencies {
+
     testImplementation(kotlin("test"))
 }
 
