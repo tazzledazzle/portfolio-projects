@@ -31,7 +31,11 @@ run_pytest() {
 
 # Standalone demos
 echo "==> pytest in projgen"
-(cd projgen && python3 -m pytest -q src/tests)
+(
+  cd projgen
+  python3 -m pip install -q -e .
+  python3 -m pytest -q src/tests
+)
 run_pytest online-bookstore
 run_pytest rest-api-test-demo
 run_pytest workflow-api-demo/api
