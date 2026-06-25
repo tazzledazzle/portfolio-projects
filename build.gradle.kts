@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "2.3.0"
     kotlin("multiplatform") version "2.3.0" apply false
-    id("com.tazzledazzle.python") version "0.1.0" apply false
+    id("com.tazzledazzle.python") version "0.2.0" apply false
 
 }
 

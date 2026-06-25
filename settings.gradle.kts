@@ -18,6 +18,7 @@ include("c0de-quality-and-analysis")
 include("ci-cd-pipelines")
 include("dev-ex")
 include("dev-env")
+include("onboarding-automation-cli")
 include("forgex")
 
 includeBuild("../../may-portfolio-projects/gradle-python-plugin")
