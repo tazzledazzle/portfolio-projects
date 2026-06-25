@@ -8,8 +8,16 @@ class StubAdapter:
         self._content = content
         self.calls: list[tuple[str, str]] = []
 
-    def generate_tests(self, source_code: str, module_name: str, facts=None, test_level: str = "unit") -> str:
-        del facts, test_level
+    def generate_tests(
+        self,
+        source_code: str,
+        module_name: str,
+        facts=None,
+        test_level: str = "unit",
+        source_path=None,
+        repo_root=None,
+    ) -> str:
+        del facts, test_level, source_path, repo_root
         self.calls.append((source_code, module_name))
         return self._content
 
@@ -39,11 +47,11 @@ def test_generate_for_file_passes_source_and_module_name(tmp_path: Path) -> None
     source = tmp_path / "billing.py"
     source_code = "def total(a, b):\n    return a + b\n"
     source.write_text(source_code, encoding="utf-8")
-    adapter = StubAdapter("def test_total():\n    assert True\n")
+    adapter = StubAdapter("def test_total():\n    assert total(1, 2) == 3\n")
 
     result = generate_for_file(source_path=source, repo_root=tmp_path, adapter=adapter)
 
     assert result.source_path == source
     assert result.target_path == tmp_path / "tests" / "test_billing.py"
-    assert result.content == "def test_total():\n    assert True\n"
+    assert result.content == "def test_total():\n    assert total(1, 2) == 3\n"
     assert adapter.calls == [(source_code, "billing")]

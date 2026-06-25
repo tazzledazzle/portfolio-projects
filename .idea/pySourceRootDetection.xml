@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PySourceRootDetectionService">
+    <option name="sourcePathsSet">
+      <set>
+        <option value="$PROJECT_DIR$/ai-best-practices-examples/ai-code-assistant" />
+        <option value="$PROJECT_DIR$/ai-best-practices-examples/knowledge-qa-system/tests" />
+        <option value="$PROJECT_DIR$/ai-best-practices-examples/knowledge-qa-system/src" />
+        <option value="$PROJECT_DIR$/ai-best-practices-examples/ai-code-assistant/tests" />
+        <option value="$PROJECT_DIR$/ai-best-practices-examples/ai-image-video-generator/tests" />
+        <option value="$PROJECT_DIR$/ai-best-practices-examples/chat-ai/tests" />
+        <option value="$PROJECT_DIR$/ai-best-practices-examples/domain-expert-ai/tests" />
+        <option value="$PROJECT_DIR$/ai-best-practices-examples/domain-expert-ai/src" />
+        <option value="$PROJECT_DIR$/ai-best-practices-examples/chat-ai/src" />
+        <option value="$PROJECT_DIR$/ai-best-practices-examples/ai-image-video-generator/src" />
+        <option value="$PROJECT_DIR$/ai-best-practices-examples/ai-code-assistant/src" />
+      </set>
+    </option>
+  </component>
+</project>
