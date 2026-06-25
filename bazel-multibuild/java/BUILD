@@ -2,6 +2,11 @@ load("@rules_java//java:defs.bzl", "java_binary", "java_library", "java_test")
 
 package(default_visibility = ["//visibility:public"])
 
+java_library(
+    name = "greeter",
+    srcs = ["src/main/java/com/example/Greeting.java"],
+)
+
 java_binary(
     name = "ProjectRunner",
     srcs = glob(["src/main/java/com/example/*.java"]),

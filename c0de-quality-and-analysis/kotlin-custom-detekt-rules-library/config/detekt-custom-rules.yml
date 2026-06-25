@@ -7,3 +7,7 @@ team-custom-rules:
   MissingTransactionalAnnotation:
     active: true
     servicePackageRegex: ".*service.*"
+
+style:
+  MaxLineLength:
+    active: false

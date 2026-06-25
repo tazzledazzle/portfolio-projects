@@ -4,11 +4,20 @@ Polyglot Bazel demo with Java and TypeScript modules.
 
 ## Quick start
 
+Java (all targets):
+
 ```bash
 cd java
-bazel test //:myproject_test
+bazel test //...
 ```
 
-The `frontend/` and `flags-parsing-tutorial/` subdirectories contain additional Bazel examples.
+TypeScript frontend:
+
+```bash
+cd frontend
+bazel test //...
+```
+
+The `flags-parsing-tutorial/` subdirectory contains an additional Bazel example.
 
 Container image targets in `java/BUILD` are commented out until `rules_oci` is wired for your Bazel version.

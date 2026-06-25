@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     compileOnly("io.gitlab.arturbosch.detekt:detekt-api:1.23.6")
+    detektPlugins(project)
     testImplementation(kotlin("test"))
 }
 
