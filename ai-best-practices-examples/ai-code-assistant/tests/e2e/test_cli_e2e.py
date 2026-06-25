@@ -28,7 +28,8 @@ def test_e2e_single_file_dry_run_prints_generated_output(tmp_path: Path) -> None
     assert result.returncode == 0
     assert "---" in result.stdout
     assert "test_worker.py" in result.stdout
-    assert "def test_work_unit_placeholder" in result.stdout
+    assert "def test_work_behavior" in result.stdout
+    assert "assert result == 1" in result.stdout
 
 
 def test_e2e_repo_mode_writes_test_files(tmp_path: Path) -> None:
@@ -42,4 +43,5 @@ def test_e2e_repo_mode_writes_test_files(tmp_path: Path) -> None:
     generated = tmp_path / "tests" / "unit" / "test_service.py"
     assert generated.exists()
     content = generated.read_text(encoding="utf-8")
-    assert "def test_service_unit_placeholder" in content
+    assert "def test_service_behavior" in content
+    assert "assert result == 'ok'" in content

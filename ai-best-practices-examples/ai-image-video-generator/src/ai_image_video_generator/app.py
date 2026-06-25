@@ -12,7 +12,9 @@ from ai_image_video_generator.models import ImageVariant
 from ai_image_video_generator.models import ProductBrief
 from ai_image_video_generator.models import VideoClip
 from ai_image_video_generator.models import VideoRequest
-from ai_image_video_generator.pipelines.comfy_client import ComfyClient
+from ai_image_video_generator.pipelines.client_factory import active_backend_name
+from ai_image_video_generator.pipelines.client_factory import create_generation_client
+from ai_image_video_generator.pipelines.comfy_client import ComfyClientError
 from ai_image_video_generator.pipelines.image_generation import ImageGenerationPipeline
 from ai_image_video_generator.pipelines.video_generation import VideoGenerationPipeline
 from ai_image_video_generator.safety.provenance import build_manifest
@@ -35,6 +37,13 @@ def build_product_brief(
     )
 
 
+def _variant_choices(state_json: str) -> gr.Dropdown:
+    state = json.loads(state_json or "{}")
+    choices = [item["id"] for item in state.get("variants", [])]
+    value = choices[0] if choices else None
+    return gr.Dropdown(choices=choices, value=value)
+
+
 def _generate_images(
     product_name: str,
     prompt: str,
@@ -43,43 +52,65 @@ def _generate_images(
     variant_count: int,
     brand_refs: list[str] | None,
     quality_profile_name: str,
-) -> tuple[str, str]:
+    state_json: str,
+) -> tuple[str, list[str], str, str, gr.Dropdown, str]:
     config = load_config()
-    comfy = ComfyClient(base_url=config.comfyui_base_url)
-    image_pipeline = ImageGenerationPipeline(comfy_client=comfy)
-    brief = build_product_brief(
-        product_name=product_name,
-        prompt=prompt,
-        style_notes=style_notes,
-        scene_description=scene_description,
-        variant_count=variant_count,
-    )
-    variants = image_pipeline.generate_variants(
-        brief=brief,
-        brand_reference_paths=brand_refs,
-        quality_profile_name=quality_profile_name,
-    )
-    state = {"brief": brief.model_dump(), "variants": [v.model_dump(mode="json") for v in variants], "videos": []}
-    paths = "\n".join(v.asset_path for v in variants)
-    return paths, json.dumps(state)
+    backend = active_backend_name(config)
+    try:
+        client = create_generation_client(config)
+        image_pipeline = ImageGenerationPipeline(comfy_client=client)
+        brief = build_product_brief(
+            product_name=product_name,
+            prompt=prompt,
+            style_notes=style_notes,
+            scene_description=scene_description,
+            variant_count=variant_count,
+        )
+        variants = image_pipeline.generate_variants(
+            brief=brief,
+            brand_reference_paths=brand_refs,
+            quality_profile_name=quality_profile_name,
+        )
+        state = {
+            "brief": brief.model_dump(),
+            "variants": [v.model_dump(mode="json") for v in variants],
+            "videos": [],
+        }
+        paths = [v.asset_path for v in variants]
+        status = f"Generated {len(variants)} image variant(s) using {backend} backend."
+        serialized_state = json.dumps(state)
+        return status, paths, "\n".join(paths), serialized_state, _variant_choices(serialized_state), backend
+    except (ComfyClientError, ValueError, FileNotFoundError) as exc:
+        return f"Image generation failed: {exc}", [], "", state_json or "{}", _variant_choices(state_json), backend
 
 
-def _generate_video(variant_id: str, state_json: str, duration_seconds: int, fps: int) -> tuple[str, str]:
+def _generate_video(
+    variant_id: str,
+    state_json: str,
+    duration_seconds: int,
+    fps: int,
+) -> tuple[str, str | None, str, str]:
+    config = load_config()
+    backend = active_backend_name(config)
     state = json.loads(state_json or "{}")
     variants = [ImageVariant.model_validate(v) for v in state.get("variants", [])]
     variant = next((item for item in variants if item.id == variant_id), None)
     if variant is None:
-        return "Variant not found in state.", state_json
+        return "Variant not found in state. Generate images first.", None, state_json, backend
 
-    config = load_config()
-    comfy = ComfyClient(base_url=config.comfyui_base_url)
-    video_pipeline = VideoGenerationPipeline(comfy_client=comfy)
-    request = VideoRequest(image_variant_id=variant_id, duration_seconds=duration_seconds, fps=fps)
-    clip = video_pipeline.generate_clip(variant=variant, request=request)
-    videos = state.get("videos", [])
-    videos.append(clip.model_dump(mode="json"))
-    state["videos"] = videos
-    return clip.asset_path, json.dumps(state)
+    try:
+        client = create_generation_client(config)
+        video_pipeline = VideoGenerationPipeline(comfy_client=client)
+        request = VideoRequest(image_variant_id=variant_id, duration_seconds=duration_seconds, fps=fps)
+        clip = video_pipeline.generate_clip(variant=variant, request=request)
+        videos = state.get("videos", [])
+        videos.append(clip.model_dump(mode="json"))
+        state["videos"] = videos
+        updated_state = json.dumps(state)
+        status = f"Generated video clip for {variant_id} using {backend} backend."
+        return status, clip.asset_path, updated_state, backend
+    except (ComfyClientError, ValueError, FileNotFoundError) as exc:
+        return f"Video generation failed: {exc}", None, state_json, backend
 
 
 def _export_gallery(state_json: str) -> str:
@@ -102,8 +133,14 @@ def _export_gallery(state_json: str) -> str:
 
 
 def build_demo() -> gr.Blocks:
+    config = load_config()
+    backend = active_backend_name(config)
     with gr.Blocks(title="AI Image & Video Generator") as demo:
         gr.Markdown("## AI Image & Video Generator MVP")
+        gr.Markdown(
+            f"Active backend: **{backend}**. "
+            "Set `AIVG_BACKEND=local|comfyui|auto` to control generation mode."
+        )
         with gr.Row():
             product_name = gr.Textbox(label="Product name", value="Ceramic mug")
             prompt = gr.Textbox(label="Prompt", value="Premium studio product photo")
@@ -114,18 +151,22 @@ def build_demo() -> gr.Blocks:
         quality_profile_name = gr.Dropdown(
             label="Quality profile",
             choices=list(QUALITY_PROFILES.keys()),
-            value=load_config().default_quality_profile,
+            value=config.default_quality_profile,
         )
         brand_refs = gr.File(label="Brand references", file_count="multiple", type="filepath")
         generate_images_button = gr.Button("Generate image variants")
-        image_paths = gr.Textbox(label="Generated image paths", lines=4)
+        image_status = gr.Textbox(label="Image generation status")
+        image_gallery = gr.Gallery(label="Generated image variants", columns=3, height="auto")
+        image_paths = gr.Textbox(label="Generated image paths", lines=3)
 
         state = gr.Textbox(label="Run state (internal)", visible=False)
-        variant_id = gr.Textbox(label="Variant ID for video", value="variant-1")
+        backend_label = gr.Textbox(label="Backend (internal)", visible=False, value=backend)
+        variant_id = gr.Dropdown(label="Variant ID for video", choices=[], value=None)
         duration_seconds = gr.Slider(label="Video duration seconds", minimum=1, maximum=8, step=1, value=4)
         fps = gr.Slider(label="Video FPS", minimum=4, maximum=24, step=1, value=8)
         generate_video_button = gr.Button("Generate video")
-        video_path = gr.Textbox(label="Generated video path")
+        video_status = gr.Textbox(label="Video generation status")
+        video_output = gr.File(label="Generated video clip")
 
         export_button = gr.Button("Export review gallery")
         export_status = gr.Textbox(label="Export status")
@@ -140,13 +181,14 @@ def build_demo() -> gr.Blocks:
                 variant_count,
                 brand_refs,
                 quality_profile_name,
+                state,
             ],
-            outputs=[image_paths, state],
+            outputs=[image_status, image_gallery, image_paths, state, variant_id, backend_label],
         )
         generate_video_button.click(
             fn=_generate_video,
             inputs=[variant_id, state, duration_seconds, fps],
-            outputs=[video_path, state],
+            outputs=[video_status, video_output, state, backend_label],
         )
         export_button.click(fn=_export_gallery, inputs=[state], outputs=[export_status])
     return demo

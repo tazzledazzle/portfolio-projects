@@ -3,6 +3,7 @@ from pathlib import Path
 
 from ai_code_assistant.adapters.llm_adapter import LLMAdapter
 from ai_code_assistant.services.ast_analysis import analyze_source
+from ai_code_assistant.services.test_codegen import generate_robust_tests
 
 
 @dataclass(frozen=True)
@@ -30,8 +31,22 @@ def derive_test_path(source_path: Path, repo_root: Path) -> Path:
 def generate_for_file(source_path: Path, repo_root: Path, adapter: LLMAdapter) -> GeneratedTest:
     source_text = source_path.read_text(encoding="utf-8")
     facts = analyze_source(source_path)
-    content = adapter.generate_tests(source_code=source_text, module_name=source_path.stem, facts=facts)
-    content = _stabilize_generated_content(content=content, module_name=source_path.stem)
+    content = adapter.generate_tests(
+        source_code=source_text,
+        module_name=source_path.stem,
+        facts=facts,
+        source_path=source_path,
+        repo_root=repo_root,
+    )
+    content = _stabilize_generated_content(
+        content=content,
+        module_name=source_path.stem,
+        source_code=source_text,
+        facts=facts,
+        test_level="unit",
+        source_path=source_path,
+        repo_root=repo_root,
+    )
     target_path = derive_test_path(source_path=source_path, repo_root=repo_root)
     return GeneratedTest(source_path=source_path, target_path=target_path, content=content)
 
@@ -45,19 +60,45 @@ def generate_pyramid_for_file(
     tests: list[GeneratedTest] = []
     for level in levels:
         content = adapter.generate_tests(
-            source_code=source_text, module_name=module_name, facts=facts, test_level=level
+            source_code=source_text,
+            module_name=module_name,
+            facts=facts,
+            test_level=level,
+            source_path=source_path,
+            repo_root=repo_root,
         )
-        content = _stabilize_generated_content(content=content, module_name=module_name)
+        content = _stabilize_generated_content(
+            content=content,
+            module_name=module_name,
+            source_code=source_text,
+            facts=facts,
+            test_level=level,
+            source_path=source_path,
+            repo_root=repo_root,
+        )
         target_path = repo_root / "tests" / level / f"test_{module_name}.py"
         tests.append(GeneratedTest(source_path=source_path, target_path=target_path, content=content, level=level))
     return tests
 
 
-def _stabilize_generated_content(content: str, module_name: str) -> str:
-    if "def test_" in content:
+def _stabilize_generated_content(
+    content: str,
+    module_name: str,
+    source_code: str = "",
+    facts=None,
+    test_level: str = "unit",
+    source_path: Path | None = None,
+    repo_root: Path | None = None,
+) -> str:
+    if "def test_" in content and "assert True" not in content:
         return content
-    return (
-        f"import pytest\n\n\n"
-        f"def test_{module_name}_stabilized() -> None:\n"
-        f"    assert True\n"
-    )
+    if "def test_" not in content:
+        return generate_robust_tests(
+            source_code=source_code,
+            module_name=module_name,
+            facts=facts,
+            test_level=test_level,
+            source_path=source_path,
+            repo_root=repo_root,
+        )
+    return content

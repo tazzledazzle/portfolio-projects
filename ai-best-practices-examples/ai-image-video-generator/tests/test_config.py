@@ -6,6 +6,7 @@ from ai_image_video_generator.config import load_config
 
 def test_load_config_defaults() -> None:
     config = load_config({})
+    assert config.backend == "auto"
     assert config.comfyui_base_url == "http://127.0.0.1:8188"
     assert config.default_variant_count == 3
 

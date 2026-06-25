@@ -27,7 +27,8 @@ def test_cli_single_file_dry_run(tmp_path: Path, capsys: pytest.CaptureFixture[s
 
     assert code == 0
     assert "test_module.py" in output
-    assert "def test_f_unit_placeholder" in output
+    assert "def test_f_behavior" in output
+    assert "assert result == 1" in output
     assert not (tmp_path / "tests" / "unit" / "test_module.py").exists()
 
 

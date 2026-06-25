@@ -1,13 +1,17 @@
 from collections.abc import Mapping
 import os
+from typing import Literal
 
 from pydantic import BaseModel
 from pydantic import Field
 
 from ai_image_video_generator.models import ImageQualityProfile
 
+BackendMode = Literal["auto", "comfyui", "local"]
+
 
 class AppConfig(BaseModel):
+    backend: BackendMode = "auto"
     comfyui_base_url: str = "http://127.0.0.1:8188"
     image_workflow_path: str = "workflows/image_generation.json"
     video_workflow_path: str = "workflows/video_generation.json"
@@ -18,7 +22,11 @@ class AppConfig(BaseModel):
 
 def load_config(env: Mapping[str, str] | None = None) -> AppConfig:
     source = dict(env) if env is not None else os.environ
+    backend = source.get("AIVG_BACKEND", "auto").lower()
+    if backend not in {"auto", "comfyui", "local"}:
+        raise ValueError(f"Unsupported AIVG_BACKEND value: {backend!r}")
     return AppConfig(
+        backend=backend,  # type: ignore[arg-type]
         comfyui_base_url=source.get("AIVG_COMFYUI_BASE_URL", "http://127.0.0.1:8188"),
         image_workflow_path=source.get(
             "AIVG_IMAGE_WORKFLOW_PATH", "workflows/image_generation.json"

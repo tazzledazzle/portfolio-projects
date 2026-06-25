@@ -1,6 +1,12 @@
 from pathlib import Path
 
 
+def _video_item(path: str) -> str:
+    if path.lower().endswith(".gif"):
+        return f'<li><img src="{path}" alt="{path}" style="max-width:320px" /><p>{path}</p></li>'
+    return f'<li><video src="{path}" controls style="max-width:320px"></video><p>{path}</p></li>'
+
+
 def build_review_gallery(
     output_dir: Path,
     image_paths: list[str],
@@ -13,10 +19,7 @@ def build_review_gallery(
         f'<li><img src="{path}" alt="{path}" style="max-width:240px" /><p>{path}</p></li>'
         for path in image_paths
     )
-    video_items = "\n".join(
-        f'<li><video src="{path}" controls style="max-width:320px"></video><p>{path}</p></li>'
-        for path in video_paths
-    )
+    video_items = "\n".join(_video_item(path) for path in video_paths)
     html = f"""<!doctype html>
 <html>
   <head><meta charset="utf-8" /><title>Review Gallery</title></head>

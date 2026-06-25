@@ -37,7 +37,8 @@ def test_single_file_mode_calls_output_with_expected_target(
     assert len(captured) == 1
     target_path, content, dry_run, output_mode, _audit_log_path, source_path = captured[0]
     assert target_path == tmp_path / "tests" / "unit" / "test_engine.py"
-    assert "def test_run_unit_placeholder" in content
+    assert "def test_run_behavior" in content
+    assert "assert result == 1" in content
     assert dry_run is True
     assert output_mode == "text"
     assert source_path == source

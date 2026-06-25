@@ -39,3 +39,19 @@ def test_comfy_client_raises_on_invalid_response() -> None:
         assert "asset_path" in str(exc)
     else:
         raise AssertionError("Expected ComfyClientError for malformed response")
+
+
+def test_comfy_client_wraps_connection_errors() -> None:
+    class BrokenTransport:
+        def post_json(self, path: str, payload: dict) -> dict:
+            import requests
+
+            raise requests.ConnectionError("connection refused")
+
+    client = ComfyClient(base_url="http://127.0.0.1:8188", transport=BrokenTransport())
+    try:
+        client.run_workflow({"seed": 1})
+    except ComfyClientError as exc:
+        assert "Could not reach ComfyUI" in str(exc)
+    else:
+        raise AssertionError("Expected ComfyClientError for connection failure")
