@@ -1,6 +1,14 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
+
 rootProject.name = "portfolio-project"
 
 include("projgen")
@@ -21,4 +29,10 @@ include("dev-env")
 include("onboarding-automation-cli")
 include("forgex")
 
-includeBuild("../../may-portfolio-projects/gradle-python-plugin")
+val pythonPluginCandidates =
+    listOf(
+        rootDir.resolve("gradle-python-plugin"),
+        rootDir.resolve("../../may-portfolio-projects/gradle-python-plugin"),
+    )
+
+pythonPluginCandidates.firstOrNull { it.isDirectory }?.let { includeBuild(it) }

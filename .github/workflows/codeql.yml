@@ -16,12 +16,32 @@ jobs:
       security-events: write
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        language: [ 'python', 'java' ]
+        include:
+          - language: python
+            build-mode: none
+          - language: java-kotlin
+            build-mode: manual
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout gradle-python-plugin
+        if: matrix.language == 'java-kotlin'
+        uses: actions/checkout@v4
+        with:
+          repository: tazzledazzle/gradle-python-plugin
+          path: gradle-python-plugin
+      - name: Set up Java
+        if: matrix.language == 'java-kotlin'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '23'
       - uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
-      - uses: github/codeql-action/autobuild@v3
+          build-mode: ${{ matrix.build-mode }}
+      - name: Build Kotlin sources
+        if: matrix.language == 'java-kotlin'
+        run: ./gradlew compileKotlin compileTestKotlin --no-daemon --no-build-cache
       - uses: github/codeql-action/analyze@v3

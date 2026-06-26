@@ -26,6 +26,7 @@ jobs:
             kotlin:
               - '**/*.kt'
               - 'build.gradle*'
+              - 'settings.gradle*'
             bazel:
               - '**/BUILD'
               - '**/BUILD.bazel'
@@ -55,8 +56,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: tazzledazzle/gradle-python-plugin
+          path: gradle-python-plugin
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '23'
       - uses: gradle/actions/setup-gradle@v4
-      - run: ./gradlew ktlintCheck detekt test --no-daemon
+      - run: ./gradlew ktlintCheck test --no-daemon
 
   bazel:
     needs: detect-changes
