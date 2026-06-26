@@ -2,6 +2,7 @@ import com.tazzledazzle.python.tasks.PythonExec
 
 plugins {
     id("com.tazzledazzle.python")
+    base
 }
 tasks.register<Exec>("activateVenv").configure {
     commandLine = listOf("../.venv/bin/activate")
@@ -76,7 +77,7 @@ val installDeps by tasks.registering(Exec::class) {
  * Activates the venv and runs your main Python script.
  * Swap out the script name / args to suit your project.
  */
-val runPython by tasks.registering(Exec::class) {
+val runCanaryDeploymentController by tasks.registering(Exec::class) {
     group = "python"
     description = "Run main.py inside the activated virtual environment"
 
@@ -164,4 +165,17 @@ val verifyVenv by tasks.registering(Exec::class) {
     dependsOn(createVenv)
 
     commandLine(pythonExecutable, "--version")
+}
+
+tasks.named("build").configure {
+    dependsOn(
+        listOf(
+            runSelfServicePipelineTemplateEngine,
+            runReleaseLeadTimeCalculator,
+            runPipelineTelemetryExporter,
+            runPipelineCostAnalyzer,
+            runFlakyPipelineGate,
+            runCanaryDeploymentController
+        )
+    )
 }
