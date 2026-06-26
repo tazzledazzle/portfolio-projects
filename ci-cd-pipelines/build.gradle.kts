@@ -116,6 +116,26 @@ val runPipelineTelemetryExporter by tasks.registering(Exec::class) {
 
     commandLine(pythonExecutable, "pipeline-telemetry-exporter/src/main.py")
 }
+
+
+val runReleaseLeadTimeCalculator by tasks.registering(Exec::class) {
+    group = "python"
+    description = "Run main.py inside the release lead time calculator project"
+
+    dependsOn(installDeps)
+
+    commandLine(pythonExecutable, "release-lead-time-calculator/src/main.py")
+}
+
+
+val runSelfServicePipelineTemplateEngine by tasks.registering(Exec::class) {
+    group = "python"
+    description = "Run main.py inside the self service pipeline template engine project"
+
+    dependsOn(installDeps)
+
+    commandLine(pythonExecutable, "self-service-pipeline-template-engine/src/main.py")
+}
 /**
  * General-purpose task: activate the venv and run any command.
  *
