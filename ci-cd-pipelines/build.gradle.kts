@@ -137,23 +137,6 @@ val runSelfServicePipelineTemplateEngine by tasks.registering(Exec::class) {
 
     commandLine(pythonExecutable, "self-service-pipeline-template-engine/src/main.py")
 }
-/**
- * General-purpose task: activate the venv and run any command.
- *
- * Usage:
- *   ./gradlew venvExec -PvenvArgs="pytest tests/ -v"
- */
-val venvExec by tasks.registering(Exec::class) {
-    group = "python"
-    description = "Run an arbitrary command inside the venv. Pass -PvenvArgs='<cmd>'"
-
-    dependsOn(createVenv)
-
-    val rawArgs = providers.gradleProperty("venvArgs").orNull
-        ?: error("Pass -PvenvArgs='<your command>' to use this task")
-
-    commandLine(*venvCommand(rawArgs).toTypedArray())
-}
 
 /**
  * Prints the venv's Python version to confirm activation works.
