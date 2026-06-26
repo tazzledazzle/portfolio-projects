@@ -9,7 +9,9 @@ import io.gitlab.arturbosch.detekt.api.Rule
 import io.gitlab.arturbosch.detekt.api.Severity
 import org.jetbrains.kotlin.psi.KtNamedFunction
 
-class MissingTransactionalAnnotationRule(config: Config) : Rule(config) {
+class MissingTransactionalAnnotationRule(
+    config: Config,
+) : Rule(config) {
     override val issue: Issue =
         Issue("MissingTransactionalAnnotation", Severity.Defect, "Mutating service methods should be @Transactional.", Debt.TEN_MINS)
 

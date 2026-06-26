@@ -9,7 +9,9 @@ import io.gitlab.arturbosch.detekt.api.Rule
 import io.gitlab.arturbosch.detekt.api.Severity
 import org.jetbrains.kotlin.psi.KtBinaryExpressionWithTypeRHS
 
-class UncheckedPlatformTypeCastRule(config: Config) : Rule(config) {
+class UncheckedPlatformTypeCastRule(
+    config: Config,
+) : Rule(config) {
     override val issue: Issue =
         Issue("UncheckedPlatformTypeCast", Severity.Warning, "Avoid unchecked casts around platform types.", Debt.FIVE_MINS)
 

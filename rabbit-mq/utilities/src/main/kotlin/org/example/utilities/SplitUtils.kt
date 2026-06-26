@@ -29,14 +29,15 @@ class SplitUtils {
             return result
         }
 
-        private fun addIfValid(token: String, list: LinkedList) {
+        private fun addIfValid(
+            token: String,
+            list: LinkedList,
+        ) {
             if (isTokenValid(token)) {
                 list.add(token)
             }
         }
 
-        private fun isTokenValid(token: String): Boolean {
-            return token.isNotEmpty()
-        }
+        private fun isTokenValid(token: String): Boolean = token.isNotEmpty()
     }
 }

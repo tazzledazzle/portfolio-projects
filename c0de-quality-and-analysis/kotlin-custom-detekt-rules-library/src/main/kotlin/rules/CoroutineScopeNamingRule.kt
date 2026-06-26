@@ -9,7 +9,9 @@ import io.gitlab.arturbosch.detekt.api.Rule
 import io.gitlab.arturbosch.detekt.api.Severity
 import org.jetbrains.kotlin.psi.KtProperty
 
-class CoroutineScopeNamingRule(config: Config) : Rule(config) {
+class CoroutineScopeNamingRule(
+    config: Config,
+) : Rule(config) {
     override val issue: Issue =
         Issue("CoroutineScopeNaming", Severity.Style, "Coroutine scope properties should end with 'Scope'.", Debt.FIVE_MINS)
 

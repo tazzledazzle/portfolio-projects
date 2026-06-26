@@ -13,10 +13,11 @@ class CustomRuleSetProvider : RuleSetProvider {
     override fun instance(config: Config): RuleSet =
         RuleSet(
             id = ruleSetId,
-            rules = listOf(
-                CoroutineScopeNamingRule(config),
-                UncheckedPlatformTypeCastRule(config),
-                MissingTransactionalAnnotationRule(config),
-            ),
+            rules =
+                listOf(
+                    CoroutineScopeNamingRule(config),
+                    UncheckedPlatformTypeCastRule(config),
+                    MissingTransactionalAnnotationRule(config),
+                ),
         )
 }

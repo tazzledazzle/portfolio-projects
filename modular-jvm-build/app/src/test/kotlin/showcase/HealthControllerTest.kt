@@ -12,13 +12,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @SpringBootTest
 @AutoConfigureMockMvc
 class HealthControllerTest {
-
     @Autowired
     private lateinit var mockMvc: MockMvc
 
     @Test
     fun healthReturnsUp() {
-        mockMvc.perform(get("/api/health"))
+        mockMvc
+            .perform(get("/api/health"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.status").value("UP"))
             .andExpect(jsonPath("$.service").value("modular-jvm-build"))

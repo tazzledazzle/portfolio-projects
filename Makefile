@@ -5,7 +5,7 @@ bootstrap:
 
 lint:
 	ruff .
-	ktlintCheck
+	./gradlew ktlintCheck
 
 test:
 	@echo "🧪 Running test suite..."
