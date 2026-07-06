@@ -3,6 +3,15 @@ pluginManagement {
         gradlePluginPortal()
         mavenCentral()
     }
+
+    val pythonPluginCandidates =
+        listOf(
+            file("gradle-python-plugin"),
+            file("../gradle-python-plugin"),
+            file("../../may-portfolio-projects/gradle-python-plugin"),
+        )
+
+    pythonPluginCandidates.firstOrNull { it.isDirectory }?.let { includeBuild(it) }
 }
 
 plugins {
@@ -28,11 +37,3 @@ include("dev-ex")
 include("dev-env")
 include("onboarding-automation-cli")
 include("forgex")
-
-//val pythonPluginCandidates =
-//    listOf(
-//        rootDir.resolve("gradle-python-plugin"),
-//        rootDir.resolve("../../may-portfolio-projects/gradle-python-plugin"),
-//    )
-//
-//pythonPluginCandidates.firstOrNull { it.isDirectory }?.let { includeBuild(it) }
