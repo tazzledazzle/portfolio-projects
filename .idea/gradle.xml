@@ -7,9 +7,9 @@
         <compositeConfiguration>
           <compositeBuild compositeDefinitionSource="SCRIPT">
             <builds>
-              <build path="$PROJECT_DIR$/../../may-portfolio-projects/gradle-python-plugin" name="gradle-python-plugin">
+              <build path="$PROJECT_DIR$/gradle-python-plugin" name="gradle-python-plugin">
                 <projects>
-                  <project path="$PROJECT_DIR$/../../may-portfolio-projects/gradle-python-plugin" />
+                  <project path="$PROJECT_DIR$/gradle-python-plugin" />
                 </projects>
               </build>
             </builds>
@@ -26,6 +26,7 @@
             <option value="$PROJECT_DIR$/dev-env" />
             <option value="$PROJECT_DIR$/dev-ex" />
             <option value="$PROJECT_DIR$/forgex" />
+            <option value="$PROJECT_DIR$/gradle-python-plugin" />
             <option value="$PROJECT_DIR$/modular-jvm-build" />
             <option value="$PROJECT_DIR$/onboarding-automation-cli" />
             <option value="$PROJECT_DIR$/online-bookstore" />
@@ -36,7 +37,6 @@
             <option value="$PROJECT_DIR$/rest-api-test-demo" />
             <option value="$PROJECT_DIR$/workflow-api-demo" />
             <option value="$PROJECT_DIR$/ws-chat-fast" />
-            <option value="$PROJECT_DIR$/../../may-portfolio-projects/gradle-python-plugin" />
           </set>
         </option>
       </GradleProjectSettings>
