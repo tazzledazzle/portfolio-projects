@@ -1,0 +1,4 @@
+- Writes clean JUnit 5 tests: `@Test`, `@BeforeEach`, `@AfterEach`, `@BeforeAll`, `@AfterAll`
+- Uses `@ParameterizedTest` with `@ValueSource`, `@CsvSource`, `@MethodSource`
+- Assertions with `assertAll`, `assertThrows`, `assertTimeout`
+- Mocking with Mockito: `@Mock`, `@InjectMocks`, `verify`, `when/thenReturn`, `ArgumentCaptor`

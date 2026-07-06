@@ -3,7 +3,7 @@ plugins {
     kotlin("multiplatform") version "2.3.0" apply false
     id("org.jlleitschuh.gradle.ktlint") version "14.2.0"
     id("io.gitlab.arturbosch.detekt") version "1.23.6" apply false
-    id("com.tazzledazzle.python") version "0.2.0" apply false
+    id("com.tazzledazzle.python") version "0.1.0" apply false
 }
 
 group = "com.tazzledazzle"
@@ -11,6 +11,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
 }
 
 dependencies {

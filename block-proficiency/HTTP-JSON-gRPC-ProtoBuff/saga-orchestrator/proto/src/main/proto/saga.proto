@@ -1,0 +1,168 @@
+syntax = "proto3";
+
+package saga.v1;
+
+option java_multiple_files = true;
+option java_package = "com.skidroad.saga.proto";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/any.proto";
+
+// ─── Shared types ────────────────────────────────────────────────────────────
+
+// SagaStatus tracks the overall saga state machine position.
+// Fields are numbered with gaps to leave room for future steps (backward compat).
+message SagaStatus {
+  string saga_id   = 1;
+  string order_id  = 2;
+  State  state     = 3;
+  google.protobuf.Timestamp started_at  = 4;
+  google.protobuf.Timestamp updated_at  = 5;
+  // reserved 6; // previously: estimated_delivery (removed in v2)
+  repeated CompensationStep compensation_log = 7;
+
+  enum State {
+    STATE_UNSPECIFIED      = 0;
+    PENDING                = 1;
+    PAYMENT_CHARGED        = 2;
+    INVENTORY_RESERVED     = 3;
+    SHIPMENT_CREATED       = 4;
+    COMPLETED              = 5;
+    COMPENSATING           = 6;
+    COMPENSATION_COMPLETE  = 7;
+    FAILED                 = 8;
+  }
+}
+
+message CompensationStep {
+  string service     = 1;
+  string action      = 2;
+  bool   succeeded   = 3;
+  string error       = 4;  // populated if succeeded=false
+}
+
+// ─── Orchestrator ─────────────────────────────────────────────────────────────
+
+message PlaceOrderRequest {
+  string order_id          = 1;
+  repeated OrderItem items  = 2;
+  PaymentInfo payment_info  = 3;
+  ShippingAddress address   = 4;
+  // Idempotency: clients should set this to a stable UUID per attempt.
+  string idempotency_key    = 5;
+}
+
+message PlaceOrderResponse {
+  SagaStatus saga_status   = 1;
+  string     shipment_id   = 2;
+}
+
+message GetSagaStatusRequest {
+  string saga_id = 1;
+}
+
+message OrderItem {
+  string sku      = 1;
+  int32  quantity = 2;
+  int64  price_cents = 3;
+}
+
+message PaymentInfo {
+  string payment_method_id = 1;  // tokenized — never raw card data
+  int64  amount_cents      = 2;
+  string currency          = 3;  // ISO 4217, e.g. "USD"
+}
+
+message ShippingAddress {
+  string street   = 1;
+  string city     = 2;
+  string postcode = 3;
+  string country  = 4;  // ISO 3166-1 alpha-2
+}
+
+service SagaOrchestratorService {
+  rpc PlaceOrder(PlaceOrderRequest) returns (PlaceOrderResponse);
+  rpc GetSagaStatus(GetSagaStatusRequest) returns (SagaStatus);
+  // Bidirectional stream: client sends order updates, server streams saga events
+  rpc StreamSagaEvents(stream PlaceOrderRequest) returns (stream SagaStatus);
+}
+
+// ─── Payment Service ─────────────────────────────────────────────────────────
+
+message ChargePaymentRequest {
+  string order_id          = 1;
+  string payment_method_id = 2;
+  int64  amount_cents      = 3;
+  string currency          = 4;
+  string idempotency_key   = 5;
+}
+
+message ChargePaymentResponse {
+  string transaction_id = 1;
+  google.protobuf.Timestamp charged_at = 2;
+}
+
+message RefundPaymentRequest {
+  string transaction_id  = 1;
+  string reason          = 2;
+  // reserved 3;  // previously: partial_amount_cents (removed)
+}
+
+message RefundPaymentResponse {
+  string refund_id = 1;
+  google.protobuf.Timestamp refunded_at = 2;
+}
+
+service PaymentService {
+  rpc ChargePayment(ChargePaymentRequest) returns (ChargePaymentResponse);
+  rpc RefundPayment(RefundPaymentRequest) returns (RefundPaymentResponse);
+}
+
+// ─── Inventory Service ────────────────────────────────────────────────────────
+
+message ReserveInventoryRequest {
+  string             order_id       = 1;
+  repeated OrderItem items          = 2;
+  string             idempotency_key = 3;
+}
+
+message ReserveInventoryResponse {
+  string reservation_id = 1;
+  google.protobuf.Duration reservation_ttl = 2;  // e.g. 15 minutes
+}
+
+message ReleaseInventoryRequest {
+  string reservation_id = 1;
+  string reason         = 2;
+}
+
+message ReleaseInventoryResponse {
+  bool released = 1;
+}
+
+service InventoryService {
+  rpc ReserveInventory(ReserveInventoryRequest) returns (ReserveInventoryResponse);
+  rpc ReleaseInventory(ReleaseInventoryRequest) returns (ReleaseInventoryResponse);
+}
+
+// ─── Shipping Service ─────────────────────────────────────────────────────────
+
+message CreateShipmentRequest {
+  string          order_id       = 1;
+  string          reservation_id = 2;
+  ShippingAddress address        = 3;
+  repeated OrderItem items       = 4;
+  string          idempotency_key = 5;
+}
+
+message CreateShipmentResponse {
+  string shipment_id    = 1;
+  string tracking_number = 2;
+  google.protobuf.Timestamp estimated_delivery = 3;
+  // google.protobuf.Any carrier_metadata = 4;  // extensible for carrier-specific data
+}
+
+service ShippingService {
+  rpc CreateShipment(CreateShipmentRequest) returns (CreateShipmentResponse);
+}

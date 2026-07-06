@@ -1,0 +1,5 @@
+- Writes `pipeline.yml` with `command`, `wait`, `block`, and `trigger` steps
+- Configures agents; understands agent queues and tags for routing
+- Uses environment variables, `BUILDKITE_*` built-ins
+- Uploads artifacts and uses `buildkite-agent artifact download`
+- Implements basic parallelism with `parallelism` key

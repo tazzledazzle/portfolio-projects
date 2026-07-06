@@ -1,0 +1,3 @@
+- CRUD, JOINs, GROUP BY, ORDER BY, LIMIT/OFFSET
+- Understands indexes: B-tree, composite index column ordering, covering indexes
+- Basic `EXPLAIN` plan reading; identifies full table scans

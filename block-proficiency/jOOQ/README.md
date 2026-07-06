@@ -1,0 +1,4 @@
+- Code generation from database schema; uses generated `DSL` classes
+- Type-safe SELECT, INSERT, UPDATE, DELETE using DSL API
+- Understands `Record`, `Result`, `Field`, `Table` abstractions
+- Transactions with `DSLContext.transaction()`

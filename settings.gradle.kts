@@ -29,10 +29,10 @@ include("dev-env")
 include("onboarding-automation-cli")
 include("forgex")
 
-val pythonPluginCandidates =
-    listOf(
-        rootDir.resolve("gradle-python-plugin"),
-        rootDir.resolve("../../may-portfolio-projects/gradle-python-plugin"),
-    )
-
-pythonPluginCandidates.firstOrNull { it.isDirectory }?.let { includeBuild(it) }
+//val pythonPluginCandidates =
+//    listOf(
+//        rootDir.resolve("gradle-python-plugin"),
+//        rootDir.resolve("../../may-portfolio-projects/gradle-python-plugin"),
+//    )
+//
+//pythonPluginCandidates.firstOrNull { it.isDirectory }?.let { includeBuild(it) }

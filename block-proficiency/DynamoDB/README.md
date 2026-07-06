@@ -1,0 +1,4 @@
+- Understands partition key, sort key, and their impact on data distribution
+- CRUD via AWS SDK; `GetItem`, `PutItem`, `Query`, `Scan`
+- `FilterExpression` vs. `KeyConditionExpression` — knows the difference
+- DynamoDB Streams basics; TTL attribute configuration

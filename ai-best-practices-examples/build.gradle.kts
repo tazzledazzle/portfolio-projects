@@ -1,7 +1,12 @@
 import com.tazzledazzle.python.tasks.PythonExec
 
 plugins {
-    id("com.tazzledazzle.python")
+    id("com.tazzledazzle.python") version "0.1.0"
+}
+
+repositories {
+    gradlePluginPortal()
+    mavenCentral()
 }
 
 python {

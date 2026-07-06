@@ -1,0 +1,53 @@
+# Example alert rules — portfolio / local demo (not wired to PagerDuty).
+# Validate: promtool check rules deploy/prometheus/alerts.yml
+
+groups:
+  - name: ai-temporal-worker
+    rules:
+      - alert: HighActivityFailureRate
+        expr: |
+          (
+            sum(rate(workflow_completed_total{status="error"}[5m]))
+            /
+            clamp_min(sum(rate(workflow_completed_total[5m])), 1e-9)
+          ) > 0.25
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: High workflow failure rate on ai-temporal-worker
+          description: >
+            More than 25% of workflow completions are failing over the last 5 minutes.
+            Check Temporal UI and Activity Latency dashboard.
+
+      - alert: AiWorkerTargetDown
+        expr: up{job="ai-worker"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: Prometheus cannot scrape ai-worker metrics
+          description: >
+            Target host.docker.internal:9464 is down. Start the Kotlin worker or free port 9464.
+
+  - name: otel-collector
+    rules:
+      - alert: OtelExporterSendFailures
+        expr: sum(increase(otelcol_exporter_send_failed_spans[5m])) by (exporter) > 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: OTel Collector failed to export spans
+          description: >
+            Exporter {{ $labels.exporter }} reported send failures. Check collector logs and
+            Tempo/Jaeger health.
+
+      - alert: OtelCollectorTargetDown
+        expr: up{job="otel-collector"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: Prometheus cannot scrape otel-collector metrics
+          description: Collector self-metrics on :8888 are unreachable.

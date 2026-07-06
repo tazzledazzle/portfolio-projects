@@ -1,0 +1,3 @@
+- Understands events vs. commands vs. queries (CQRS); pub/sub vs. point-to-point
+- Designs events with stable schemas; includes event ID, timestamp, aggregate ID
+- Implements idempotent consumers; uses deduplication keys

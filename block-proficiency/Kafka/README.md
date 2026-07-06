@@ -1,0 +1,4 @@
+- Core model: topics, partitions, offsets, consumer groups, brokers
+- Produces and consumes with Java/Kotlin client (`KafkaProducer`, `KafkaConsumer`)
+- Understands `auto.offset.reset`, `enable.auto.commit`, and manual offset committing
+- Basic topic configuration: `replication.factor`, `min.insync.replicas`, retention
