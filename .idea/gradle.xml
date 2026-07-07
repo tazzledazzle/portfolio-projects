@@ -35,6 +35,7 @@
             <option value="$PROJECT_DIR$/projgen" />
             <option value="$PROJECT_DIR$/rabbit-mq" />
             <option value="$PROJECT_DIR$/rest-api-test-demo" />
+            <option value="$PROJECT_DIR$/temporal-orchestrated-observability-platform" />
             <option value="$PROJECT_DIR$/workflow-api-demo" />
             <option value="$PROJECT_DIR$/ws-chat-fast" />
           </set>
