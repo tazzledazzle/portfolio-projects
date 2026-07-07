@@ -45,7 +45,10 @@ class LinkedList {
         return result
     }
 
-    private fun unlink(previousIt: Node?, currentIt: Node) {
+    private fun unlink(
+        previousIt: Node?,
+        currentIt: Node,
+    ) {
         if (currentIt == head) {
             head = currentIt.next
         } else {
@@ -80,7 +83,9 @@ class LinkedList {
         return it.data
     }
 
-    private data class Node(val data: String) {
+    private data class Node(
+        val data: String,
+    ) {
         var next: Node? = null
     }
 }

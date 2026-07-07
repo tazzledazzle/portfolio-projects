@@ -1,0 +1,81 @@
+env:
+  APP_NAME: "my-service"
+  DEPLOY_BUCKET: "s3://my-org-artifacts"
+  # BUILDKITE_* builtins are available implicitly; we reference them in steps below
+
+steps:
+
+  # ── 1. Lint & validate ────────────────────────────────────────────────────
+  - label: ":mag: Lint"
+    command: |
+      echo "Branch:  $BUILDKITE_BRANCH"
+      echo "Commit:  $BUILDKITE_COMMIT"
+      ./scripts/lint.sh
+    agents:
+      queue: default
+      os: linux
+
+  # ── 2. Parallel test shards ───────────────────────────────────────────────
+  - label: ":pytest: Test (shard %n of %c)"
+    command: |
+      ./scripts/run-tests.sh \
+        --shard-index  $BUILDKITE_PARALLEL_JOB \
+        --shard-total  $BUILDKITE_PARALLEL_JOB_COUNT
+    parallelism: 4
+    agents:
+      queue: test-runners
+      size: large           # custom agent tag for resource-heavy jobs
+
+  # ── 3. Wait for lint + all test shards ───────────────────────────────────
+  - wait
+
+  # ── 4. Build & upload artifact ────────────────────────────────────────────
+  - label: ":package: Build"
+    command: |
+      ./scripts/build.sh --output dist/$APP_NAME-$BUILDKITE_BUILD_NUMBER.tar.gz
+      buildkite-agent artifact upload "dist/*.tar.gz"
+    agents:
+      queue: builders
+      os: linux
+
+  - wait
+
+  # ── 5. Manual gate before production deploy ───────────────────────────────
+  - block: ":rocket: Deploy to production?"
+    prompt: "Review the build and approve to continue."
+    fields:
+      - select: "Target region"
+        key: deploy-region
+        options:
+          - label: "US East"
+            value: us-east-1
+          - label: "EU West"
+            value: eu-west-1
+
+  # ── 6. Deploy (downloads the artifact built above) ───────────────────────
+  - label: ":ship: Deploy"
+    command: |
+      buildkite-agent artifact download "dist/*.tar.gz" ./dist
+      TARBALL=$(ls dist/*.tar.gz | head -1)
+      REGION=$(buildkite-agent meta-data get deploy-region)
+      ./scripts/deploy.sh \
+        --artifact  "$TARBALL" \
+        --region    "$REGION" \
+        --build     "$BUILDKITE_BUILD_NUMBER" \
+        --pipeline  "$BUILDKITE_PIPELINE_SLUG"
+    agents:
+      queue: deployers
+      role: deploy          # only agents tagged role=deploy run this step
+
+  - wait
+
+  # ── 7. Trigger downstream smoke-test pipeline ────────────────────────────
+  - trigger: smoke-tests
+    label: ":smoke: Trigger smoke tests"
+    build:
+      message: "Smoke tests for $BUILDKITE_PIPELINE_SLUG build $BUILDKITE_BUILD_NUMBER"
+      commit: "$BUILDKITE_COMMIT"
+      branch: "$BUILDKITE_BRANCH"
+      env:
+        UPSTREAM_BUILD: "$BUILDKITE_BUILD_NUMBER"
+        UPSTREAM_PIPELINE: "$BUILDKITE_PIPELINE_SLUG"

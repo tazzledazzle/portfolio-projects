@@ -1,0 +1,3 @@
+- Understands Vitess as a MySQL sharding/proxy layer for horizontal scaling
+- Knows VSchema, keyspaces, shards, tablets (primary, replica, rdonly)
+- Basic VTGate query routing; understands why certain SQL constructs are unsupported

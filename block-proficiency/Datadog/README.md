@@ -1,0 +1,2 @@
+- Knows DataDog is an observability platform for metrics, logs, and traces
+- Can navigate dashboards; read graphs and alert states

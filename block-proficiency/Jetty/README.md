@@ -1,0 +1,3 @@
+- Embeds Jetty (`Server`, `ServerConnector`, `ServletContextHandler`) programmatically
+- Configures HTTPS with `SslContextFactory`; sets thread pool size
+- Writes and registers Servlets and Filters; understands `HttpServletRequest`/`HttpServletResponse`

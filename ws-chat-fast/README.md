@@ -9,9 +9,10 @@ This project demonstrates a simple WebSocket chat application built with FastAPI
 
 ```shell
 ws-chat-fast/
- ├── app
+ ├── ws_chat
  │   ├── chat.py
  │   ├── exclusive_chatroom.py
+ │   ├── main.py
  │   ├── security.py
  │   ├── templating.py
  │   ├── ws_manager.py

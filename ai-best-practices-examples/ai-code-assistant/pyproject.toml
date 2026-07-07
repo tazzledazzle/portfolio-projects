@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-code-assistant"
+version = "0.1.0"
+description = "CLI for generating unit tests for Python codebases."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+]
+openai = [
+  "openai>=1.30.0",
+]
+
+[project.scripts]
+ai-code-assistant = "ai_code_assistant.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = [
+  "unit: fast isolated tests for single modules/functions",
+  "integration: cross-module behavior tests without full external stack",
+  "e2e: end-to-end CLI execution tests via subprocess or real file writes",
+]

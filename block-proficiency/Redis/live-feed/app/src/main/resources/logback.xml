@@ -1,0 +1,19 @@
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %-40logger{40} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Quiet down Lettuce's internal chatter -->
+    <logger name="io.lettuce" level="WARN"/>
+    <logger name="io.netty"   level="WARN"/>
+
+    <!-- Our code at INFO; set DEBUG to see every LPUSH/LRANGE call -->
+    <logger name="com.skidroad.notifeed" level="INFO"/>
+    <logger name="Main" level="INFO"/>
+
+    <root level="WARN">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

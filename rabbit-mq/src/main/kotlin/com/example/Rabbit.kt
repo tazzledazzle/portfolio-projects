@@ -1,6 +1,5 @@
 package com.example
 
-
 fun main() {
     println("Hello, World!")
     // This is a simple Kotlin application that prints "Hello, World!" to the console.

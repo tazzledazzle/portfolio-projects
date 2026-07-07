@@ -1,0 +1,4 @@
+- Core data structures: String, List, Set, Sorted Set, Hash
+- Key expiration (`EXPIRE`, `EXPIREAT`, `TTL`); eviction policies
+- Pub/Sub basics; simple caching patterns (cache-aside)
+- Connects via Jedis or Lettuce from JVM

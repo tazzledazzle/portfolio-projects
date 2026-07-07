@@ -1,0 +1,62 @@
+{
+  "baseline_model": "llama3.1",
+  "tuned_model": "domain-expert-ai",
+  "baseline": {
+    "keyword_score": 0.0,
+    "citation_score": 1.0,
+    "format_rate": 1.0
+  },
+  "tuned": {
+    "keyword_score": 0.0,
+    "citation_score": 1.0,
+    "format_rate": 1.0
+  },
+  "sample_count": 1,
+  "slice_metrics": [
+    {
+      "dimension": "difficulty",
+      "value": "unknown",
+      "sample_count": 1,
+      "baseline": {
+        "keyword_score": 0.0,
+        "citation_score": 1.0,
+        "format_rate": 1.0
+      },
+      "tuned": {
+        "keyword_score": 0.0,
+        "citation_score": 1.0,
+        "format_rate": 1.0
+      }
+    },
+    {
+      "dimension": "jurisdiction",
+      "value": "ML-AI",
+      "sample_count": 1,
+      "baseline": {
+        "keyword_score": 0.0,
+        "citation_score": 1.0,
+        "format_rate": 1.0
+      },
+      "tuned": {
+        "keyword_score": 0.0,
+        "citation_score": 1.0,
+        "format_rate": 1.0
+      }
+    },
+    {
+      "dimension": "risk_category",
+      "value": "medium",
+      "sample_count": 1,
+      "baseline": {
+        "keyword_score": 0.0,
+        "citation_score": 1.0,
+        "format_rate": 1.0
+      },
+      "tuned": {
+        "keyword_score": 0.0,
+        "citation_score": 1.0,
+        "format_rate": 1.0
+      }
+    }
+  ]
+}

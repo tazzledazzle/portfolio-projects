@@ -1,0 +1,8 @@
+[risk]
+auto_allow_max = 30
+approval_required_min = 31
+hard_block_min = 80
+
+[redaction]
+enabled = true
+patterns = ["sk-[A-Za-z0-9]{10,}", "ghp_[A-Za-z0-9]{20,}"]

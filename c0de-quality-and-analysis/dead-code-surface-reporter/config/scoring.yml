@@ -1,0 +1,6 @@
+minStaleDays: 90
+weights:
+  unreachableConfidence: 0.6
+  staleDays: 0.4
+threshold:
+  backlogCandidate: 0.7

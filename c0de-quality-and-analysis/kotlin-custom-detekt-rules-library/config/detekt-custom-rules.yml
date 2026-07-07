@@ -1,0 +1,13 @@
+team-custom-rules:
+  CoroutineScopeNaming:
+    active: true
+    requiredSuffix: "Scope"
+  UncheckedPlatformTypeCast:
+    active: true
+  MissingTransactionalAnnotation:
+    active: true
+    servicePackageRegex: ".*service.*"
+
+style:
+  MaxLineLength:
+    active: false

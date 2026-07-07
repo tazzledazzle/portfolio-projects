@@ -1,0 +1,1 @@
+{"question": "How do I prevent overfitting in deep learning models?", "context": "Vision model shows high train accuracy but poor validation performance.", "answer": "Use regularization, data augmentation, early stopping, and stronger validation protocols.", "jurisdiction": "ML-AI", "risk_level": "medium", "citations": ["Deep Learning (Goodfellow et al.)"]}

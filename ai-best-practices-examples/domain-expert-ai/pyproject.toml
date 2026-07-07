@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "domain-expert-ai"
+version = "0.1.0"
+description = "Prompt baseline + QLoRA pipeline for CS and software engineering expert assistants."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "transformers>=4.40.0",
+  "datasets>=2.18.0",
+  "peft>=0.10.0",
+  "accelerate>=0.28.0",
+  "bitsandbytes>=0.43.0",
+  "pydantic>=2.6.0",
+  "rich>=13.7.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+]
+
+[project.scripts]
+domain-expert-ai = "domain_expert_ai.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

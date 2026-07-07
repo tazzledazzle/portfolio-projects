@@ -1,0 +1,4 @@
+- Decomposes monoliths along domain boundaries; understands bounded contexts
+- Implements REST or gRPC service-to-service communication
+- Uses environment variables and config maps for configuration; 12-factor app principles
+- Containerizes services with Docker; writes production-ready `Dockerfile`s

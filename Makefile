@@ -2,10 +2,13 @@
 bootstrap:
 	python3 -m pip install -r requirements.txt
 	just install-hooks
+	@if [ ! -d gradle-python-plugin ]; then \
+		git clone --depth 1 https://github.com/tazzledazzle/gradle-python-plugin.git gradle-python-plugin; \
+	fi
 
 lint:
 	ruff .
-	ktlintCheck
+	./gradlew ktlintCheck
 
 test:
 	@echo "🧪 Running test suite..."

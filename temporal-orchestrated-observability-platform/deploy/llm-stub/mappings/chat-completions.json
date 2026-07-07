@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/v1/chat/completions"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "text": "Stub LLM answer grounded in the provided architecture and operations documentation.",
+      "citation": "fixtures/chunks.json#chunk-0"
+    }
+  }
+}

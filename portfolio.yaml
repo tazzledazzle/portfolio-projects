@@ -6,7 +6,7 @@ projects:
     highlights: ["Auto reconnection", "Metrics"]
     status: "stable"
     path: "ws-chat-fast"
-    tags: ["DX","perf","distributed"]
+    tags: ["DX", "perf", "distributed"]
   - id: projgen
     name: "Project Generator"
     problem: "Scaffold new projects easily"
@@ -14,28 +14,284 @@ projects:
     highlights: ["CLI UX", "Template system"]
     status: "beta"
     path: "projgen"
-    tags: ["tooling","DX"]
+    tags: ["tooling", "DX"]
   - id: rabbit-mq
     name: "RabbitMQ Demo"
     problem: "Message queue patterns"
-    stack: ["Python", "RabbitMQ", "Docker"]
+    stack: ["Kotlin", "RabbitMQ", "Gradle"]
     highlights: ["Pub/Sub", "Work queues"]
     status: "stable"
     path: "rabbit-mq"
-    tags: ["distributed","messaging"]
+    tags: ["distributed", "messaging"]
   - id: online-bookstore
     name: "Online Bookstore"
-    problem: "E-commerce microservices"
-    stack: ["Java", "Spring Boot", "PostgreSQL"]
-    highlights: ["REST API", "Database design"]
+    problem: "E-commerce REST API demo"
+    stack: ["Python", "FastAPI", "PostgreSQL"]
+    highlights: ["REST API", "OAuth2", "WebSockets"]
     status: "stable"
     path: "online-bookstore"
-    tags: ["microservices","api"]
+    tags: ["microservices", "api"]
   - id: bazel-multibuild
     name: "Bazel Multi-Build"
     problem: "Polyglot build system"
-    stack: ["Bazel", "Java", "Python"]
+    stack: ["Bazel", "Java", "TypeScript"]
     highlights: ["Build optimization", "Cross-language"]
     status: "beta"
     path: "bazel-multibuild"
-    tags: ["build-systems","tooling"]
+    tags: ["build-systems", "tooling"]
+  - id: modular-jvm-build
+    name: "Modular JVM Build"
+    problem: "Gradle multi-module Spring Boot"
+    stack: ["Kotlin", "Spring Boot", "Gradle"]
+    highlights: ["Layered modules", "Health API"]
+    status: "stable"
+    path: "modular-jvm-build"
+    tags: ["microservices", "build-systems"]
+  - id: rest-api-test-demo
+    name: "REST API Test Demo"
+    problem: "Production-style FastAPI with tests"
+    stack: ["Python", "FastAPI", "Docker"]
+    highlights: ["pytest", "Coverage", "CI"]
+    status: "stable"
+    path: "rest-api-test-demo"
+    tags: ["api", "testing"]
+  - id: workflow-api-demo
+    name: "Workflow API Demo"
+    problem: "API to Redis queue to worker"
+    stack: ["Python", "FastAPI", "Redis", "PostgreSQL"]
+    highlights: ["Async jobs", "Docker Compose"]
+    status: "stable"
+    path: "workflow-api-demo"
+    tags: ["distributed", "microservices"]
+  - id: otel-demo-stack
+    name: "OpenTelemetry Demo Stack"
+    problem: "End-to-end distributed tracing"
+    stack: ["Python", "OpenTelemetry", "Docker"]
+    highlights: ["OTel Collector", "Trace propagation"]
+    status: "stable"
+    path: "otel-demo-stack"
+    tags: ["observability", "distributed"]
+  - id: observability
+    name: "Observability Stack"
+    problem: "Prometheus and Grafana locally"
+    stack: ["Docker", "Prometheus", "Grafana"]
+    highlights: ["Metrics", "Dashboards"]
+    status: "beta"
+    path: "observability"
+    tags: ["observability"]
+  - id: platform-audit-template
+    name: "Platform Audit Template"
+    problem: "SRE audit scripts and templates"
+    stack: ["Python", "Bash", "GCP"]
+    highlights: ["Billing analysis", "Runbooks"]
+    status: "beta"
+    path: "platform-audit-template"
+    tags: ["SRE", "tooling"]
+  - id: ai-code-assistant
+    name: "AI Code Assistant"
+    problem: "LLM-assisted test generation"
+    stack: ["Python", "FastAPI", "OpenAI"]
+    highlights: ["CLI", "unit/integration/e2e tests"]
+    status: "stable"
+    path: "ai-best-practices-examples/ai-code-assistant"
+    tags: ["AI", "testing"]
+  - id: knowledge-qa-system
+    name: "Knowledge QA System"
+    problem: "RAG over documents"
+    stack: ["Python", "LangChain", "ChromaDB"]
+    highlights: ["Ingestion", "Vector search"]
+    status: "stable"
+    path: "ai-best-practices-examples/knowledge-qa-system"
+    tags: ["AI", "RAG"]
+  - id: chat-ai
+    name: "Chat AI"
+    problem: "Conversational agent with tools"
+    stack: ["Python", "FastAPI", "LangChain"]
+    highlights: ["Memory", "Tool calling"]
+    status: "stable"
+    path: "ai-best-practices-examples/chat-ai"
+    tags: ["AI", "chat"]
+  - id: domain-expert-ai
+    name: "Domain Expert AI"
+    problem: "Fine-tuning and eval pipeline"
+    stack: ["Python", "Transformers", "PEFT"]
+    highlights: ["Training", "Guardrails"]
+    status: "beta"
+    path: "ai-best-practices-examples/domain-expert-ai"
+    tags: ["AI", "ML"]
+  - id: ai-image-video-generator
+    name: "AI Image/Video Generator"
+    problem: "ComfyUI-backed media generation"
+    stack: ["Python", "Gradio", "ComfyUI"]
+    highlights: ["Image gen", "Live smoke tests"]
+    status: "beta"
+    path: "ai-best-practices-examples/ai-image-video-generator"
+    tags: ["AI", "media"]
+  - id: canary-deployment-controller
+    name: "Canary Deployment Controller"
+    problem: "Progressive traffic shifting with rollback"
+    stack: ["Python", "Kubernetes", "Prometheus"]
+    highlights: ["SLO gates", "Auto rollback"]
+    status: "beta"
+    path: "ci-cd-pipelines/canary-deployment-controller"
+    tags: ["CI/CD", "kubernetes"]
+  - id: flaky-pipeline-gate
+    name: "Flaky Pipeline Gate"
+    problem: "Flakiness-aware merge blocking"
+    stack: ["Python", "CI analytics"]
+    highlights: ["Rolling window", "Flake scoring"]
+    status: "beta"
+    path: "ci-cd-pipelines/flaky-pipeline-gate"
+    tags: ["CI/CD", "testing"]
+  - id: release-lead-time-calculator
+    name: "Release Lead Time Calculator"
+    problem: "DORA lead time metrics API"
+    stack: ["Python", "GitHub API"]
+    highlights: ["Cycle time", "DORA"]
+    status: "beta"
+    path: "ci-cd-pipelines/release-lead-time-calculator"
+    tags: ["CI/CD", "metrics"]
+  - id: pipeline-telemetry-exporter
+    name: "Pipeline Telemetry Exporter"
+    problem: "CI spans as OpenTelemetry traces"
+    stack: ["Python", "OpenTelemetry"]
+    highlights: ["Job spans", "Step duration"]
+    status: "beta"
+    path: "ci-cd-pipelines/pipeline-telemetry-exporter"
+    tags: ["CI/CD", "observability"]
+  - id: self-service-pipeline-template-engine
+    name: "Pipeline Template Engine"
+    problem: "Generate CI YAML from manifests"
+    stack: ["Python", "Jinja2", "Backstage"]
+    highlights: ["Scaffolding", "Conventions"]
+    status: "beta"
+    path: "ci-cd-pipelines/self-service-pipeline-template-engine"
+    tags: ["CI/CD", "tooling"]
+  - id: pipeline-cost-analyzer
+    name: "Pipeline Cost Analyzer"
+    problem: "Attribute CI runner spend to teams"
+    stack: ["Python", "GitHub Actions"]
+    highlights: ["Cost attribution", "Optimization"]
+    status: "beta"
+    path: "ci-cd-pipelines/pipeline-cost-analyzer"
+    tags: ["CI/CD", "finops"]
+  - id: kotlin-custom-detekt-rules-library
+    name: "Kotlin Custom Detekt Rules"
+    problem: "Team-specific static analysis rules"
+    stack: ["Kotlin", "Detekt", "Gradle"]
+    highlights: ["Custom rules", "RuleSetProvider"]
+    status: "beta"
+    path: "c0de-quality-and-analysis/kotlin-custom-detekt-rules-library"
+    tags: ["quality", "kotlin"]
+  - id: license-compliance-scanner
+    name: "License Compliance Scanner"
+    problem: "SPDX license policy enforcement"
+    stack: ["Python", "Gradle", "SPDX"]
+    highlights: ["SBOM", "Policy engine"]
+    status: "beta"
+    path: "c0de-quality-and-analysis/license-compliance-scanner"
+    tags: ["quality", "security"]
+  - id: dead-code-surface-reporter
+    name: "Dead Code Surface Reporter"
+    problem: "Prioritize unreachable stale code"
+    stack: ["Python", "Git", "Call graph"]
+    highlights: ["Blame recency", "Scoring"]
+    status: "beta"
+    path: "c0de-quality-and-analysis/dead-code-surface-reporter"
+    tags: ["quality", "refactoring"]
+  - id: api-breaking-change-detector
+    name: "API Breaking Change Detector"
+    problem: "OpenAPI compatibility merge gate"
+    stack: ["Python", "OpenAPI"]
+    highlights: ["Diff", "Merge gate"]
+    status: "beta"
+    path: "c0de-quality-and-analysis/api-breaking-change-detector"
+    tags: ["quality", "api"]
+  - id: security-hotspot-annotator
+    name: "Security Hotspot Annotator"
+    problem: "Semgrep findings on PR comments"
+    stack: ["Python", "Semgrep", "GitHub"]
+    highlights: ["CWE mapping", "PR annotations"]
+    status: "beta"
+    path: "c0de-quality-and-analysis/security-hotspot-annotator"
+    tags: ["quality", "security"]
+  - id: devcontainer-feature-library
+    name: "Devcontainer Feature Library"
+    problem: "Composable local dev stack features"
+    stack: ["Shell", "Dev Containers", "Docker"]
+    highlights: ["Kafka", "Keycloak", "Postgres"]
+    status: "beta"
+    path: "dev-env/devcontainer-feature-library"
+    tags: ["DX", "dev-env"]
+  - id: environment-drift-detector
+    name: "Environment Drift Detector"
+    problem: "Detect local toolchain drift"
+    stack: ["Python", "YAML"]
+    highlights: ["Version compare", "Fix scripts"]
+    status: "beta"
+    path: "dev-env/environment-drift-detector"
+    tags: ["DX", "dev-env"]
+  - id: local-service-mesh
+    name: "Local Service Mesh"
+    problem: "K8s-like routing on Docker Compose"
+    stack: ["Docker", "Caddy", "Compose"]
+    highlights: ["Gateway", "Service routing"]
+    status: "beta"
+    path: "dev-env/local-service-mesh"
+    tags: ["DX", "microservices"]
+  - id: onboarding-automation-cli
+    name: "Onboarding Automation CLI"
+    problem: "Automate new-hire environment setup"
+    stack: ["Kotlin", "Gradle", "CLI"]
+    highlights: ["Repo clone", "Health checks"]
+    status: "beta"
+    path: "dev-env/onboarding-automation-cli"
+    tags: ["DX", "tooling"]
+  - id: remote-dev-environment-orchestrator
+    name: "Remote Dev Environment Orchestrator"
+    problem: "Ephemeral cloud dev environments"
+    stack: ["Python", "Temporal"]
+    highlights: ["TTL teardown", "Provisioning"]
+    status: "beta"
+    path: "dev-env/remote-dev-environment-orchestrator"
+    tags: ["DX", "cloud"]
+  - id: developer-satisfaction-pulse-system
+    name: "Developer Satisfaction Pulse"
+    problem: "SPACE/NPS developer surveys"
+    stack: ["Python", "FastAPI", "PostgreSQL"]
+    highlights: ["Pulse surveys", "Trends"]
+    status: "beta"
+    path: "dev-ex/developer-satisfaction-pulse-system"
+    tags: ["DX", "metrics"]
+  - id: tooling-adoption-tracker
+    name: "Tooling Adoption Tracker"
+    problem: "Measure tool rollout adoption"
+    stack: ["TypeScript", "Node"]
+    highlights: ["Funnel metrics", "Telemetry"]
+    status: "beta"
+    path: "dev-ex/tooling-adoption-tracker"
+    tags: ["DX", "metrics"]
+  - id: inner-loop-friction-scorer
+    name: "Inner Loop Friction Scorer"
+    problem: "Composite developer friction score"
+    stack: ["Python", "CI telemetry"]
+    highlights: ["Friction taxonomy", "Scoring"]
+    status: "beta"
+    path: "dev-ex/inner-loop-friction-scorer"
+    tags: ["DX", "metrics"]
+  - id: platform-changelog-migration-generator
+    name: "Platform Changelog Generator"
+    problem: "API diff changelogs and migrations"
+    stack: ["Python", "AST"]
+    highlights: ["Breaking changes", "Rewriters"]
+    status: "beta"
+    path: "dev-ex/platform-changelog-migration-generator"
+    tags: ["DX", "tooling"]
+  - id: forgex
+    name: "ForgeX (Planned)"
+    problem: "Polyglot repo generator product spec"
+    stack: ["Specification", "Gradle", "Bazel"]
+    highlights: ["Unified scaffolding vision", "Not yet implemented"]
+    status: "planned"
+    path: "forgex"
+    tags: ["tooling", "planned"]

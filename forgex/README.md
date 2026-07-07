@@ -1,4 +1,7 @@
 # ForgeX
+
+> **Status: Planned** — this directory contains a product specification only. For the implemented project scaffolder, see [projgen](../projgen).
+
 ----
 
 ## 1. Product Overview

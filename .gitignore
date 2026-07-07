@@ -1,5 +1,6 @@
 .gradle
 build/
+gradle-python-plugin/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
@@ -43,3 +44,27 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Python ###
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+*.egg-info/
+dist/
+*.egg
+
+### Node ###
+node_modules/
+
+### Local data / runtime artifacts ###
+chroma_data/
+.ai-code-assistant/
+site/
+
+### Bazel generated symlinks ###
+bazel-multibuild/**/bazel-*

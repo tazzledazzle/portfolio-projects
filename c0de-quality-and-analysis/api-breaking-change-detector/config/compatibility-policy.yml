@@ -1,0 +1,6 @@
+strictMode: true
+approvedBreakingChanges:
+  - id: "remove-v1-legacy-endpoint"
+    expiresOn: "2026-12-31"
+output:
+  format: markdown

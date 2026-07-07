@@ -1,0 +1,5 @@
+{
+  "name": "image_generation",
+  "description": "Reference ComfyUI graph placeholder for text-to-image + ControlNet/IP-Adapter.",
+  "nodes": []
+}

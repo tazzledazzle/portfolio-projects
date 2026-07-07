@@ -1,0 +1,17 @@
+[
+  {
+    "id": "chunk-0",
+    "path": "docs/ARCHITECTURE.md",
+    "text": "Temporal orchestrates AI workflows with durable execution and automatic retries."
+  },
+  {
+    "id": "chunk-1",
+    "path": "docs/LOCAL-DEV.md",
+    "text": "Run docker compose, start the worker, then invoke starter commands for each workflow."
+  },
+  {
+    "id": "chunk-2",
+    "path": "README.md",
+    "text": "Kotlin workers instrument activities with OpenTelemetry for end-to-end observability."
+  }
+]

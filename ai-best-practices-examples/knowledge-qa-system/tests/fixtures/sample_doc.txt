@@ -1,0 +1,2 @@
+Chroma is a vector database used for retrieval augmented generation.
+This fixture explains how citations should be attached to answers.

@@ -4,15 +4,12 @@
 package org.example.app
 
 import com.google.gson.Gson
-import com.google.gson.stream.JsonWriter
+import com.rabbitmq.client.AMQP.BasicProperties
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.ConnectionFactory
 import com.rabbitmq.client.DefaultConsumer
-import com.rabbitmq.client.MessageProperties
-import com.rabbitmq.client.AMQP.BasicProperties
 import com.rabbitmq.client.Envelope
-
-
+import com.rabbitmq.client.MessageProperties
 import org.apache.commons.text.WordUtils
 import java.util.concurrent.Executors
 
@@ -37,29 +34,35 @@ fun main() {
     // consume messages from the queue
     val consumerTag = channel.basicConsume(mfq, true, consumer)
 
-
     // executor service and thread pool
     val executorService = Executors.newFixedThreadPool(10)
     // add it to the connections
     val otherConnection = factory.newConnection(executorService)
-  // writing serialized JSON to a queue
+    // writing serialized JSON to a queue
     val myJsonQueue = "myJsonQueue"
     channel.queueDeclare(myJsonQueue, false, false, false, null)
     val book = Book("The Catcher in the Rye", "J.D. Salinger", 1951)
     val gson = Gson()
     gson.toJson(book).let { json ->
-        val props = BasicProperties.Builder()
-            .contentType("application/json")
-            .deliveryMode(2) // persistent
-            .build()
+        val props =
+            BasicProperties
+                .Builder()
+                .contentType("application/json")
+                .deliveryMode(2) // persistent
+                .build()
         channel.basicPublish("", myJsonQueue, props, json.toByteArray())
     }
-
-    
 }
 
-class ActualConsumer(channel: Channel) : DefaultConsumer(channel) {
-    override fun handleDelivery(consumerTag: String, envelope: Envelope, properties: BasicProperties, body: ByteArray) {
+class ActualConsumer(
+    channel: Channel,
+) : DefaultConsumer(channel) {
+    override fun handleDelivery(
+        consumerTag: String,
+        envelope: Envelope,
+        properties: BasicProperties,
+        body: ByteArray,
+    ) {
         val message = String(body)
         println("Received message: ${WordUtils.capitalize(message)}")
     }
@@ -77,7 +80,5 @@ class Book() {
         this.year = year
     }
 
-    override fun toString(): String {
-        return "Book(title='$title', author='$author', year=$year)"
-    }
+    override fun toString(): String = "Book(title='$title', author='$author', year=$year)"
 }

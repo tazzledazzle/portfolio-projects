@@ -1,0 +1,4 @@
+- Entities with `@Entity`, `@Table`, `@Id`, `@GeneratedValue`, `@Column`
+- Relationships: `@OneToMany`, `@ManyToOne`, `@ManyToMany`, `@OneToOne`; cascade types
+- JPQL and Criteria API for queries
+- Understands `EntityManager` lifecycle: persist, merge, remove, detach, refresh

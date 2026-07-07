@@ -1,0 +1,4 @@
+tools:
+  node: "20.11.1"
+  jvm: "20.0.1"
+  terraform: "1.8.4"

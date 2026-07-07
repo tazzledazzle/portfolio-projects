@@ -1,0 +1,67 @@
+version: "3.9"
+
+# Run all four services locally.
+# Each service gets its own port to avoid conflicts.
+#
+# Usage:
+#   docker compose up
+#   grpcurl -plaintext -H 'Authorization: Bearer dev-token' \
+#     -d '{"order_id":"ord-1","idempotency_key":"key-1","items":[{"sku":"SKU-001","quantity":1,"price_cents":1000}],"payment_info":{"payment_method_id":"pm_visa","amount_cents":1000,"currency":"USD"},"address":{"street":"123 Main","city":"Seattle","postcode":"98101","country":"US"}}' \
+#     localhost:50051 saga.v1.SagaOrchestratorService/PlaceOrder
+
+services:
+  payment-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MODULE: payment-service
+        MAIN_CLASS: com.skidroad.saga.PaymentServiceKt
+    environment:
+      GRPC_PORT: "50052"
+    ports:
+      - "50052:50052"
+
+  inventory-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MODULE: inventory-service
+        MAIN_CLASS: com.skidroad.saga.InventoryServiceKt
+    environment:
+      GRPC_PORT: "50053"
+    ports:
+      - "50053:50053"
+
+  shipping-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MODULE: shipping-service
+        MAIN_CLASS: com.skidroad.saga.ShippingServiceKt
+    environment:
+      GRPC_PORT: "50054"
+      SHIPPING_FAIL_RATE: "0.3"   # 30% failure rate to demo compensation
+    ports:
+      - "50054:50054"
+
+  orchestrator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MODULE: orchestrator
+        MAIN_CLASS: com.skidroad.saga.orchestrator.MainKt
+    environment:
+      GRPC_PORT: "50051"
+      PAYMENT_HOST: payment-service
+      INVENTORY_HOST: inventory-service
+      SHIPPING_HOST: shipping-service
+    ports:
+      - "50051:50051"
+    depends_on:
+      - payment-service
+      - inventory-service
+      - shipping-service

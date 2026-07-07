@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="dev-ex-js">
+    <output-path>$PROJECT_DIR$/dev-ex/build/libs</output-path>
+    <root id="archive" name="dev-ex-js.jar" />
+  </artifact>
+</component>

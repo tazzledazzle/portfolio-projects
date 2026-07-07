@@ -1,0 +1,60 @@
+{
+  "annotations": { "list": [] },
+  "editable": false,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": { "unit": "s", "decimals": 3 },
+        "overrides": []
+      },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "options": { "legend": { "displayMode": "table", "placement": "right" } },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(activity_duration_seconds_bucket[5m])) by (le, activity_type))",
+          "legendFormat": "p50 {{activity_type}}",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(activity_duration_seconds_bucket[5m])) by (le, activity_type))",
+          "legendFormat": "p95 {{activity_type}}",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(activity_duration_seconds_bucket[5m])) by (le, activity_type))",
+          "legendFormat": "p99 {{activity_type}}",
+          "refId": "C"
+        }
+      ],
+      "title": "Activity duration percentiles",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ops" }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 10 },
+      "id": 2,
+      "targets": [
+        {
+          "expr": "sum(rate(activity_duration_seconds_count[5m])) by (activity_type, status)",
+          "legendFormat": "{{activity_type}} {{status}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Activity execution rate",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "tags": ["observability", "activities"],
+  "time": { "from": "now-1h", "to": "now" },
+  "title": "Activity Latency",
+  "uid": "activity-latency",
+  "version": 1
+}
