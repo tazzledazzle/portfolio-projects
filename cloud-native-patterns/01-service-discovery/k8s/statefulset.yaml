@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kafka-broker
+  namespace: kafka
+  labels:
+    app: kafka-broker
+spec:
+  serviceName: "kafka-broker"   # Must match the headless Service name above.
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kafka-broker
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      partition: 0   # Set to N to do a canary roll: only pods ≥ N are updated.
+  podManagementPolicy: OrderedReady  # Ensures pods start/stop in order (0 → 1 → 2).
+  template:
+    metadata:
+      labels:
+        app: kafka-broker
+    spec:
+      # Anti-affinity ensures brokers spread across nodes — essential for HA.
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - kafka-broker
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: kafka
+          image: confluentinc/cp-kafka:7.6.0
+          ports:
+            - name: kafka
+              containerPort: 9092
+            - name: kafka-internal
+              containerPort: 9093
+            - name: jmx
+              containerPort: 9999
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: KAFKA_BROKER_ID
+              # StatefulSet pod ordinal (0, 1, 2) becomes the broker ID.
+              # Derived from the pod name suffix (kafka-broker-0 → 0).
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['apps.kubernetes.io/pod-index']
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: "zookeeper.kafka.svc.cluster.local:2181"
+            - name: KAFKA_LISTENERS
+              value: "INTERNAL://0.0.0.0:9093,EXTERNAL://0.0.0.0:9092"
+            - name: KAFKA_ADVERTISED_LISTENERS
+              # Uses the stable DNS name for each pod that headless Service provides.
+              value: "INTERNAL://$(POD_NAME).kafka-broker.$(POD_NAMESPACE).svc.cluster.local:9093,EXTERNAL://$(POD_NAME).kafka-broker.$(POD_NAMESPACE).svc.cluster.local:9092"
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: "INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT"
+            - name: KAFKA_INTER_BROKER_LISTENER_NAME
+              value: "INTERNAL"
+            - name: KAFKA_LOG_DIRS
+              value: "/var/kafka/data"
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "2000m"
+              memory: "4Gi"
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - "kafka-topics.sh --bootstrap-server localhost:9092 --list > /dev/null 2>&1"
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
+          volumeMounts:
+            - name: kafka-data
+              mountPath: /var/kafka/data
+  volumeClaimTemplates:
+    # StatefulSet VCTs provision one PVC per pod, bound to the pod's identity.
+    # kafka-broker-0 → kafka-data-kafka-broker-0
+    # kafka-broker-1 → kafka-data-kafka-broker-1
+    - metadata:
+        name: kafka-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: gp3-encrypted
+        resources:
+          requests:
+            storage: 100Gi
