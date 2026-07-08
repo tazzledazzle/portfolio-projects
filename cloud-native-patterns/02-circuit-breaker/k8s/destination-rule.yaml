@@ -1,0 +1,54 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: payment-service
+  namespace: payments
+spec:
+  host: payment-service
+  trafficPolicy:
+    # Connection pool limits — first line of defense against cascading failure.
+    # Requests that exceed these limits get a 503 immediately rather than
+    # queuing indefinitely and consuming threads/memory.
+    connectionPool:
+      tcp:
+        maxConnections: 100
+        connectTimeout: 3s
+        tcpKeepalive:
+          time: 7200s
+          interval: 75s
+      http:
+        http1MaxPendingRequests: 50
+        http2MaxRequests: 1000
+        maxRequestsPerConnection: 10
+        maxRetries: 3
+        idleTimeout: 60s
+        h2UpgradePolicy: UPGRADE
+    # Outlier detection — the mesh's circuit-breaker equivalent.
+    # Ejects pods from the load balancing pool when they return too many errors.
+    # This is transport-level (HTTP status codes) — pair with app-level Resilience4j
+    # for business-logic failures (e.g., 200 OK with error payload).
+    outlierDetection:
+      consecutive5xxErrors: 5          # Eject after 5 consecutive 5xx
+      consecutiveGatewayErrors: 5      # Also count 502/503/504 from upstream
+      interval: 30s                    # Evaluation interval
+      baseEjectionTime: 30s            # Minimum ejection duration
+      maxEjectionPercent: 50           # Never eject more than 50% of the pool
+      minHealthPercent: 30             # Maintain at least 30% healthy endpoints
+      splitExternalLocalOriginErrors: true
+    retryPolicy:
+      attempts: 3
+      perTryTimeout: 5s
+      retryOn: "5xx,reset,connect-failure,retriable-4xx"
+      retryRemoteLocalities: true
+  # Subsets for canary or A/B deployments
+  subsets:
+    - name: stable
+      labels:
+        version: stable
+    - name: canary
+      labels:
+        version: canary
+      trafficPolicy:
+        connectionPool:
+          http:
+            http1MaxPendingRequests: 10  # Tighter limits for canary traffic
