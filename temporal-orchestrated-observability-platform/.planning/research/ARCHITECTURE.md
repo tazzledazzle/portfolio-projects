@@ -4,15 +4,15 @@
 
 ## Major components (diagram → implementation)
 
-| Diagram box | Implementation unit | Phase |
-|-------------|---------------------|-------|
-| AI Workflow 1..N | `workflows/` Kotlin interfaces + `starter/` CLI | 3 |
-| Temporal Engine | `deploy/docker-compose` Temporal service | 2 |
-| OpenTelemetry SDK | `worker/telemetry/` module | 4 |
-| Jaeger | Compose service + collector exporter | 5 |
-| Prometheus | Compose + scrape config | 5 |
-| Loki / Tempo / Grafana | Compose LGTM profile | 6 |
-| Operations / On-Call | `docs/OPERATIONS.md` + alerts | 7 |
+| Diagram box            | Implementation unit                             | Phase |
+|------------------------|-------------------------------------------------|-------|
+| AI Workflow 1..N       | `workflows/` Kotlin interfaces + `starter/` CLI | 3     |
+| Temporal Engine        | `deploy/docker-compose` Temporal service        | 2     |
+| OpenTelemetry SDK      | `worker/telemetry/` module                      | 4     |
+| Jaeger                 | Compose service + collector exporter            | 5     |
+| Prometheus             | Compose + scrape config                         | 5     |
+| Loki / Tempo / Grafana | Compose LGTM profile                            | 6     |
+| Operations / On-Call   | `docs/OPERATIONS.md` + alerts                   | 7     |
 
 ## Data flow (happy path)
 
@@ -42,12 +42,12 @@ Starter → Temporal (start workflow) → Worker (workflow task)
 
 ## Integration points
 
-| From | To | Protocol |
-|------|-----|----------|
-| Starter | Temporal | gRPC (frontend) |
-| Worker | Temporal | gRPC (worker) |
-| Worker | LLM stub | HTTP + traceparent |
-| Worker | OTel Collector | OTLP gRPC :4317 |
-| Prometheus | Worker | HTTP scrape :9464 |
-| Promtail | Loki | HTTP push |
-| Grafana | LGTM stores | Native datasources |
+| From       | To             | Protocol           |
+|------------|----------------|--------------------|
+| Starter    | Temporal       | gRPC (frontend)    |
+| Worker     | Temporal       | gRPC (worker)      |
+| Worker     | LLM stub       | HTTP + traceparent |
+| Worker     | OTel Collector | OTLP gRPC :4317    |
+| Prometheus | Worker         | HTTP scrape :9464  |
+| Promtail   | Loki           | HTTP push          |
+| Grafana    | LGTM stores    | Native datasources |

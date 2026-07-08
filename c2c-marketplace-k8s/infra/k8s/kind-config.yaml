@@ -1,0 +1,20 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: c2c-marketplace
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      # Expose the services on host ports without needing kubectl
+      # port-forward for basic smoke testing.
+      - containerPort: 30081
+        hostPort: 8081
+        protocol: TCP
+      - containerPort: 30082
+        hostPort: 8082
+        protocol: TCP
+      - containerPort: 30083
+        hostPort: 8083
+        protocol: TCP
+      - containerPort: 30084
+        hostPort: 8084
+        protocol: TCP

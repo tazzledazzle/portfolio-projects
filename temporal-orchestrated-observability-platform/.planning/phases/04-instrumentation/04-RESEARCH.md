@@ -1,7 +1,7 @@
 # Phase 4 Research — Kotlin + OpenTelemetry
 
-**Researched:** 2026-05-20  
-**Phase:** 04-instrumentation  
+**Researched:** 2026-05-20
+**Phase:** 04-instrumentation
 **Requirements:** OTEL-01 … OTEL-04
 
 ## Summary
@@ -12,14 +12,14 @@ Phase 5 wires collector → Jaeger/Tempo; Phase 4 only needs OTLP export to the 
 
 ## Technology choices
 
-| Area | Choice | Rationale |
-|------|--------|-----------|
-| OTel API/SDK | BOM `1.43.0` | Aligns with `.planning/research/STACK.md`; stable OTLP + Prometheus exporters |
-| Trace export | OTLP gRPC → `OTEL_EXPORTER_OTLP_ENDPOINT` | Collector from Phase 1 already listens on `4317` |
-| Metrics export | `PrometheusHttpServer` on `METRICS_PORT` (default `9464`) | Matches `prometheus.yml` `ai-worker` job |
-| Temporal tracing | Custom `WorkerInterceptor` + `ActivityInboundCallsInterceptorBase` + `WorkflowInboundCallsInterceptorBase` | Official `temporal-opentelemetry` module not published for 1.25.2 |
-| HTTP client | `opentelemetry-okhttp-3.0` instrumentation | W3C `traceparent` on LLM stub calls (OTEL-04) |
-| Logging | `logstash-logback-encoder` + manual MDC in interceptor | JSON one-liners; `trace_id` from active span context |
+| Area             | Choice                                                                                                     | Rationale                                                                     |
+|------------------|------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| OTel API/SDK     | BOM `1.43.0`                                                                                               | Aligns with `.planning/research/STACK.md`; stable OTLP + Prometheus exporters |
+| Trace export     | OTLP gRPC → `OTEL_EXPORTER_OTLP_ENDPOINT`                                                                  | Collector from Phase 1 already listens on `4317`                              |
+| Metrics export   | `PrometheusHttpServer` on `METRICS_PORT` (default `9464`)                                                  | Matches `prometheus.yml` `ai-worker` job                                      |
+| Temporal tracing | Custom `WorkerInterceptor` + `ActivityInboundCallsInterceptorBase` + `WorkflowInboundCallsInterceptorBase` | Official `temporal-opentelemetry` module not published for 1.25.2             |
+| HTTP client      | `opentelemetry-okhttp-3.0` instrumentation                                                                 | W3C `traceparent` on LLM stub calls (OTEL-04)                                 |
+| Logging          | `logstash-logback-encoder` + manual MDC in interceptor                                                     | JSON one-liners; `trace_id` from active span context                          |
 
 ## Temporal interceptor pattern
 
@@ -40,32 +40,32 @@ WorkerFactory.newWorker(queue, WorkerOptions)
 
 ## Metric instrument names
 
-| Instrument | Type | Attributes |
-|------------|------|------------|
-| `activity.duration` | Histogram (seconds) | `workflow_type`, `activity_type`, `status` |
-| `workflow.completed` | Counter | `workflow_type`, `status` |
-| `llm.request.duration` | Histogram (seconds) | `status` (optional `model=stub`) |
+| Instrument             | Type                | Attributes                                 |
+|------------------------|---------------------|--------------------------------------------|
+| `activity.duration`    | Histogram (seconds) | `workflow_type`, `activity_type`, `status` |
+| `workflow.completed`   | Counter             | `workflow_type`, `status`                  |
+| `llm.request.duration` | Histogram (seconds) | `status` (optional `model=stub`)           |
 
 Record `llm.request.duration` inside OkHttp instrumentation callback or a thin wrapper around `LlmClient.complete`.
 
 ## Environment variables
 
-| Variable | Default | Purpose |
-|----------|---------|---------|
-| `OTEL_SERVICE_NAME` | `ai-temporal-worker` | `service.name` resource attribute |
+| Variable                      | Default                 | Purpose                                             |
+|-------------------------------|-------------------------|-----------------------------------------------------|
+| `OTEL_SERVICE_NAME`           | `ai-temporal-worker`    | `service.name` resource attribute                   |
 | `OTEL_EXPORTER_OTLP_ENDPOINT` | `http://localhost:4317` | OTLP gRPC endpoint (host worker → Docker collector) |
-| `METRICS_PORT` | `9464` | Prometheus scrape bind port |
-| `OTEL_TRACES_EXPORTER` | `otlp` | Allow `none` for unit tests |
+| `METRICS_PORT`                | `9464`                  | Prometheus scrape bind port                         |
+| `OTEL_TRACES_EXPORTER`        | `otlp`                  | Allow `none` for unit tests                         |
 
 ## Testing strategy
 
-| Test | Proves |
-|------|--------|
-| `TemporalTracingInterceptorTest` + `InMemorySpanExporter` | OTEL-01 attributes on activity span |
-| `MetricsTest` or interceptor test asserting `MetricReader` | OTEL-02 histogram/counter recorded |
-| `LlmClientTest` with mock server + span exporter | OTEL-04 child span + propagation header |
-| Manual: `./gradlew :worker:run` + `curl localhost:9464/metrics` | Prometheus exposition |
-| Manual: starter `ping` → JSON log line with `trace_id` | OTEL-03 |
+| Test                                                            | Proves                                  |
+|-----------------------------------------------------------------|-----------------------------------------|
+| `TemporalTracingInterceptorTest` + `InMemorySpanExporter`       | OTEL-01 attributes on activity span     |
+| `MetricsTest` or interceptor test asserting `MetricReader`      | OTEL-02 histogram/counter recorded      |
+| `LlmClientTest` with mock server + span exporter                | OTEL-04 child span + propagation header |
+| Manual: `./gradlew :worker:run` + `curl localhost:9464/metrics` | Prometheus exposition                   |
+| Manual: starter `ping` → JSON log line with `trace_id`          | OTEL-03                                 |
 
 Use `@BeforeEach` / `@AfterEach` to register/shutdown test `OpenTelemetry` instances; avoid polluting global SDK in parallel tests.
 

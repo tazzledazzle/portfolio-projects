@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: c2c
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: postgres }
+  template:
+    metadata:
+      labels: { app: postgres }
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          env:
+            - name: POSTGRES_DB
+              value: marketplace
+            - name: POSTGRES_USER
+              value: marketplace
+            - name: POSTGRES_PASSWORD
+              value: marketplace
+          ports:
+            - containerPort: 5432
+          # No PersistentVolumeClaim -- this is a throwaway local dev
+          # cluster; data does not survive `kind delete cluster`, which is
+          # intentional (fast reset between experiments).
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "marketplace"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: c2c
+spec:
+  selector: { app: postgres }
+  ports:
+    - port: 5432
+      targetPort: 5432
