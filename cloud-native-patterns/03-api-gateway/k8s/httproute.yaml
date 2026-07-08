@@ -1,0 +1,96 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: orders-route
+  namespace: ecommerce
+spec:
+  parentRefs:
+    - name: main-gateway
+      namespace: gateway-system
+      sectionName: https
+  hostnames:
+    - "api.example.com"
+  rules:
+    # --- Orders API ---
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/orders
+          headers:
+            - name: x-api-version
+              type: Exact
+              value: "2024"
+      backendRefs:
+        - name: orders-service
+          port: 8080
+          weight: 90
+        - name: orders-service-canary   # Weighted canary deployment
+          port: 8080
+          weight: 10
+      timeouts:
+        request: 5s           # Explicit timeouts — "wait forever" is how you kill a gateway
+        backendRequest: 4s
+
+    # --- Payments API — stricter timeout for financial operations ---
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/payments
+      backendRefs:
+        - name: payment-service
+          namespace: payments
+          port: 8080
+      timeouts:
+        request: 10s
+        backendRequest: 9s
+      filters:
+        - type: RequestHeaderModifier
+          requestHeaderModifier:
+            add:
+              # Propagate caller identity to downstream — enables per-service audit logs.
+              - name: x-forwarded-gateway
+                value: "main-gateway"
+              - name: x-request-id
+                value: "$(request.id)"   # Envoy Gateway expression
+
+    # --- Health check endpoint — no auth, no rate limit ---
+    - matches:
+        - path:
+            type: Exact
+            value: /healthz
+      backendRefs:
+        - name: health-service
+          port: 8080
+
+    # --- Redirect HTTP to HTTPS ---
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
+---
+# HTTPRoute for internal gRPC traffic — separate from the edge route
+# Uses the Gateway API's native gRPC support (GA in v1.1)
+apiVersion: gateway.networking.k8s.io/v1
+kind: GRPCRoute
+metadata:
+  name: orders-grpc-route
+  namespace: ecommerce
+spec:
+  parentRefs:
+    - name: main-gateway
+      namespace: gateway-system
+      sectionName: https
+  hostnames:
+    - "grpc.api.example.com"
+  rules:
+    - matches:
+        - method:
+            service: orders.v1.OrderService
+      backendRefs:
+        - name: orders-service
+          port: 9090
