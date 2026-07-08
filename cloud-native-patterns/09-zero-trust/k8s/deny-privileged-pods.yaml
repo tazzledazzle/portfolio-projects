@@ -1,0 +1,77 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: deny-privileged-pods
+  annotations:
+    policies.kyverno.io/title: Deny Privileged Pods
+    policies.kyverno.io/category: Pod Security, Zero Trust
+    policies.kyverno.io/severity: critical
+    policies.kyverno.io/description: >
+      Privileged pods have root-level access to the host kernel — a full container
+      escape. This policy denies any pod requesting privileged mode, hostPID, hostIPC,
+      or hostNetwork unless explicitly exempted. This policy aligns with the
+      Kubernetes Pod Security Standards "baseline" profile.
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: deny-privileged-containers
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: ["!kube-system", "!istio-system"]
+      validate:
+        message: >
+          Privileged containers are not allowed. Remove securityContext.privileged: true.
+          If you need elevated capabilities, use specific allowedCapabilities instead.
+        foreach:
+          - list: "request.object.spec.[containers, initContainers, ephemeralContainers][]"
+            deny:
+              conditions:
+                any:
+                  - key: "{{ element.securityContext.privileged || false }}"
+                    operator: Equals
+                    value: true
+
+    - name: deny-host-namespaces
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: ["!kube-system", "!istio-system"]
+      validate:
+        message: >
+          hostPID, hostIPC, and hostNetwork are not allowed — they break workload isolation.
+          hostNetwork is a particularly common security audit finding.
+        deny:
+          conditions:
+            any:
+              - key: "{{ request.object.spec.hostPID || false }}"
+                operator: Equals
+                value: true
+              - key: "{{ request.object.spec.hostIPC || false }}"
+                operator: Equals
+                value: true
+              - key: "{{ request.object.spec.hostNetwork || false }}"
+                operator: Equals
+                value: true
+
+    - name: deny-privileged-escalation
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: ["!kube-system", "!istio-system"]
+      validate:
+        message: >
+          allowPrivilegeEscalation must be false. Set securityContext.allowPrivilegeEscalation: false
+          on every container.
+        foreach:
+          - list: "request.object.spec.[containers, initContainers][]"
+            deny:
+              conditions:
+                any:
+                  - key: "{{ element.securityContext.allowPrivilegeEscalation || true }}"
+                    operator: Equals
+                    value: true

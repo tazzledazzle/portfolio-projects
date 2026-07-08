@@ -1,0 +1,64 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-resource-limits
+  annotations:
+    policies.kyverno.io/title: Require CPU and Memory Limits
+    policies.kyverno.io/category: Best Practices, Zero Trust
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/description: >
+      Pods without resource limits are a noisy-neighbor DoS vector — one
+      misbehaving pod can starve the node. This policy enforces that every
+      container specifies CPU and memory limits.
+      Run in CI: kyverno apply require-resource-limits.yaml --resource manifests/
+spec:
+  validationFailureAction: Enforce   # Reject the admission request; change to Audit to warn only
+  background: true                   # Also scan existing resources
+  rules:
+    - name: check-container-limits
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - "!kube-system"         # Exempt system namespace
+                - "!kube-node-lease"
+                - "!kube-public"
+                - "!istio-system"
+                - "!cert-manager"
+      validate:
+        message: >
+          All containers must specify CPU and memory limits.
+          Add resources.limits.cpu and resources.limits.memory to every container.
+          Ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+        foreach:
+          - list: "request.object.spec.containers"
+            deny:
+              conditions:
+                any:
+                  - key: "{{ element.resources.limits.cpu || '' }}"
+                    operator: Equals
+                    value: ""
+                  - key: "{{ element.resources.limits.memory || '' }}"
+                    operator: Equals
+                    value: ""
+    - name: check-initcontainer-limits
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: ["!kube-system", "!kube-node-lease", "!kube-public", "!istio-system", "!cert-manager"]
+      validate:
+        message: "Init containers must also specify CPU and memory limits."
+        foreach:
+          - list: "request.object.spec.initContainers"
+            deny:
+              conditions:
+                any:
+                  - key: "{{ element.resources.limits.cpu || '' }}"
+                    operator: Equals
+                    value: ""
+                  - key: "{{ element.resources.limits.memory || '' }}"
+                    operator: Equals
+                    value: ""

@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: orders-service
+  namespace: orders
+  annotations:
+    # IRSA (IAM Roles for Service Accounts) on AWS — scoped to only the S3 bucket
+    # this service legitimately needs. No AdministratorAccess, no wildcard policies.
+    eks.amazonaws.com/role-arn: "arn:aws:iam::123456789012:role/orders-service-role"
+  labels:
+    app: orders-service
+automountServiceAccountToken: false   # Disable auto-mount; we use projected tokens (see below)
+---
+# Scoped RBAC — the orders-service may only read ConfigMaps in its own namespace.
+# A service account with cluster-admin is still the most common finding in cloud
+# security audits. Default: no permissions. Grant only what's needed.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: orders-service-role
+  namespace: orders
+rules:
+  # Read application configuration from ConfigMaps
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    resourceNames: ["orders-config", "orders-feature-flags"]
+    verbs: ["get", "watch"]
+  # Read secrets for DB credentials (prefer External Secrets Operator or Vault sidecar)
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames: ["orders-db-credentials"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: orders-service-rolebinding
+  namespace: orders
+subjects:
+  - kind: ServiceAccount
+    name: orders-service
+    namespace: orders
+roleRef:
+  kind: Role
+  apiRef: orders-service-role
+  name: orders-service-role
+---
+# Projected service account token with bounded audience and TTL.
+# Much safer than the auto-mounted long-lived token:
+#   - Audience scoped to the payment service (not "kubernetes" / wildcard)
+#   - 1-hour expiration (default is no expiration for legacy tokens)
+#   - Rotated automatically by kubelet
+apiVersion: v1
+kind: Pod
+metadata:
+  name: orders-service-example
+  namespace: orders
+  labels:
+    app: orders-service
+spec:
+  serviceAccountName: orders-service
+  automountServiceAccountToken: false   # Explicit — don't rely on SA default
+  containers:
+    - name: orders-service
+      image: registry.example.com/orders-service:1.0.0
+      resources:
+        requests:
+          cpu: "250m"
+          memory: "256Mi"
+        limits:
+          cpu: "1000m"
+          memory: "512Mi"
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]   # Drop all Linux capabilities — net_bind_service dropped too
+      volumeMounts:
+        - name: service-account-token
+          mountPath: /var/run/secrets/tokens
+          readOnly: true
+        - name: tmp-dir
+          mountPath: /tmp   # readOnlyRootFilesystem: true requires explicit writable mount
+  volumes:
+    - name: service-account-token
+      projected:
+        sources:
+          - serviceAccountToken:
+              path: token
+              expirationSeconds: 3600   # 1-hour token — auto-refreshed by kubelet
+              audience: "payment-service"   # Scoped to exactly who uses this token
+    - name: tmp-dir
+      emptyDir: {}
