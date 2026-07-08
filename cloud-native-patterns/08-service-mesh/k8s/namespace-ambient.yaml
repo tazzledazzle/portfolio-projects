@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: payments
+  labels:
+    # Opt in to Istio Ambient mode — no per-pod sidecar injection needed.
+    # A shared ztunnel DaemonSet handles L4 mTLS for all pods in this namespace.
+    # For L7 policy (header-based routing, JWT validation), deploy a Waypoint proxy (see waypoint.yaml).
+    istio.io/dataplane-mode: ambient
+    # Required for network policies to work with ambient mesh
+    kubernetes.io/metadata.name: payments
+  annotations:
+    # Ambient mode was GA in Istio 1.22 (May 2024) — check your version before enabling.
+    # As of 2026 it supports: mTLS, L4 authorization, L7 via waypoint, telemetry.
+    # Sidecar injection label (istio-injection: enabled) is mutually exclusive with ambient.
+    mesh.istio.io/mode: ambient
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: orders
+  labels:
+    istio.io/dataplane-mode: ambient
+    kubernetes.io/metadata.name: orders

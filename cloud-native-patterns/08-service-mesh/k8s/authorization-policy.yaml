@@ -1,0 +1,48 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: payment-service-authz
+  namespace: payments
+spec:
+  selector:
+    matchLabels:
+      app: payment-service
+  action: ALLOW
+  rules:
+    # Only the orders-service service account may call payment-service.
+    # Principal format: spiffe://cluster.local/ns/<namespace>/sa/<serviceaccount>
+    # This is service-to-service authorization — not user authorization.
+    # User identity (JWT) is handled separately at the gateway.
+    - from:
+        - source:
+            principals:
+              - "cluster.local/ns/orders/sa/orders-service"
+              - "cluster.local/ns/payment-ops/sa/payment-admin"
+      to:
+        - operation:
+            methods: ["POST"]
+            paths: ["/v1/payments/charge", "/v1/payments/refund"]
+        - operation:
+            methods: ["GET"]
+            paths: ["/v1/payments/*"]
+    # Health checks from kube-apiserver (node identity, not service identity)
+    - from:
+        - source:
+            namespaces: ["kube-system"]
+      to:
+        - operation:
+            paths: ["/healthz/*"]
+---
+# Deny-all default policy — everything NOT explicitly allowed above is rejected.
+# Placing this in the same namespace ensures no implicit allow.
+# This is the "default deny" posture required by zero-trust networking.
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: deny-all-payments
+  namespace: payments
+spec:
+  # Empty selector matches all pods in the namespace
+  action: DENY
+  rules:
+    - {}   # Deny all traffic by default; specific ALLOW policies above take precedence
