@@ -6,7 +6,7 @@ This roadmap covers the remediation of critical (P0) and high-priority (P1) issu
 
 ## Phases
 
-- [ ] **Phase 1: Fix P0 and P1 Portfolio Issues** - Remove committed artifacts, fix broken imports and builds, repair CI strategy, expand portfolio index, fix placeholder content
+- [x] **Phase 1: Fix P0 and P1 Portfolio Issues** - Remove committed artifacts, fix broken imports and builds, repair CI strategy, expand portfolio index, fix placeholder content
 
 ## Phase Details
 
@@ -30,10 +30,10 @@ This roadmap covers the remediation of critical (P0) and high-priority (P1) issu
 **Plans**: 7 plans
 Plans:
 
-- [ ] 01-01-PLAN.md — Remove tracked __pycache__ and bytecode artifacts via git rm --cached
-- [ ] 01-02-PLAN.md — Fix online-bookstore pytest (add python-multipart, fill pyproject.toml)
-- [ ] 01-03-PLAN.md — Verify bazel test passes; remove deprecated jcenter and HTTP Maven URL from MODULE.bazel
-- [ ] 01-04-PLAN.md — Add pytest.ini to prevent root collection errors; fix Makefile test target; verify P1-01 and P1-02 already resolved
-- [ ] 01-05-PLAN.md — Add monorepo-safe mypy step to CI python job (--explicit-package-bases)
-- [ ] 01-06-PLAN.md — Fix onboarding-automation-cli Gradle build (settings.gradle.kts + Kotlin plugin)
-- [ ] 01-07-PLAN.md — Fix kotlin-custom-detekt-rules-library (add detekt plugin version)
+- [x] 01-01-PLAN.md — Remove tracked __pycache__ and bytecode artifacts via git rm --cached
+- [x] 01-02-PLAN.md — Fix online-bookstore pytest (add python-multipart, fill pyproject.toml)
+- [x] 01-03-PLAN.md — Verify bazel test passes; remove deprecated jcenter and HTTP Maven URL from MODULE.bazel
+- [x] 01-04-PLAN.md — Add pytest.ini to prevent root collection errors; fix Makefile test target; verify P1-01 and P1-02 already resolved
+- [x] 01-05-PLAN.md — Add monorepo-safe mypy step to CI python job (per-subproject runner)
+- [x] 01-06-PLAN.md — Fix onboarding-automation-cli Gradle build (settings.gradle.kts + Kotlin plugin)
+- [x] 01-07-PLAN.md — Fix kotlin-custom-detekt-rules-library (add detekt plugin version)
