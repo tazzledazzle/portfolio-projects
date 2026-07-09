@@ -14,11 +14,7 @@ test:
 	@echo "🧪 Running test suite..."
 	@echo ""
 	@echo "📋 Python Tests:"
-	@if command -v pytest >/dev/null 2>&1; then \
-		pytest -v --tb=short --continue-on-collection-errors || echo "⚠️  Some Python tests failed"; \
-	else \
-		echo "❌ pytest not installed. Install with: pip install pytest"; \
-	fi
+	bash scripts/run_portfolio_pytest.sh
 	@echo ""
 	@echo "📋 Gradle Tests:"
 	@if [ -f "./gradlew" ]; then \
