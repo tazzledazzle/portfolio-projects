@@ -9,7 +9,6 @@ import io.github.resilience4j.retry.Retry
 import io.github.resilience4j.retry.RetryConfig
 import io.github.resilience4j.retry.RetryRegistry
 import org.slf4j.LoggerFactory
-import java.io.IOException
 import java.time.Duration
 import java.util.UUID
 
@@ -32,10 +31,10 @@ fun buildCircuitBreakerConfig(): CircuitBreakerConfig =
         .slidingWindowSize(20)
         .permittedNumberOfCallsInHalfOpenState(5)
         .automaticTransitionFromOpenToHalfOpenEnabled(true)
-        // Only count IOExceptions as failures — not business-logic errors like
-        // payment declined. This is a critical distinction: don't circuit-break
-        // on 4xx-equivalent business errors.
-        .recordExceptions(IOException::class.java)
+        // Only count transient infra failures — not business errors like payment declined.
+        // Resilience4j's decorateSupplier only catches RuntimeException, so use a
+        // RuntimeException subclass (TransientPaymentException) for retriable failures.
+        .recordExceptions(TransientPaymentException::class.java)
         .ignoreExceptions(PaymentDeclinedException::class.java)
         .build()
 
@@ -57,8 +56,9 @@ fun buildRetryConfig(): RetryConfig =
                 0.5,
             )
         )
-        // Only retry transient I/O errors — never retry a declined charge.
-        .retryOnException { it is IOException }
+        // Only retry transient infra errors — never retry a declined charge.
+        // Must use RuntimeException subclass; Resilience4j decorateSupplier only catches RuntimeException.
+        .retryExceptions(TransientPaymentException::class.java)
         .build()
 
 /**

@@ -1,8 +1,10 @@
 package com.patterns.circuitbreaker
 
 import org.slf4j.LoggerFactory
-import java.io.IOException
 import java.util.concurrent.atomic.AtomicInteger
+
+/** Wraps transient network/infra failures — safe to retry. Distinct from [PaymentDeclinedException]. */
+class TransientPaymentException(message: String, cause: Throwable? = null) : RuntimeException(message, cause)
 
 data class ChargeRequest(
     val orderId: String,
@@ -43,7 +45,7 @@ class PaymentClient(private val failEveryN: Int = 3) {
 
         if (n % failEveryN == 0) {
             log.warn("Simulating failure on call #{}", n)
-            throw IOException("Simulated network failure on call #$n (failEveryN=$failEveryN)")
+            throw TransientPaymentException("Simulated network failure on call #$n (failEveryN=$failEveryN)")
         }
 
         return ChargeResult(

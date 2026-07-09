@@ -1,8 +1,5 @@
 package com.patterns.saga
 
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
 import io.temporal.client.WorkflowClient
 import io.temporal.client.WorkflowOptions
 import io.temporal.testing.TestWorkflowEnvironment
@@ -13,22 +10,26 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.Duration
 import java.util.UUID
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Tests for [OrderSagaWorkflowImpl] using [TestWorkflowEnvironment].
  *
- * TestWorkflowEnvironment:
- *  - Runs the workflow in a single-threaded, deterministic test environment
- *  - No Temporal server required — runs entirely in-process
- *  - Time can be fast-forwarded (not needed here but useful for timer-based workflows)
- *  - Activities are mocked using Mockk to control success/failure scenarios
+ * MockK cannot be used directly with Temporal activity interfaces — MockK's ByteBuddy
+ * proxy inherits @ActivityMethod annotations onto the concrete class, which Temporal
+ * rejects. Use a manually written stub ([StubActivities]) instead.
+ *
+ * StubActivities is a plain class (no @ActivityInterface/@ActivityMethod) registered
+ * as an implementation of [OrderActivities]. It records calls and can be configured
+ * to throw on specific methods — same expressiveness as a mock, without the annotation
+ * inheritance problem.
  */
 class OrderSagaWorkflowTest {
 
     private lateinit var testEnv: TestWorkflowEnvironment
     private lateinit var worker: Worker
     private lateinit var client: WorkflowClient
-    private lateinit var mockActivities: OrderActivities
+    private lateinit var stub: StubActivities
 
     private val testOrder = OrderRequest(
         orderId = "order-test-${UUID.randomUUID()}",
@@ -39,13 +40,11 @@ class OrderSagaWorkflowTest {
 
     @BeforeEach
     fun setUp() {
+        stub = StubActivities()
         testEnv = TestWorkflowEnvironment.newInstance()
         worker = testEnv.newWorker(TASK_QUEUE)
         worker.registerWorkflowImplementationTypes(OrderSagaWorkflowImpl::class.java)
-
-        mockActivities = mockk<OrderActivities>(relaxed = false)
-        worker.registerActivitiesImplementations(mockActivities)
-
+        worker.registerActivitiesImplementations(stub)
         testEnv.start()
         client = testEnv.workflowClient
     }
@@ -68,9 +67,9 @@ class OrderSagaWorkflowTest {
 
     @Test
     fun `successful saga completes with all three step results`() {
-        every { mockActivities.chargePayment(any(), any(), any()) } returns "pay-001"
-        every { mockActivities.reserveInventory(any(), any()) } returns "res-001"
-        every { mockActivities.scheduleShipment(any(), any(), any()) } returns "ship-001"
+        stub.chargePaymentResult = "pay-001"
+        stub.reserveInventoryResult = "res-001"
+        stub.scheduleShipmentResult = "ship-001"
 
         val result = newWorkflowStub().execute(testOrder)
 
@@ -79,108 +78,160 @@ class OrderSagaWorkflowTest {
         assertThat(result.reservationId).isEqualTo("res-001")
         assertThat(result.shipmentId).isEqualTo("ship-001")
         assertThat(result.failureReason).isNull()
-
-        // Verify no compensations were called
-        verify(exactly = 0) { mockActivities.refundPayment(any(), any()) }
-        verify(exactly = 0) { mockActivities.releaseInventory(any(), any()) }
+        assertThat(stub.refundCallCount.get()).isEqualTo(0)
+        assertThat(stub.releaseCallCount.get()).isEqualTo(0)
     }
 
     // ─── Failure at step 1 (chargePayment) ───────────────────────────────────
 
     @Test
     fun `chargePayment failure returns COMPENSATED with no compensations needed`() {
-        every { mockActivities.chargePayment(any(), any(), any()) } throws
-            RuntimeException("Payment gateway unavailable")
+        stub.chargePaymentError = RuntimeException("Payment gateway unavailable")
 
         val result = newWorkflowStub().execute(testOrder)
 
         assertThat(result.status).isEqualTo(SagaStatus.COMPENSATED)
         assertThat(result.failureReason).contains("Payment failed")
-
-        // No compensations needed — payment never succeeded
-        verify(exactly = 0) { mockActivities.refundPayment(any(), any()) }
-        verify(exactly = 0) { mockActivities.releaseInventory(any(), any()) }
-        verify(exactly = 0) { mockActivities.scheduleShipment(any(), any(), any()) }
+        assertThat(stub.refundCallCount.get()).isEqualTo(0)
+        assertThat(stub.releaseCallCount.get()).isEqualTo(0)
+        assertThat(stub.scheduleCallCount.get()).isEqualTo(0)
     }
 
     // ─── Failure at step 2 (reserveInventory) ────────────────────────────────
 
     @Test
     fun `reserveInventory failure triggers refundPayment compensation`() {
-        every { mockActivities.chargePayment(any(), any(), any()) } returns "pay-002"
-        every { mockActivities.reserveInventory(any(), any()) } throws
-            RuntimeException("Insufficient stock")
-        every { mockActivities.refundPayment(any(), any()) } returns Unit
+        stub.chargePaymentResult = "pay-002"
+        stub.reserveInventoryError = RuntimeException("Insufficient stock")
 
         val result = newWorkflowStub().execute(testOrder)
 
         assertThat(result.status).isEqualTo(SagaStatus.COMPENSATED)
         assertThat(result.failureReason).contains("Inventory reservation failed")
-
-        // Verify compensation was called with the correct paymentId
-        verify(exactly = 1) { mockActivities.refundPayment("pay-002", testOrder.orderId) }
-
-        // Shipment should never have been called
-        verify(exactly = 0) { mockActivities.scheduleShipment(any(), any(), any()) }
-        // Inventory was never reserved, so no need to release it
-        verify(exactly = 0) { mockActivities.releaseInventory(any(), any()) }
+        assertThat(stub.refundCallCount.get()).isEqualTo(1)
+        assertThat(stub.refundPaymentIdCapture).isEqualTo("pay-002")
+        assertThat(stub.scheduleCallCount.get()).isEqualTo(0)
+        assertThat(stub.releaseCallCount.get()).isEqualTo(0)
     }
 
     // ─── Failure at step 3 (scheduleShipment) ────────────────────────────────
 
     @Test
     fun `scheduleShipment failure triggers both releaseInventory and refundPayment compensations`() {
-        every { mockActivities.chargePayment(any(), any(), any()) } returns "pay-003"
-        every { mockActivities.reserveInventory(any(), any()) } returns "res-003"
-        every { mockActivities.scheduleShipment(any(), any(), any()) } throws
-            RuntimeException("Courier API timeout")
-        every { mockActivities.releaseInventory(any(), any()) } returns Unit
-        every { mockActivities.refundPayment(any(), any()) } returns Unit
+        stub.chargePaymentResult = "pay-003"
+        stub.reserveInventoryResult = "res-003"
+        stub.scheduleShipmentError = RuntimeException("Courier API timeout")
 
         val result = newWorkflowStub().execute(testOrder)
 
         assertThat(result.status).isEqualTo(SagaStatus.COMPENSATED)
         assertThat(result.failureReason).contains("Shipment scheduling failed")
-
-        // Both compensations must fire in reverse order
-        verify(exactly = 1) { mockActivities.releaseInventory("res-003", testOrder.orderId) }
-        verify(exactly = 1) { mockActivities.refundPayment("pay-003", testOrder.orderId) }
+        assertThat(stub.releaseCallCount.get()).isEqualTo(1)
+        assertThat(stub.releaseReservationIdCapture).isEqualTo("res-003")
+        assertThat(stub.refundCallCount.get()).isEqualTo(1)
+        assertThat(stub.refundPaymentIdCapture).isEqualTo("pay-003")
     }
 
     // ─── Compensation resilience ──────────────────────────────────────────────
 
     @Test
     fun `compensation failure on releaseInventory still runs refundPayment`() {
-        // scheduleShipment fails; releaseInventory also fails (e.g., inventory service down).
-        // refundPayment should still run — one compensation failure must not block others.
-        every { mockActivities.chargePayment(any(), any(), any()) } returns "pay-004"
-        every { mockActivities.reserveInventory(any(), any()) } returns "res-004"
-        every { mockActivities.scheduleShipment(any(), any(), any()) } throws RuntimeException("Courier down")
-        every { mockActivities.releaseInventory(any(), any()) } throws RuntimeException("Inventory service down")
-        every { mockActivities.refundPayment(any(), any()) } returns Unit
+        stub.chargePaymentResult = "pay-004"
+        stub.reserveInventoryResult = "res-004"
+        stub.scheduleShipmentError = RuntimeException("Courier down")
+        stub.releaseInventoryError = RuntimeException("Inventory service down")
 
         val result = newWorkflowStub().execute(testOrder)
 
-        // Workflow still completes (as COMPENSATED) even though releaseInventory failed
         assertThat(result.status).isEqualTo(SagaStatus.COMPENSATED)
-
-        // Both compensations were attempted
-        verify(exactly = 1) { mockActivities.releaseInventory("res-004", testOrder.orderId) }
-        verify(exactly = 1) { mockActivities.refundPayment("pay-004", testOrder.orderId) }
+        assertThat(stub.releaseCallCount.get()).isEqualTo(1)
+        assertThat(stub.refundCallCount.get()).isEqualTo(1)
     }
 
-    // ─── Idempotency key in activities ────────────────────────────────────────
+    // ─── Activity call verification ───────────────────────────────────────────
 
     @Test
     fun `all three forward activities are called with correct orderId`() {
-        every { mockActivities.chargePayment(any(), any(), any()) } returns "pay-idem"
-        every { mockActivities.reserveInventory(any(), any()) } returns "res-idem"
-        every { mockActivities.scheduleShipment(any(), any(), any()) } returns "ship-idem"
+        stub.chargePaymentResult = "pay-idem"
+        stub.reserveInventoryResult = "res-idem"
+        stub.scheduleShipmentResult = "ship-idem"
 
         newWorkflowStub().execute(testOrder)
 
-        verify { mockActivities.chargePayment(testOrder.orderId, testOrder.customerId, testOrder.totalCents) }
-        verify { mockActivities.reserveInventory(testOrder.orderId, testOrder.items) }
-        verify { mockActivities.scheduleShipment(testOrder.orderId, testOrder.customerId, "res-idem") }
+        assertThat(stub.chargeOrderIdCapture).isEqualTo(testOrder.orderId)
+        assertThat(stub.reserveOrderIdCapture).isEqualTo(testOrder.orderId)
+        assertThat(stub.scheduleOrderIdCapture).isEqualTo(testOrder.orderId)
+        assertThat(stub.scheduleReservationIdCapture).isEqualTo("res-idem")
+    }
+}
+
+/**
+ * Configurable activity stub — implements [OrderActivities] as a plain class.
+ *
+ * Must NOT have @ActivityInterface or @ActivityMethod annotations (those belong
+ * on the interface only). Temporal will match this to [OrderActivities] via
+ * the interface it implements.
+ */
+class StubActivities : OrderActivities {
+    // Configurable return values / errors
+    var chargePaymentResult: String = "pay-stub"
+    var chargePaymentError: RuntimeException? = null
+
+    var reserveInventoryResult: String = "res-stub"
+    var reserveInventoryError: RuntimeException? = null
+
+    var scheduleShipmentResult: String = "ship-stub"
+    var scheduleShipmentError: RuntimeException? = null
+
+    var releaseInventoryError: RuntimeException? = null
+    var refundPaymentError: RuntimeException? = null
+
+    // Call tracking
+    val chargeCallCount = AtomicInteger(0)
+    val reserveCallCount = AtomicInteger(0)
+    val scheduleCallCount = AtomicInteger(0)
+    val releaseCallCount = AtomicInteger(0)
+    val refundCallCount = AtomicInteger(0)
+
+    // Argument captures (last call)
+    var chargeOrderIdCapture: String? = null
+    var reserveOrderIdCapture: String? = null
+    var scheduleOrderIdCapture: String? = null
+    var scheduleReservationIdCapture: String? = null
+    var releaseReservationIdCapture: String? = null
+    var refundPaymentIdCapture: String? = null
+
+    override fun chargePayment(orderId: String, customerId: String, amountCents: Long): String {
+        chargeCallCount.incrementAndGet()
+        chargeOrderIdCapture = orderId
+        chargePaymentError?.let { throw it }
+        return chargePaymentResult
+    }
+
+    override fun reserveInventory(orderId: String, items: List<OrderItem>): String {
+        reserveCallCount.incrementAndGet()
+        reserveOrderIdCapture = orderId
+        reserveInventoryError?.let { throw it }
+        return reserveInventoryResult
+    }
+
+    override fun scheduleShipment(orderId: String, customerId: String, reservationId: String): String {
+        scheduleCallCount.incrementAndGet()
+        scheduleOrderIdCapture = orderId
+        scheduleReservationIdCapture = reservationId
+        scheduleShipmentError?.let { throw it }
+        return scheduleShipmentResult
+    }
+
+    override fun refundPayment(paymentId: String, orderId: String) {
+        refundCallCount.incrementAndGet()
+        refundPaymentIdCapture = paymentId
+        refundPaymentError?.let { throw it }
+    }
+
+    override fun releaseInventory(reservationId: String, orderId: String) {
+        releaseCallCount.incrementAndGet()
+        releaseReservationIdCapture = reservationId
+        releaseInventoryError?.let { throw it }
     }
 }

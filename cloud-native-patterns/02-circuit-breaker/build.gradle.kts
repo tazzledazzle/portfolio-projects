@@ -13,10 +13,10 @@ repositories {
 val resilience4jVersion = "1.7.1"
 
 dependencies {
-    // Resilience4j — application-layer circuit breaker / retry (successor to Hystrix)
     implementation("io.github.resilience4j:resilience4j-circuitbreaker:$resilience4jVersion")
     implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")
-    implementation("io.github.resilience4j:resilience4j-decorators:$resilience4jVersion")
+    // resilience4j-all contains the Decorators facade class
+    implementation("io.github.resilience4j:resilience4j-all:$resilience4jVersion")
 
     // SLF4J + Logback for structured logging
     implementation("org.slf4j:slf4j-api:2.0.13")
