@@ -45,8 +45,9 @@ jobs:
         with:
           python-version: '3.12'
           cache: 'pip'
-      - run: pip install ruff pytest coverage
+      - run: pip install ruff pytest coverage mypy
       - run: ruff check .
+      - run: bash scripts/run_portfolio_mypy.sh
       - run: bash scripts/run_portfolio_pytest.sh
       - uses: codecov/codecov-action@v5
 
