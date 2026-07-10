@@ -55,7 +55,7 @@ Located at: `payments-service/src/test/kotlin/com/marketplace/payments/OrderRepo
 
 | Test | Assertion |
 |---|---|
-| `createWithHold persists order and escrow_hold atomically` | Both rows committed; order status = PENDING, escrow status = HELD |
+| `createWithHold persists order and escrow_hold atomically` | Both rows committed; order status = HELD, escrow status = HELD |
 | `applyEvent HELD + ConfirmDelivery → RELEASED` | Escrow row updated to RELEASED; method returns RELEASED |
 | `applyEvent HELD + BuyerDispute → REFUNDED` | Escrow row updated to REFUNDED; method returns REFUNDED |
 | `applyEvent on non-existent order throws NoSuchElementException` | Exception thrown; no DB mutation |
@@ -118,9 +118,9 @@ Dependencies to add:
 
 ---
 
-## 6. Potential Production Code Gap
+## 6. Production Code Status
 
-`OrderRepository.applyEvent` must throw `NoSuchElementException` when the order is not found (so the route can map it to 404). This will be confirmed or driven by the `OrderRepositoryTest` — if the current implementation silently no-ops or returns null, the test will fail red and the fix is made before moving to Layer 2.
+No production code gaps. `OrderRepository.applyEvent` already throws `NoSuchElementException` when the order is not found (`OrderRepository.kt:101`), which the route correctly maps to 404. `EscrowStateMachine.transition` already throws `IllegalEscrowTransitionException` for illegal transitions, which the route maps to 409. The TDD work in this slice is entirely in the test layer.
 
 ---
 
