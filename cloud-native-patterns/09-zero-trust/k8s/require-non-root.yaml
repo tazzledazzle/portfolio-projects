@@ -1,0 +1,80 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-non-root
+  annotations:
+    policies.kyverno.io/title: Require Non-Root User
+    policies.kyverno.io/category: Pod Security, Zero Trust
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/description: >
+      Running containers as root (UID 0) means a container escape gives the
+      attacker root on the node. This policy requires runAsNonRoot: true and
+      optionally verifies that runAsUser is not 0.
+      Build your images with a non-root USER in the Dockerfile:
+        RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+        USER appuser
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: require-run-as-non-root
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: ["!kube-system", "!kube-node-lease", "!kube-public", "!istio-system"]
+      validate:
+        message: >
+          Containers must not run as root. Set one of:
+            spec.securityContext.runAsNonRoot: true
+            spec.containers[*].securityContext.runAsNonRoot: true
+          Also ensure your container image USER is not root.
+        foreach:
+          - list: "request.object.spec.containers"
+            deny:
+              conditions:
+                all:
+                  # Deny if both pod-level and container-level runAsNonRoot are unset or false
+                  - key: "{{ request.object.spec.securityContext.runAsNonRoot || false }}"
+                    operator: Equals
+                    value: false
+                  - key: "{{ element.securityContext.runAsNonRoot || false }}"
+                    operator: Equals
+                    value: false
+
+    - name: deny-root-uid
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: ["!kube-system", "!kube-node-lease", "!kube-public", "!istio-system"]
+      validate:
+        message: >
+          runAsUser must not be 0 (root). Specify a UID > 0 (e.g., 1000) in securityContext.
+        foreach:
+          - list: "request.object.spec.[containers, initContainers][]"
+            deny:
+              conditions:
+                any:
+                  - key: "{{ element.securityContext.runAsUser || 1000 }}"
+                    operator: Equals
+                    value: 0
+
+    - name: require-read-only-root-filesystem
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: ["!kube-system", "!kube-node-lease", "!kube-public", "!istio-system"]
+      validate:
+        message: >
+          Set securityContext.readOnlyRootFilesystem: true. If the app needs to write,
+          mount a specific writable volume (emptyDir) rather than using the root filesystem.
+        foreach:
+          - list: "request.object.spec.containers"
+            deny:
+              conditions:
+                any:
+                  - key: "{{ element.securityContext.readOnlyRootFilesystem || false }}"
+                    operator: Equals
+                    value: false

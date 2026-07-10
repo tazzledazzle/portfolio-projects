@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-service
+  namespace: ecommerce
+  labels:
+    app: orders-service
+  annotations:
+    # Expose both the HTTP and gRPC ports for discovery by other services.
+    # kube-dns creates an A record: orders-service.ecommerce.svc.cluster.local → ClusterIP
+    # Within the same namespace, the short name "orders-service" resolves via the
+    # ndots search path: orders-service.ecommerce.svc.cluster.local
+spec:
+  type: ClusterIP
+  selector:
+    app: orders-service
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+      protocol: TCP
+    - name: grpc
+      port: 9090
+      targetPort: grpc
+      protocol: TCP
+  # sessionAffinity: ClientIP  # Uncomment only if your load balancer needs sticky sessions.
+  # For stateless services, leave at None — round-robin gives better distribution.

@@ -1,0 +1,25 @@
+apiVersion: security.istio.io/v1
+kind: PeerAuthentication
+metadata:
+  name: payments-mtls
+  namespace: payments
+spec:
+  # STRICT mode: all traffic to pods in the payments namespace must use mTLS.
+  # The mesh will REJECT plain-text connections — no opt-out at the pod level.
+  #
+  # In ambient mode, ztunnel enforces this at the node level without any sidecar.
+  # SPIFFE/X.509 certificates are issued by Istiod to each workload identity.
+  # Certificate format: spiffe://cluster.local/ns/<namespace>/sa/<serviceaccount>
+  mtls:
+    mode: STRICT
+---
+# Mesh-wide default: STRICT mTLS for all namespaces that are ambient-enabled.
+# Apply this to the istio-system namespace to make STRICT the cluster default.
+apiVersion: security.istio.io/v1
+kind: PeerAuthentication
+metadata:
+  name: default-mtls
+  namespace: istio-system
+spec:
+  mtls:
+    mode: STRICT

@@ -1,0 +1,40 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: payments-waypoint
+  namespace: payments
+  labels:
+    # This Gateway resource is interpreted by Istio as a Waypoint proxy definition.
+    # The waypoint handles L7 policy for the payments namespace — header-based routing,
+    # JWT validation, gRPC transcoding, and HTTPRoute-level traffic management.
+    # ztunnel handles L4 mTLS; waypoint handles everything above L4.
+    istio.io/waypoint-for: service
+spec:
+  gatewayClassName: istio-waypoint   # Istio-provided class for waypoints
+  listeners:
+    - name: mesh
+      port: 15008
+      protocol: HBONE    # HTTP/2-based overlay used by Istio ambient ztunnel
+---
+# Attach waypoint to services in the payments namespace.
+# Only traffic to services with this label goes through the waypoint.
+# Services without it get L4-only (mTLS via ztunnel, but no L7 policy).
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-service
+  namespace: payments
+  labels:
+    app: payment-service
+    # Attach this service to the waypoint proxy above
+    istio.io/use-waypoint: payments-waypoint
+spec:
+  selector:
+    app: payment-service
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+    - name: grpc
+      port: 9090
+      targetPort: 9090

@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package orders.v1;
+
+option java_package = "com.patterns.grpc.proto";
+option java_outer_classname = "OrderProto";
+option java_multiple_files = true;
+
+// OrderService exposes two RPCs:
+//   CreateOrder  — unary: one request, one response
+//   ListOrders   — server streaming: one request, many responses
+//
+// Use buf (https://buf.build) for linting and breaking-change detection in CI:
+//   buf lint
+//   buf breaking --against .git#branch=main
+service OrderService {
+  // CreateOrder creates a new order and returns the created order.
+  rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
+
+  // ListOrders streams all orders matching the filter.
+  // Server streaming is appropriate here because the result set may be large
+  // and we want to start delivering results before the full set is assembled.
+  rpc ListOrders (ListOrdersRequest) returns (stream Order);
+}
+
+// ─── Messages ────────────────────────────────────────────────────────────────
+
+message CreateOrderRequest {
+  string customer_id = 1;
+  repeated OrderItem items = 2;
+  string idempotency_key = 3;  // Caller-supplied key; safe to retry if network fails
+}
+
+message CreateOrderResponse {
+  Order order = 1;
+}
+
+message ListOrdersRequest {
+  string customer_id = 1;     // Empty string means "all customers" (admin use)
+  OrderStatus status_filter = 2;  // UNKNOWN means no filter
+  int32 max_results = 3;      // 0 = server-default (100)
+}
+
+message Order {
+  string order_id = 1;
+  string customer_id = 2;
+  repeated OrderItem items = 3;
+  OrderStatus status = 4;
+  int64 created_at_unix_ms = 5;
+  int64 total_cents = 6;
+}
+
+message OrderItem {
+  string sku = 1;
+  int32 quantity = 2;
+  int64 unit_price_cents = 3;
+}
+
+enum OrderStatus {
+  ORDER_STATUS_UNKNOWN = 0;  // Proto3: zero value must be explicit
+  ORDER_STATUS_PENDING = 1;
+  ORDER_STATUS_CONFIRMED = 2;
+  ORDER_STATUS_SHIPPED = 3;
+  ORDER_STATUS_DELIVERED = 4;
+  ORDER_STATUS_CANCELLED = 5;
+}

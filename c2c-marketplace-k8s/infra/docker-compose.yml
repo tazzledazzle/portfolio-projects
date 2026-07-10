@@ -1,0 +1,72 @@
+version: "3.8"
+
+# Fast inner loop: `docker compose up -d` for infra, then run each service
+# with `./gradlew :listings-service:run` etc. from the repo root (or use
+# the `services` section below to run everything containerized).
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: marketplace
+      POSTGRES_USER: marketplace
+      POSTGRES_PASSWORD: marketplace
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U marketplace"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  opensearch:
+    image: opensearchproject/opensearch:2.14.0
+    environment:
+      - discovery.type=single-node
+      - DISABLE_SECURITY_PLUGIN=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:9200/_cluster/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redpanda:
+    # Kafka-API-compatible, single binary, far lighter than running real
+    # Kafka + Zookeeper for a local dev loop.
+    image: redpandadata/redpanda:v24.1.9
+    command:
+      - redpanda
+      - start
+      - --smp=1
+      - --memory=512M
+      - --overprovisioned
+      - --node-id=0
+      - --kafka-addr=PLAINTEXT://0.0.0.0:9092
+      - --advertise-kafka-addr=PLAINTEXT://redpanda:9092
+    ports:
+      - "9092:9092"
+
+  # Optional: run the services themselves in compose too, instead of via
+  # `./gradlew run`. Uncomment once you've built the images with
+  # scripts/build-images.sh.
+  #
+  # listings-service:
+  #   image: c2c/listings-service:local
+  #   environment:
+  #     DB_URL: jdbc:postgresql://postgres:5432/marketplace
+  #     KAFKA_BOOTSTRAP_SERVERS: redpanda:9092
+  #   ports:
+  #     - "8081:8081"
+  #   depends_on: [postgres, redpanda]

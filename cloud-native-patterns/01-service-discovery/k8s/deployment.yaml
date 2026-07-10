@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-service
+  namespace: ecommerce
+  labels:
+    app: orders-service
+    version: v1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: orders-service
+  template:
+    metadata:
+      labels:
+        app: orders-service
+        version: v1
+    spec:
+      serviceAccountName: orders-service
+      containers:
+        - name: orders-service
+          image: registry.example.com/orders-service:1.0.0
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: grpc
+              containerPort: 9090
+              protocol: TCP
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "kubernetes"
+            # DNS-based service discovery — address downstream by DNS name, not IP.
+            # Kubernetes resolves <service>.<namespace>.svc.cluster.local automatically.
+            - name: PAYMENT_SERVICE_URL
+              value: "http://payment-service.payments.svc.cluster.local:8080"
+            - name: INVENTORY_SERVICE_URL
+              value: "http://inventory-service.inventory.svc.cluster.local:8080"
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "512Mi"
+          # Readiness probe is the critical signal — a pod is only included in
+          # DNS / iptables routing AFTER this passes. Getting this right matters
+          # more than which service discovery mechanism you pick.
+          readinessProbe:
+            httpGet:
+              path: /healthz/ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          livenessProbe:
+            httpGet:
+              path: /healthz/live
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /healthz/started
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 2
+          lifecycle:
+            preStop:
+              exec:
+                # Give in-flight requests time to drain before the pod terminates.
+                # terminationGracePeriodSeconds (default 30s) starts simultaneously.
+                command: ["/bin/sh", "-c", "sleep 5"]
+      terminationGracePeriodSeconds: 30

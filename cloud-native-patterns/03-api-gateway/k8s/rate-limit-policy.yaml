@@ -1,0 +1,66 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: orders-rate-limit
+  namespace: ecommerce
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: orders-route
+  rateLimit:
+    type: Global    # Global rate limit shared across all Envoy instances (via Redis)
+    global:
+      rules:
+        # --- Per-API-key rate limit (identity-based, not IP-based) ---
+        # IP-based limiting is broken for mobile carriers and corporate NATs where
+        # thousands of users share one egress IP.
+        - clientSelectors:
+            - headers:
+                - name: x-api-key
+                  type: Distinct   # Each unique API key gets its own counter
+          limit:
+            requests: 1000
+            unit: Hour
+        # --- Per-JWT-subject limit for authenticated users ---
+        - clientSelectors:
+            - headers:
+                - name: authorization
+                  type: Distinct
+          limit:
+            requests: 500
+            unit: Minute
+        # --- Global fallback — catch unauthenticated/unknown callers ---
+        - limit:
+            requests: 100
+            unit: Minute
+---
+# Security policy: require JWT validation at the gateway for all /v1/* routes.
+# The gateway validates the token before forwarding — downstream services can
+# trust the x-jwt-subject header injected by the gateway.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: orders-jwt-auth
+  namespace: ecommerce
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: orders-route
+  jwt:
+    providers:
+      - name: auth0
+        issuer: "https://auth.example.com/"
+        audiences:
+          - "api.example.com"
+        remoteJWKS:
+          uri: "https://auth.example.com/.well-known/jwks.json"
+          cacheDuration: 5m
+        claimToHeaders:
+          - claim: sub
+            header: x-jwt-subject
+          - claim: email
+            header: x-jwt-email
+          - claim: "https://example.com/roles"
+            header: x-jwt-roles

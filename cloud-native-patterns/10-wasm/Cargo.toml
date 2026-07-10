@@ -1,0 +1,36 @@
+[package]
+name = "envoy-trace-filter"
+version = "0.1.0"
+edition = "2021"
+description = "Envoy/Istio proxy-wasm filter: injects x-trace-id and x-request-timestamp headers"
+
+# Build for WASM target:
+#   rustup target add wasm32-wasip1
+#   cargo build --target wasm32-wasip1 --release
+#
+# The .wasm output at target/wasm32-wasip1/release/envoy_trace_filter.wasm
+# is deployed via an Istio WasmPlugin resource (see deploy/wasmplugin.yaml comments below).
+#
+# Minimum Envoy version for proxy-wasm 0.2: Istio 1.17+ / Envoy 1.25+
+
+[[lib]]
+crate-type = ["cdylib"]   # Compile as a C-compatible dynamic library (required for WASM)
+
+[lib]
+name = "envoy_trace_filter"
+path = "src/lib.rs"
+
+[dependencies]
+# proxy-wasm: Rust SDK for Envoy's WebAssembly filter API
+proxy-wasm = "0.2"
+
+# uuid: generate v4 UUIDs for trace IDs
+# The "v4" feature enables random UUID generation.
+# The "js" feature is NOT included — not needed for WASM in Envoy context.
+uuid = { version = "1", features = ["v4"] }
+
+[profile.release]
+opt-level = "s"    # Optimize for size — WASM binary size matters for filter load time
+lto = true         # Link-time optimization for smaller binary
+codegen-units = 1  # Single codegen unit for better optimization
+strip = true       # Strip debug symbols from release build
