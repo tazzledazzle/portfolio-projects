@@ -1,5 +1,7 @@
 package com.marketplace.payments
 
+import com.marketplace.common.observability.Observability
+import com.marketplace.common.observability.installObservability
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.http.HttpStatusCode
@@ -11,12 +13,17 @@ import io.ktor.server.netty.Netty
 import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.statuspages.StatusPages
+import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
+import io.opentelemetry.api.OpenTelemetry
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
+
+private const val SERVICE_NAME = "payments-service"
 
 fun main() {
     val dbUrl = System.getenv("DB_URL") ?: "jdbc:postgresql://localhost:5432/marketplace"
@@ -24,6 +31,9 @@ fun main() {
     val dbPassword = System.getenv("DB_PASSWORD") ?: "marketplace"
     val kafkaBootstrap = System.getenv("KAFKA_BOOTSTRAP_SERVERS") ?: "localhost:9092"
     val port = System.getenv("PORT")?.toIntOrNull() ?: 8084
+
+    val registry = Observability.createPrometheusRegistry(SERVICE_NAME)
+    val openTelemetry = Observability.initOpenTelemetry(SERVICE_NAME)
 
     val dataSource = HikariDataSource(HikariConfig().apply {
         jdbcUrl = dbUrl
@@ -39,10 +49,18 @@ fun main() {
     val repository = OrderRepository()
     val publisher = EventPublisher(kafkaBootstrap)
 
-    embeddedServer(Netty, port = port, module = { module(repository, publisher) }).start(wait = true)
+    embeddedServer(Netty, port = port, module = {
+        module(repository, publisher, registry, openTelemetry)
+    }).start(wait = true)
 }
 
-fun Application.module(repository: OrderRepository, publisher: EventPublisher) {
+fun Application.module(
+    repository: OrderRepository,
+    publisher: EventPublisher,
+    meterRegistry: PrometheusMeterRegistry = Observability.createPrometheusRegistry(SERVICE_NAME),
+    openTelemetry: OpenTelemetry = Observability.initOpenTelemetry(SERVICE_NAME),
+) {
+    installObservability(SERVICE_NAME, meterRegistry, openTelemetry)
     install(ContentNegotiation) { json() }
     install(CallLogging)
     install(StatusPages) {
@@ -52,6 +70,6 @@ fun Application.module(repository: OrderRepository, publisher: EventPublisher) {
     }
     routing {
         get("/healthz") { call.respond(mapOf("status" to "ok")) }
-        paymentsRoutes(repository, publisher)
+        paymentsRoutes(repository, publisher, meterRegistry)
     }
 }
