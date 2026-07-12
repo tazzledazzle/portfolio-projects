@@ -1,0 +1,143 @@
+# Metric name contract for Grafana dashboards (Task 3):
+#
+# SLOs (D-04):
+#   Availability: 99.9% — good = non-5xx / total (4xx do NOT burn budget)
+#   Latency:      99% of requests under 500ms
+#
+# Recording rules (per service label `service`):
+#   sli:http_requests:availability:ratio_rate5m
+#   sli:http_requests:availability:ratio_rate30m
+#   sli:http_requests:availability:ratio_rate1h
+#   sli:http_requests:availability:ratio_rate6h
+#   sli:http_requests:availability:ratio_rate1d
+#   sli:http_requests:latency_le_500ms:ratio_rate5m
+#   sli:http_requests:latency_le_500ms:ratio_rate30m
+#   sli:http_requests:latency_le_500ms:ratio_rate1h
+#   sli:http_requests:latency_le_500ms:ratio_rate6h
+#   sli:http_requests:latency_le_500ms:ratio_rate1d
+#   slo:availability:error_budget_remaining:ratio
+#   slo:latency:error_budget_remaining:ratio
+#   sli:escrow:success:ratio_rate5m          (payments)
+#   sli:messaging:ws_delivery:ratio_rate5m  (messaging)
+#
+# Source metrics (Micrometer / Ktor):
+#   http_server_requests_seconds_count{service,uri,method,status,outcome}
+#   http_server_requests_seconds_bucket{...,le="0.5"}
+#   escrow_transitions_total{service="payments-service",result="success|server_error"}
+#   messaging_ws_connect_total{result="success|failure"}
+#   messaging_ws_publish_total{result="success|failure"}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-recording-rules
+  namespace: c2c
+data:
+  recording-rules.yml: |
+    groups:
+      - name: sli.http.availability
+        interval: 30s
+        rules:
+          - record: sli:http_requests:availability:ratio_rate5m
+            expr: |
+              sum by (service) (rate(http_server_requests_seconds_count{status!~"5.."}[5m]))
+              /
+              clamp_min(sum by (service) (rate(http_server_requests_seconds_count[5m])), 1e-9)
+          - record: sli:http_requests:availability:ratio_rate30m
+            expr: |
+              sum by (service) (rate(http_server_requests_seconds_count{status!~"5.."}[30m]))
+              /
+              clamp_min(sum by (service) (rate(http_server_requests_seconds_count[30m])), 1e-9)
+          - record: sli:http_requests:availability:ratio_rate1h
+            expr: |
+              sum by (service) (rate(http_server_requests_seconds_count{status!~"5.."}[1h]))
+              /
+              clamp_min(sum by (service) (rate(http_server_requests_seconds_count[1h])), 1e-9)
+          - record: sli:http_requests:availability:ratio_rate6h
+            expr: |
+              sum by (service) (rate(http_server_requests_seconds_count{status!~"5.."}[6h]))
+              /
+              clamp_min(sum by (service) (rate(http_server_requests_seconds_count[6h])), 1e-9)
+          - record: sli:http_requests:availability:ratio_rate1d
+            expr: |
+              sum by (service) (rate(http_server_requests_seconds_count{status!~"5.."}[1d]))
+              /
+              clamp_min(sum by (service) (rate(http_server_requests_seconds_count[1d])), 1e-9)
+
+      - name: sli.http.latency
+        interval: 30s
+        rules:
+          - record: sli:http_requests:latency_le_500ms:ratio_rate5m
+            expr: |
+              sum by (service) (rate(http_server_requests_seconds_bucket{le="0.5"}[5m]))
+              /
+              clamp_min(sum by (service) (rate(http_server_requests_seconds_count[5m])), 1e-9)
+          - record: sli:http_requests:latency_le_500ms:ratio_rate30m
+            expr: |
+              sum by (service) (rate(http_server_requests_seconds_bucket{le="0.5"}[30m]))
+              /
+              clamp_min(sum by (service) (rate(http_server_requests_seconds_count[30m])), 1e-9)
+          - record: sli:http_requests:latency_le_500ms:ratio_rate1h
+            expr: |
+              sum by (service) (rate(http_server_requests_seconds_bucket{le="0.5"}[1h]))
+              /
+              clamp_min(sum by (service) (rate(http_server_requests_seconds_count[1h])), 1e-9)
+          - record: sli:http_requests:latency_le_500ms:ratio_rate6h
+            expr: |
+              sum by (service) (rate(http_server_requests_seconds_bucket{le="0.5"}[6h]))
+              /
+              clamp_min(sum by (service) (rate(http_server_requests_seconds_count[6h])), 1e-9)
+          - record: sli:http_requests:latency_le_500ms:ratio_rate1d
+            expr: |
+              sum by (service) (rate(http_server_requests_seconds_bucket{le="0.5"}[1d]))
+              /
+              clamp_min(sum by (service) (rate(http_server_requests_seconds_count[1d])), 1e-9)
+
+      - name: slo.error_budget
+        interval: 30s
+        rules:
+          # 99.9% availability over ~30d window proxy (1d for kind retention)
+          - record: slo:availability:error_budget_remaining:ratio
+            expr: |
+              clamp_min(
+                1 - (
+                  (1 - sli:http_requests:availability:ratio_rate1d) / (1 - 0.999)
+                ),
+                0
+              )
+          # 99% under 500ms
+          - record: slo:latency:error_budget_remaining:ratio
+            expr: |
+              clamp_min(
+                1 - (
+                  (1 - sli:http_requests:latency_le_500ms:ratio_rate1d) / (1 - 0.99)
+                ),
+                0
+              )
+
+      - name: sli.payments.escrow
+        interval: 30s
+        rules:
+          - record: sli:escrow:success:ratio_rate5m
+            expr: |
+              sum(rate(escrow_transitions_total{result="success"}[5m]))
+              /
+              clamp_min(
+                sum(rate(escrow_transitions_total{result=~"success|server_error"}[5m])),
+                1e-9
+              )
+
+      - name: sli.messaging.ws
+        interval: 30s
+        rules:
+          - record: sli:messaging:ws_delivery:ratio_rate5m
+            expr: |
+              (
+                sum(rate(messaging_ws_connect_total{result="success"}[5m]))
+                + sum(rate(messaging_ws_publish_total{result="success"}[5m]))
+              )
+              /
+              clamp_min(
+                sum(rate(messaging_ws_connect_total[5m]))
+                + sum(rate(messaging_ws_publish_total[5m])),
+                1e-9
+              )

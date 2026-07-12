@@ -18,3 +18,7 @@ nodes:
       - containerPort: 30084
         hostPort: 8084
         protocol: TCP
+      # Grafana (anonymous Viewer) — NodePort 30300
+      - containerPort: 30300
+        hostPort: 3000
+        protocol: TCP
