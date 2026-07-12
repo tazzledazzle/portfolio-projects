@@ -112,7 +112,6 @@ spec:
               mountPath: /etc/grafana/provisioning/datasources
             - name: dashboard-provider
               mountPath: /etc/grafana/provisioning/dashboards
-            # Dashboard JSON ConfigMaps mounted in Task 3 under /var/lib/grafana/dashboards
             - name: dashboards
               mountPath: /var/lib/grafana/dashboards
       volumes:
@@ -123,7 +122,8 @@ spec:
           configMap:
             name: grafana-dashboard-provider
         - name: dashboards
-          emptyDir: {}
+          configMap:
+            name: grafana-dashboards
 ---
 apiVersion: v1
 kind: Service

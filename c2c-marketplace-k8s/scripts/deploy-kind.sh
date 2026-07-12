@@ -53,6 +53,10 @@ echo "==> Waiting for infra to be ready before starting services"
 kubectl -n c2c wait --for=condition=available --timeout=180s deployment/postgres deployment/redis deployment/opensearch deployment/redpanda
 
 echo "==> Applying observability stack (Prometheus/Loki/Tempo/Grafana/Alloy)"
+# Dashboard JSON lives as files; materialize ConfigMap so Grafana can provision them.
+kubectl -n c2c create configmap grafana-dashboards \
+  --from-file=infra/k8s/observability/grafana/dashboards/ \
+  --dry-run=client -o yaml | kubectl apply -f -
 kubectl apply -f infra/k8s/observability/
 
 kubectl apply -f infra/k8s/10-listings.yaml
