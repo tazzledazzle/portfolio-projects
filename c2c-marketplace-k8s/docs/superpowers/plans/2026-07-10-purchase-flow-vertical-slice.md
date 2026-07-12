@@ -1,6 +1,6 @@
 # Purchase Flow Vertical Slice Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Add a TDD-verified test suite for the purchase flow vertical slice (create listing → place order → confirm delivery → escrow released) and prove it live on both docker-compose and kind.
 
@@ -43,7 +43,7 @@
 - Consumes: `OrderRepository`, `OrderTable`, `EscrowHoldTable`, `CreateOrderRequest`, `Order`, `EscrowStatus`, `EscrowEvent`, `IllegalEscrowTransitionException` from `payments-service/src/main/`
 - Produces: nothing (test-only)
 
-- [ ] **Step 1: Add test dependencies to payments-service/build.gradle.kts**
+- [x] **Step 1: Add test dependencies to payments-service/build.gradle.kts**
 
 Replace the `dependencies` block's test section. The full updated file:
 
@@ -99,7 +99,7 @@ tasks.test {
 }
 ```
 
-- [ ] **Step 2: Verify the build resolves**
+- [x] **Step 2: Verify the build resolves**
 
 ```bash
 ./gradlew :payments-service:build -x test
@@ -107,7 +107,7 @@ tasks.test {
 
 Expected: `BUILD SUCCESSFUL`
 
-- [ ] **Step 3: Write the first failing test — createWithHold**
+- [x] **Step 3: Write the first failing test — createWithHold**
 
 Create `payments-service/src/test/kotlin/com/marketplace/payments/OrderRepositoryTest.kt`:
 
@@ -174,7 +174,7 @@ class OrderRepositoryTest {
 }
 ```
 
-- [ ] **Step 4: Run the test — expect green (production code already exists)**
+- [x] **Step 4: Run the test — expect green (production code already exists)**
 
 ```bash
 ./gradlew :payments-service:test --tests "com.marketplace.payments.OrderRepositoryTest.createWithHold*" --info
@@ -182,7 +182,7 @@ class OrderRepositoryTest {
 
 Expected: `1 test completed` — if it fails, the most likely cause is a missing JDBC driver on the classpath; check that `postgresql` is in `implementation` deps.
 
-- [ ] **Step 5: Add applyEvent transition tests**
+- [x] **Step 5: Add applyEvent transition tests**
 
 Append to `OrderRepositoryTest.kt` (inside the class, after the first test):
 
@@ -208,7 +208,7 @@ Append to `OrderRepositoryTest.kt` (inside the class, after the first test):
     }
 ```
 
-- [ ] **Step 6: Run transition tests**
+- [x] **Step 6: Run transition tests**
 
 ```bash
 ./gradlew :payments-service:test --tests "com.marketplace.payments.OrderRepositoryTest" --info
@@ -216,7 +216,7 @@ Append to `OrderRepositoryTest.kt` (inside the class, after the first test):
 
 Expected: `3 tests completed`
 
-- [ ] **Step 7: Add error case tests**
+- [x] **Step 7: Add error case tests**
 
 Append to `OrderRepositoryTest.kt` (inside the class):
 
@@ -239,7 +239,7 @@ Append to `OrderRepositoryTest.kt` (inside the class):
     }
 ```
 
-- [ ] **Step 8: Run all five tests**
+- [x] **Step 8: Run all five tests**
 
 ```bash
 ./gradlew :payments-service:test --tests "com.marketplace.payments.OrderRepositoryTest" --info
@@ -247,7 +247,7 @@ Append to `OrderRepositoryTest.kt` (inside the class):
 
 Expected: `5 tests completed, 5 passed`
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add payments-service/build.gradle.kts \
@@ -268,7 +268,7 @@ git commit -m "test: add OrderRepositoryTest — Testcontainers, 5 cases"
 
 **Note on MockK and final classes:** Kotlin classes are `final` by default. MockK 1.13.x uses ByteBuddy instrumentation to mock final classes without requiring the `open` keyword. `mockk<OrderRepository>()` and `mockk<EventPublisher>(relaxed = true)` work as-is. `relaxed = true` means Unit-returning methods (`publishOrderCreated`, `publishOrderCompleted`) are no-ops unless explicitly stubbed.
 
-- [ ] **Step 1: Write the happy-path tests**
+- [x] **Step 1: Write the happy-path tests**
 
 Create `payments-service/src/test/kotlin/com/marketplace/payments/PaymentsRoutesTest.kt`:
 
@@ -355,7 +355,7 @@ class PaymentsRoutesTest {
 }
 ```
 
-- [ ] **Step 2: Run the three happy-path tests**
+- [x] **Step 2: Run the three happy-path tests**
 
 ```bash
 ./gradlew :payments-service:test --tests "com.marketplace.payments.PaymentsRoutesTest" --info
@@ -363,7 +363,7 @@ class PaymentsRoutesTest {
 
 Expected: `3 tests completed, 3 passed`. If you see `ClassNotFoundException` for `io.mockk.*`, confirm the MockK dependency was added in Task 1.
 
-- [ ] **Step 3: Add the error case tests**
+- [x] **Step 3: Add the error case tests**
 
 Append to `PaymentsRoutesTest.kt` (inside the class):
 
@@ -399,7 +399,7 @@ Append to `PaymentsRoutesTest.kt` (inside the class):
     }
 ```
 
-- [ ] **Step 4: Run all five payments route tests**
+- [x] **Step 4: Run all five payments route tests**
 
 ```bash
 ./gradlew :payments-service:test --tests "com.marketplace.payments.PaymentsRoutesTest" --info
@@ -407,7 +407,7 @@ Append to `PaymentsRoutesTest.kt` (inside the class):
 
 Expected: `5 tests completed, 5 passed`
 
-- [ ] **Step 5: Run the full payments-service test suite**
+- [x] **Step 5: Run the full payments-service test suite**
 
 ```bash
 ./gradlew :payments-service:test --info
@@ -415,7 +415,7 @@ Expected: `5 tests completed, 5 passed`
 
 Expected: `8 tests completed` (3 from `EscrowStateMachineTest` counting the parameterized cases, plus 2 from the non-parameterized + 5 from `OrderRepositoryTest` + 5 from `PaymentsRoutesTest` = at least 14 tests). Confirm `0 failures`.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add payments-service/src/test/kotlin/com/marketplace/payments/PaymentsRoutesTest.kt
@@ -434,7 +434,7 @@ git commit -m "test: add PaymentsRoutesTest — Ktor engine, 5 HTTP surface case
 - Consumes: `Application.module(ListingRepository, EventPublisher)` from `listings-service/src/main/kotlin/.../Application.kt`; `Listing`, `CreateListingRequest`, `ErrorResponse` from production source
 - Produces: nothing (test-only)
 
-- [ ] **Step 1: Add test dependencies to listings-service/build.gradle.kts**
+- [x] **Step 1: Add test dependencies to listings-service/build.gradle.kts**
 
 The `ktor-server-test-host` and Testcontainers are already present. Add `ktor-client-content-negotiation` and MockK. Replace the test dependency lines at the bottom of the `dependencies` block:
 
@@ -500,7 +500,7 @@ tasks.test {
 }
 ```
 
-- [ ] **Step 2: Verify build resolves**
+- [x] **Step 2: Verify build resolves**
 
 ```bash
 ./gradlew :listings-service:build -x test
@@ -508,7 +508,7 @@ tasks.test {
 
 Expected: `BUILD SUCCESSFUL`
 
-- [ ] **Step 3: Write the happy-path and T&S tests**
+- [x] **Step 3: Write the happy-path and T&S tests**
 
 Create `listings-service/src/test/kotlin/com/marketplace/listings/ListingRoutesTest.kt`:
 
@@ -635,7 +635,7 @@ class ListingRoutesTest {
 }
 ```
 
-- [ ] **Step 4: Run all four listing route tests**
+- [x] **Step 4: Run all four listing route tests**
 
 ```bash
 ./gradlew :listings-service:test --tests "com.marketplace.listings.ListingRoutesTest" --info
@@ -643,7 +643,7 @@ class ListingRoutesTest {
 
 Expected: `4 tests completed, 4 passed`
 
-- [ ] **Step 5: Run the full listings-service test suite**
+- [x] **Step 5: Run the full listings-service test suite**
 
 ```bash
 ./gradlew :listings-service:test --info
@@ -651,7 +651,7 @@ Expected: `4 tests completed, 4 passed`
 
 Expected: All tests pass (3 from `ListingRepositoryTest` + 4 from `ListingRoutesTest` = 7 total). Confirm `0 failures`.
 
-- [ ] **Step 6: Run the complete Gradle test suite**
+- [x] **Step 6: Run the complete Gradle test suite**
 
 ```bash
 ./gradlew test
@@ -659,7 +659,7 @@ Expected: All tests pass (3 from `ListingRepositoryTest` + 4 from `ListingRoutes
 
 Expected: All modules pass. Confirm `BUILD SUCCESSFUL` with `0 failures`.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add listings-service/build.gradle.kts \
@@ -680,7 +680,7 @@ git commit -m "test: add ListingRoutesTest — Ktor engine, 4 HTTP surface cases
 
 **Prerequisites:** `jq` must be installed (`brew install jq` on macOS).
 
-- [ ] **Step 1: Create scripts/smoke-test.sh**
+- [x] **Step 1: Create scripts/smoke-test.sh**
 
 ```bash
 #!/usr/bin/env bash
@@ -740,13 +740,13 @@ echo ""
 echo "PASS ($((END - START))s)"
 ```
 
-- [ ] **Step 2: Make script executable**
+- [x] **Step 2: Make script executable**
 
 ```bash
 chmod +x scripts/smoke-test.sh
 ```
 
-- [ ] **Step 3: Start docker-compose infra**
+- [x] **Step 3: Start docker-compose infra**
 
 ```bash
 cd infra && docker compose up -d && cd ..
@@ -758,7 +758,7 @@ docker compose -f infra/docker-compose.yml ps
 ```
 All four containers should show `healthy` or `running`.
 
-- [ ] **Step 4: Start listings-service and payments-service**
+- [x] **Step 4: Start listings-service and payments-service**
 
 In two separate terminals (or background processes):
 
@@ -772,7 +772,7 @@ In two separate terminals (or background processes):
 
 Wait for both to print `Application started` (or similar Netty startup log) before proceeding.
 
-- [ ] **Step 5: Run the smoke test**
+- [x] **Step 5: Run the smoke test**
 
 ```bash
 ./scripts/smoke-test.sh
@@ -800,7 +800,7 @@ PASS (Xs)
 
 If Step 2 fails with a connection error, confirm payments-service is running on port 8084. If the order status comes back as something other than `HELD`, check `OrderRepository.createWithHold` — the `application { }` module must be wiring the DB connection before serving requests.
 
-- [ ] **Step 6: Stop services and commit**
+- [x] **Step 6: Stop services and commit**
 
 Stop both Gradle run processes (Ctrl+C). Leave docker-compose running for Task 5 if you're continuing immediately, otherwise `docker compose -f infra/docker-compose.yml down`.
 
@@ -821,7 +821,7 @@ git commit -m "feat: add smoke-test.sh — E2E curl verification of purchase flo
 - Docker running with sufficient resources (at least 4 GB RAM available)
 - `jq` installed
 
-- [ ] **Step 1: Build Docker images for all four services**
+- [x] **Step 1: Build Docker images for all four services**
 
 ```bash
 ./scripts/build-images.sh
@@ -833,7 +833,7 @@ Expected: builds `c2c/listings-service:local`, `c2c/search-service:local`, `c2c/
 docker images | grep c2c
 ```
 
-- [ ] **Step 2: Deploy to kind**
+- [x] **Step 2: Deploy to kind**
 
 ```bash
 ./scripts/deploy-kind.sh
@@ -847,7 +847,7 @@ kubectl -n c2c get pods -w
 
 Wait until `listings` and `payments` pods show `Running` and `READY 1/1`. The other services can be ignored for this slice. This may take 2–3 minutes as Postgres initialises.
 
-- [ ] **Step 3: Port-forward listings-service and payments-service**
+- [x] **Step 3: Port-forward listings-service and payments-service**
 
 Open two terminals and run (leave them running):
 
@@ -865,7 +865,7 @@ kubectl -n c2c get svc
 ```
 Use the exact service name shown.
 
-- [ ] **Step 4: Run the smoke test against kind**
+- [x] **Step 4: Run the smoke test against kind**
 
 ```bash
 ./scripts/smoke-test.sh
@@ -873,7 +873,7 @@ Use the exact service name shown.
 
 Same expected output as Task 4 Step 5. The `LISTINGS_URL` and `PAYMENTS_URL` env vars remain at their defaults (`http://localhost:8081` and `http://localhost:8084`) because port-forward maps the same ports locally.
 
-- [ ] **Step 5: Verify pods are healthy**
+- [x] **Step 5: Verify pods are healthy**
 
 ```bash
 kubectl -n c2c get pods
@@ -901,7 +901,7 @@ git commit -m "chore: purchase flow vertical slice complete — all tests green,
 Before calling this slice done:
 
 - [ ] `./gradlew test` — BUILD SUCCESSFUL, 0 failures
-- [ ] `./gradlew :payments-service:test` — `EscrowStateMachineTest` + `OrderRepositoryTest` + `PaymentsRoutesTest` all green
-- [ ] `./gradlew :listings-service:test` — `ListingRepositoryTest` + `ListingRoutesTest` all green
-- [ ] `./scripts/smoke-test.sh` against docker-compose — prints `PASS`
-- [ ] `./scripts/smoke-test.sh` against kind (with port-forward) — prints `PASS`
+- [x] `./gradlew :payments-service:test` — `EscrowStateMachineTest` + `OrderRepositoryTest` + `PaymentsRoutesTest` all green
+- [x] `./gradlew :listings-service:test` — `ListingRepositoryTest` + `ListingRoutesTest` all green
+- [x] `./scripts/smoke-test.sh` against docker-compose — prints `PASS`
+- [x] `./scripts/smoke-test.sh` against kind (with port-forward) — prints `PASS`
