@@ -29,4 +29,5 @@ kotlin {
 
 tasks.test {
     useJUnitPlatform()
+    workingDir = rootProject.projectDir
 }
