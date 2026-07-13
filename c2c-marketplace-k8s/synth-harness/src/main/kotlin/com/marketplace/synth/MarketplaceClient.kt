@@ -3,6 +3,7 @@ package com.marketplace.synth
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
@@ -13,6 +14,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
+import java.io.Closeable
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -77,7 +79,7 @@ class MarketplaceClient(
     searchUrl: String,
     paymentsUrl: String,
     private val http: HttpClient = defaultHttpClient()
-) {
+) : Closeable {
     private val listingsBase = listingsUrl.trimEnd('/')
     private val searchBase = searchUrl.trimEnd('/')
     private val paymentsBase = paymentsUrl.trimEnd('/')
@@ -163,7 +165,7 @@ class MarketplaceClient(
         return response.body<EscrowActionResponse>().status
     }
 
-    fun close() {
+    override fun close() {
         http.close()
     }
 
@@ -171,6 +173,10 @@ class MarketplaceClient(
         fun defaultHttpClient(): HttpClient = HttpClient(CIO) {
             install(ContentNegotiation) {
                 json(Json { ignoreUnknownKeys = true })
+            }
+            install(HttpTimeout) {
+                connectTimeoutMillis = 5_000
+                requestTimeoutMillis = 15_000
             }
         }
     }

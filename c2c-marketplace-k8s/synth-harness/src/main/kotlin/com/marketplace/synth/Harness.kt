@@ -63,30 +63,34 @@ object Harness {
         for (listing in createdListings) {
             val token = distinctiveToken(listing.title)
             var found = false
-            try {
-                for (attempt in 0 until profile.searchRetries) {
+            var lastError: String? = null
+            for (attempt in 0 until profile.searchRetries) {
+                try {
                     val hits = client.search(token, profile.geo.lat, profile.geo.lon)
+                    lastError = null
                     found = hits.any { hit ->
                         hit.title.contains(token) ||
                             hit.title == listing.title ||
                             hit.listingId == listing.id
                     }
                     if (found) break
-                    if (attempt < profile.searchRetries - 1) {
-                        delay(profile.searchRetryMs)
-                    }
+                } catch (e: Exception) {
+                    lastError = e.message ?: e::class.simpleName
                 }
-            } catch (e: Exception) {
-                if (recordError("search[${listing.id}]: ${e.message}")) return summary()
-                continue
+                if (attempt < profile.searchRetries - 1) {
+                    delay(profile.searchRetryMs)
+                }
             }
             if (found) {
                 indexed++
-            } else if (recordError(
-                    "listing ${listing.id} not indexed after ${profile.searchRetries} retries (q=$token)"
-                )
-            ) {
-                return summary()
+            } else {
+                val detail = lastError?.let { "last error: $it" } ?: "q=$token"
+                if (recordError(
+                        "listing ${listing.id} not indexed after ${profile.searchRetries} retries ($detail)"
+                    )
+                ) {
+                    return summary()
+                }
             }
         }
 

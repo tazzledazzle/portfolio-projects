@@ -21,14 +21,10 @@ fun main(args: Array<String>) {
     }
 
     val profile = json.decodeFromString<Profile>(File(profilePath).readText())
-    val client = MarketplaceClient(listingsUrl, searchUrl, paymentsUrl)
-
-    val summary = try {
+    val summary = MarketplaceClient(listingsUrl, searchUrl, paymentsUrl).use { client ->
         runBlocking {
             Harness.run(profile, client, failFast)
         }
-    } finally {
-        client.close()
     }
 
     println(json.encodeToString(summary))
