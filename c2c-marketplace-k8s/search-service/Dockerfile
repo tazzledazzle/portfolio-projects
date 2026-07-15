@@ -3,7 +3,7 @@ WORKDIR /workspace
 COPY . .
 RUN ./gradlew :search-service:installDist --no-daemon
 
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 COPY --from=build /workspace/search-service/build/install/search-service /app
 EXPOSE 8082

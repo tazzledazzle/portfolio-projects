@@ -1,5 +1,7 @@
 package com.marketplace.listings
 
+import com.marketplace.common.observability.Observability
+import com.marketplace.common.observability.installObservability
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.serialization.kotlinx.json.json
@@ -14,9 +16,12 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.call
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
+
+private const val SERVICE_NAME = "listings-service"
 
 fun main() {
     val dbUrl = System.getenv("DB_URL") ?: "jdbc:postgresql://localhost:5432/marketplace"
@@ -24,6 +29,9 @@ fun main() {
     val dbPassword = System.getenv("DB_PASSWORD") ?: "marketplace"
     val kafkaBootstrap = System.getenv("KAFKA_BOOTSTRAP_SERVERS") ?: "localhost:9092"
     val port = System.getenv("PORT")?.toIntOrNull() ?: 8081
+
+    val registry = Observability.createPrometheusRegistry(SERVICE_NAME)
+    val openTelemetry = Observability.initOpenTelemetry(SERVICE_NAME)
 
     val dataSource = HikariDataSource(HikariConfig().apply {
         jdbcUrl = dbUrl
@@ -39,11 +47,17 @@ fun main() {
     val repository = ListingRepository()
     val publisher = EventPublisher(kafkaBootstrap)
 
-    embeddedServer(Netty, port = port, module = { module(repository, publisher) })
+    embeddedServer(Netty, port = port, module = { module(repository, publisher, registry, openTelemetry) })
         .start(wait = true)
 }
 
-fun Application.module(repository: ListingRepository, publisher: EventPublisher) {
+fun Application.module(
+    repository: ListingRepository,
+    publisher: EventPublisher,
+    registry: io.micrometer.prometheusmetrics.PrometheusMeterRegistry = Observability.createPrometheusRegistry(SERVICE_NAME),
+    openTelemetry: io.opentelemetry.api.OpenTelemetry = Observability.initOpenTelemetry(SERVICE_NAME),
+) {
+    installObservability(SERVICE_NAME, registry, openTelemetry)
     install(ContentNegotiation) { json() }
     install(CallLogging)
     install(StatusPages) {

@@ -1,9 +1,12 @@
 package com.marketplace.messaging
 
+import com.marketplace.common.observability.Observability
+import com.marketplace.common.observability.installObservability
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
+import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -15,10 +18,14 @@ import io.ktor.server.routing.routing
 import io.ktor.server.websocket.WebSockets
 import io.ktor.server.websocket.pingPeriod
 import io.ktor.server.websocket.timeout
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
+import io.opentelemetry.api.OpenTelemetry
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.Duration
+
+private const val SERVICE_NAME = "messaging-service"
 
 fun main() {
     val dbUrl = System.getenv("DB_URL") ?: "jdbc:postgresql://localhost:5432/marketplace"
@@ -26,6 +33,9 @@ fun main() {
     val dbPassword = System.getenv("DB_PASSWORD") ?: "marketplace"
     val redisUrl = System.getenv("REDIS_URL") ?: "redis://localhost:6379"
     val port = System.getenv("PORT")?.toIntOrNull() ?: 8083
+
+    val registry = Observability.createPrometheusRegistry(SERVICE_NAME)
+    val openTelemetry = Observability.initOpenTelemetry(SERVICE_NAME)
 
     val dataSource = HikariDataSource(HikariConfig().apply {
         jdbcUrl = dbUrl
@@ -37,13 +47,21 @@ fun main() {
     transaction { SchemaUtils.createMissingTablesAndColumns(MessageTable) }
 
     val repository = MessageRepository()
-    val registry = ConnectionRegistry(redisUrl)
-    registry.startListeningForRoutedMessages()
+    val registryConn = ConnectionRegistry(redisUrl)
+    registryConn.startListeningForRoutedMessages()
 
-    embeddedServer(Netty, port = port, module = { module(repository, registry) }).start(wait = true)
+    embeddedServer(Netty, port = port, module = {
+        module(repository, registryConn, registry, openTelemetry)
+    }).start(wait = true)
 }
 
-fun Application.module(repository: MessageRepository, registry: ConnectionRegistry) {
+fun Application.module(
+    repository: MessageRepository,
+    connectionRegistry: ConnectionRegistry,
+    meterRegistry: PrometheusMeterRegistry = Observability.createPrometheusRegistry(SERVICE_NAME),
+    openTelemetry: OpenTelemetry = Observability.initOpenTelemetry(SERVICE_NAME),
+) {
+    installObservability(SERVICE_NAME, meterRegistry, openTelemetry)
     install(ContentNegotiation) { json() }
     install(CallLogging)
     install(WebSockets) {
@@ -51,11 +69,11 @@ fun Application.module(repository: MessageRepository, registry: ConnectionRegist
         timeout = Duration.ofSeconds(30)
     }
     routing {
-        get("/healthz") { call.respond(mapOf("status" to "ok", "podId" to registry.podId)) }
+        get("/healthz") { call.respond(mapOf("status" to "ok", "podId" to connectionRegistry.podId)) }
         get("/conversations/{id}/history") {
             val id = call.parameters["id"]!!
             call.respond(repository.history(id))
         }
-        chatWebSocket(registry, repository)
+        chatWebSocket(connectionRegistry, repository, meterRegistry)
     }
 }

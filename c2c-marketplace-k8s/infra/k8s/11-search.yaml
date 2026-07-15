@@ -10,6 +10,10 @@ spec:
   template:
     metadata:
       labels: { app: search-service }
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8082"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: search-service
@@ -22,6 +26,10 @@ spec:
               value: redpanda:9092
             - name: PORT
               value: "8082"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://alloy:4318
+            - name: OTEL_SERVICE_NAME
+              value: search-service
           ports:
             - containerPort: 8082
           readinessProbe:

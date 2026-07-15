@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh run *)",
+      "Bash(curl -s https://api.github.com/repos/bazelbuild/bazel/releases/tags/7.4.1)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('Found:', d.get\\('tag_name'\\), d.get\\('name'\\)\\)\")",
+      "Bash(git commit -m ' *)",
+      "Bash(/Users/terenceschumacher/.claude/plugins/cache/claude-plugins-official/superpowers/6.1.1/skills/subagent-driven-development/scripts/task-brief *)",
+      "Bash(./gradlew *)",
+      "Bash(git stash *)",
+      "Bash(jar tf *)",
+      "Bash(open -a \"Docker Desktop\")",
+      "Bash(open -a \"Docker\")",
+      "Bash(docker info *)",
+      "Bash(DOCKER_HOST=unix:///Users/terenceschumacher/.docker/run/docker.sock TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/Users/terenceschumacher/.docker/run/docker.sock ./gradlew :payments-service:test --tests \"com.marketplace.payments.OrderRepositoryTest\")",
+      "Bash(DOCKER_HOST=unix:///Users/terenceschumacher/.docker/run/docker.sock TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/Users/terenceschumacher/.docker/run/docker.sock ./gradlew :payments-service:test --tests \"com.marketplace.payments.OrderRepositoryTest\" --info)",
+      "Read(//Users/terenceschumacher/**)",
+      "Read(//var/run/**)",
+      "Bash(curl -s --unix-socket /var/run/docker.sock http://localhost/info)",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s --unix-socket /Users/terenceschumacher/Library/Containers/com.docker.docker/Data/docker-cli.sock http://localhost/info)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('CLI socket OK'\\)\")",
+      "Bash(curl -s --unix-socket /var/run/docker.sock http://localhost/v1.24/info)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('Server:', d.get\\('ServerVersion',''\\), 'Name:', d.get\\('Name',''\\)\\)\")"
+    ]
+  }
+}

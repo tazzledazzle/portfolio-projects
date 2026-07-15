@@ -4,7 +4,7 @@ WORKDIR /workspace
 COPY . .
 RUN ./gradlew :listings-service:installDist --no-daemon
 
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 COPY --from=build /workspace/listings-service/build/install/listings-service /app
 EXPOSE 8081

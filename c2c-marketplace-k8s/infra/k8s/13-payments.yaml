@@ -10,6 +10,10 @@ spec:
   template:
     metadata:
       labels: { app: payments-service }
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8084"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: payments-service
@@ -26,6 +30,10 @@ spec:
               value: redpanda:9092
             - name: PORT
               value: "8084"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://alloy:4318
+            - name: OTEL_SERVICE_NAME
+              value: payments-service
           ports:
             - containerPort: 8084
           readinessProbe:

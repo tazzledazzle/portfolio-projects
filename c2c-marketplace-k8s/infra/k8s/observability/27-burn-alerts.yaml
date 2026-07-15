@@ -1,0 +1,93 @@
+# Multi-window multi-burn-rate alerts (Google SRE):
+#   Fast: 14.4x burn over 5m + 1h windows
+#   Slow: 6x burn over 30m + 6h windows
+# Every alert annotation runbook_url → docs/runbooks/error-budget-burn.md
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-burn-alerts
+  namespace: c2c
+data:
+  burn-alerts.yml: |
+    groups:
+      - name: slo.availability.burn
+        interval: 30s
+        rules:
+          - alert: AvailabilityErrorBudgetBurnFast
+            expr: |
+              (
+                1 - sli:http_requests:availability:ratio_rate5m
+              ) > (14.4 * (1 - 0.999))
+              and
+              (
+                1 - sli:http_requests:availability:ratio_rate1h
+              ) > (14.4 * (1 - 0.999))
+            for: 2m
+            labels:
+              severity: critical
+              slo: availability
+              burn_window: fast
+            annotations:
+              summary: "Fast availability error-budget burn on {{ $labels.service }}"
+              description: "14.4x burn rate sustained on 5m and 1h windows (SLO 99.9%)."
+              runbook_url: "docs/runbooks/error-budget-burn.md"
+
+          - alert: AvailabilityErrorBudgetBurnSlow
+            expr: |
+              (
+                1 - sli:http_requests:availability:ratio_rate30m
+              ) > (6 * (1 - 0.999))
+              and
+              (
+                1 - sli:http_requests:availability:ratio_rate6h
+              ) > (6 * (1 - 0.999))
+            for: 15m
+            labels:
+              severity: warning
+              slo: availability
+              burn_window: slow
+            annotations:
+              summary: "Slow availability error-budget burn on {{ $labels.service }}"
+              description: "6x burn rate sustained on 30m and 6h windows (SLO 99.9%)."
+              runbook_url: "docs/runbooks/error-budget-burn.md"
+
+      - name: slo.latency.burn
+        interval: 30s
+        rules:
+          - alert: LatencyErrorBudgetBurnFast
+            expr: |
+              (
+                1 - sli:http_requests:latency_le_500ms:ratio_rate5m
+              ) > (14.4 * (1 - 0.99))
+              and
+              (
+                1 - sli:http_requests:latency_le_500ms:ratio_rate1h
+              ) > (14.4 * (1 - 0.99))
+            for: 2m
+            labels:
+              severity: critical
+              slo: latency
+              burn_window: fast
+            annotations:
+              summary: "Fast latency error-budget burn on {{ $labels.service }}"
+              description: "14.4x burn rate for latency SLO (99% under 500ms)."
+              runbook_url: "docs/runbooks/error-budget-burn.md"
+
+          - alert: LatencyErrorBudgetBurnSlow
+            expr: |
+              (
+                1 - sli:http_requests:latency_le_500ms:ratio_rate30m
+              ) > (6 * (1 - 0.99))
+              and
+              (
+                1 - sli:http_requests:latency_le_500ms:ratio_rate6h
+              ) > (6 * (1 - 0.99))
+            for: 15m
+            labels:
+              severity: warning
+              slo: latency
+              burn_window: slow
+            annotations:
+              summary: "Slow latency error-budget burn on {{ $labels.service }}"
+              description: "6x burn rate for latency SLO (99% under 500ms)."
+              runbook_url: "docs/runbooks/error-budget-burn.md"
