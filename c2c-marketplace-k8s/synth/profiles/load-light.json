@@ -1,0 +1,13 @@
+{
+  "name": "load-light",
+  "seed": 99,
+  "listings": 100,
+  "orders": 20,
+  "confirmRatio": 0.6,
+  "chatPairs": 3,
+  "messagesPerPair": 5,
+  "searchRetries": 10,
+  "searchRetryMs": 500,
+  "geo": { "lat": 47.6062, "lon": -122.3321 },
+  "categories": ["furniture", "sporting-goods", "electronics"]
+}

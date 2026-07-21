@@ -1,0 +1,13 @@
+{
+  "name": "demo",
+  "seed": 42,
+  "listings": 10,
+  "orders": 5,
+  "confirmRatio": 0.6,
+  "chatPairs": 1,
+  "messagesPerPair": 3,
+  "searchRetries": 10,
+  "searchRetryMs": 500,
+  "geo": { "lat": 47.6062, "lon": -122.3321 },
+  "categories": ["furniture", "sporting-goods", "electronics"]
+}

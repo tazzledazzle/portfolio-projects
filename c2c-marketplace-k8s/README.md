@@ -109,11 +109,21 @@ curl -X POST localhost:8084/orders -H 'Content-Type: application/json' -d '{
 curl -X POST "localhost:8084/orders/<order id from step 4>/confirm-delivery"
 ```
 
+## Synthetic data
+
+Reproducible demo / light-load traffic against localhost services (compose or kind). Requires the stack up, `jq`, and `websocat` (for chat). Design notes: [`docs/plans/2026-07-12-synth-data-factory-design.md`](docs/plans/2026-07-12-synth-data-factory-design.md). Cursor orchestration agent: [`.claude/agents/synth-data-factory.md`](.claude/agents/synth-data-factory.md).
+
+```bash
+./scripts/synth-run.sh demo         # ~10 listings, mix confirm/dispute, one chat pair
+./scripts/synth-run.sh load-light   # ~100 listings, mild load
+```
+
 ## Running tests
 
 ```bash
 ./gradlew :payments-service:test    # pure escrow state machine — no Docker needed
 ./gradlew :listings-service:test    # Testcontainers-based, needs Docker running
+./gradlew :synth-harness:test       # synthetic data generators / harness unit tests
 ```
 
 ## What to poke at next
