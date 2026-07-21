@@ -1,0 +1,14 @@
+{
+  "id": "ENG-I-001",
+  "title": "Hybrid IC + technical lead (still ships code)",
+  "kind": "implicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "designs/builds platforms + leadership duties in same role",
+  "rationale": "Pure people-manager or pure IC mismatch.",
+  "demo": "Service you implement plus leadership artifacts in same portfolio slice.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-i-001"
+}

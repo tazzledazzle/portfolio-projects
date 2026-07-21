@@ -1,0 +1,31 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "multi-window AND burn-rate allow/deny",
+    "evidence computed server-side (promql_inspired simulator)"
+  ],
+  "message": "demo completed for SLO-based quality gates",
+  "ok": true,
+  "proof": {
+    "allow": true,
+    "burn_rate": 499.99999999999955,
+    "deny": true,
+    "evidence": {
+      "burn_long": 499.99999999999955,
+      "burn_short": 499.99999999999955,
+      "errors_long": 500,
+      "errors_short": 50,
+      "multi_window": "AND",
+      "objective": 0.999,
+      "threshold": 14.4,
+      "total_long": 1000,
+      "total_short": 100
+    },
+    "gate": "deny",
+    "promql_inspired": true,
+    "simulator": true
+  },
+  "requirement_id": "ENG-N-005",
+  "run": 1,
+  "service": "eng-n-005"
+}

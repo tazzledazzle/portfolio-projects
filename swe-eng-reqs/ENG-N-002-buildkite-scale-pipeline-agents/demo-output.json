@@ -1,0 +1,18 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "demo increments run counter",
+    "metrics expose demo_runs_total"
+  ],
+  "message": "demo completed for Buildkite-scale pipeline agents (simulator)",
+  "ok": true,
+  "proof": {
+    "agents": 1,
+    "concurrency_groups": 1,
+    "dynamic_pipeline_supported": true,
+    "simulator": "buildkite"
+  },
+  "requirement_id": "ENG-N-002",
+  "run": 1,
+  "service": "eng-n-002"
+}

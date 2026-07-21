@@ -1,0 +1,16 @@
+{
+  "id": "ENG-E-008",
+  "title": "Build production platform services",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "Design and build the core services that power developer productivity",
+  "rationale": "Hands-on IC contribution required alongside leadership.",
+  "demo": "Production-style Go service with health, metrics, tests, and compose demo.",
+  "stack": "go+compose+k8s",
+  "overlaps": [
+    "ENG-E-012"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-008"
+}

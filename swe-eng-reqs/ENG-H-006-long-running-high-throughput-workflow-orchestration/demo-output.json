@@ -1,0 +1,22 @@
+{
+  "acceptance": [
+    "durable multi-step workflow persists across Signal",
+    "replay_safe: duplicate event_id does not double-apply",
+    "throughput_per_s \u003e 0 after batch signals"
+  ],
+  "message": "durable workflow + throughput demo",
+  "ok": true,
+  "proof": {
+    "durable": true,
+    "not_load_only": true,
+    "replay_safe": true,
+    "signals_applied": 4,
+    "status": "completed",
+    "steps_completed": 4,
+    "throughput_per_s": 307.6923076923077,
+    "workflow_id": "wf-1"
+  },
+  "requirement_id": "ENG-H-006",
+  "run": 1,
+  "service": "eng-h-006"
+}

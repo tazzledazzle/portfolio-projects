@@ -1,0 +1,14 @@
+{
+  "id": "ENG-E-011",
+  "title": "7+ years production platforms / tooling / delivery / distributed storage",
+  "kind": "explicit",
+  "domain": "credential",
+  "project_type": "evidence",
+  "evidence": "7+ years of software engineering experience with building production platforms...",
+  "rationale": "Depth in this domain cluster, not generic SWE years.",
+  "demo": "Timeline + case-study evidence kit mapping years to domain outcomes.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-e-011"
+}

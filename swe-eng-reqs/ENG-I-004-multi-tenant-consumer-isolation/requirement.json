@@ -1,0 +1,14 @@
+{
+  "id": "ENG-I-004",
+  "title": "Multi-tenant consumer isolation",
+  "kind": "implicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "thousands of instances/workflows; org-wide CI/artifacts",
+  "rationale": "Shared platforms need quotas and blast-radius limits.",
+  "demo": "Tenant-aware scheduler with quotas and noisy-neighbor limits.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-i-004"
+}

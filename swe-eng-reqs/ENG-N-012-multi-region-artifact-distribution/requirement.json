@@ -1,0 +1,14 @@
+{
+  "id": "ENG-N-012",
+  "title": "Multi-region artifact distribution",
+  "kind": "nice",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "multi-region artifact distribution",
+  "rationale": "Latency/availability for global consumers.",
+  "demo": "Async replication across region buckets with lag metrics.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-n-012"
+}

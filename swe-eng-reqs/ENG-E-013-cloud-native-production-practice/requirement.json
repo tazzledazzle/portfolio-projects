@@ -1,0 +1,14 @@
+{
+  "id": "ENG-E-013",
+  "title": "Cloud-native production practice",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "production experience shipping services in cloud-native environments",
+  "rationale": "Containers, declarative deploy, health, horizontal scale.",
+  "demo": "Cloud-native service with Dockerfile, probes, HPA-ready manifests, and compose parity.",
+  "stack": "go+compose+k8s",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-e-013"
+}

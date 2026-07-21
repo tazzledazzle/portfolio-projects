@@ -1,0 +1,23 @@
+# Gloo VirtualService for listings — delegates routing to the RouteTable
+# that Flagger generates/owns for the listings-service Canary.
+#
+# Domains:
+#   listings.local — Host header for in-cluster load tests and curl demos
+#   *              — so plain curl http://localhost:8081 still works via kind NodePort
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: listings-service
+  namespace: c2c
+spec:
+  virtualHost:
+    domains:
+      - listings.local
+      - "*"
+    routes:
+      - matchers:
+          - prefix: /
+        delegateAction:
+          ref:
+            name: listings-service
+            namespace: c2c

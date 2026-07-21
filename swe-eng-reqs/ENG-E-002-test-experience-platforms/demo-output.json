@@ -1,0 +1,17 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "demo increments run counter",
+    "metrics expose demo_runs_total"
+  ],
+  "message": "demo completed for Test experience platforms",
+  "ok": true,
+  "proof": {
+    "flake_score": 0,
+    "junit_parsed": false,
+    "quarantined_count": 0
+  },
+  "requirement_id": "ENG-E-002",
+  "run": 1,
+  "service": "eng-e-002"
+}

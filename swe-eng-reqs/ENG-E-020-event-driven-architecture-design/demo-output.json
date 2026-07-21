@@ -1,0 +1,25 @@
+{
+  "acceptance": [
+    "schema envelopes with id/subject/schema/payload/ts",
+    "consumers deliver published messages",
+    "handler failure → DLQ",
+    "replay from log offset",
+    "nats_inspired + simulator honesty labels"
+  ],
+  "message": "NATS-inspired bus demo (simulator; no live NATS)",
+  "ok": true,
+  "proof": {
+    "dlq": true,
+    "dlq_reason": "simulated handler failure",
+    "envelope_id": "msg-1",
+    "nats_connected": false,
+    "nats_inspired": true,
+    "replay": true,
+    "replay_count": 2,
+    "schema_envelope": true,
+    "simulator": true
+  },
+  "requirement_id": "ENG-E-020",
+  "run": 1,
+  "service": "eng-e-020"
+}

@@ -1,0 +1,18 @@
+{
+  "acceptance": [
+    "ADR list ≥1",
+    "≥2 alternatives documented",
+    "skeleton references ADR ID"
+  ],
+  "message": "demo completed for Design platform subsystems",
+  "ok": true,
+  "proof": {
+    "adr_count": 1,
+    "alternatives": 3,
+    "decision_recorded": true,
+    "skeleton_adr_id": "0001-platform-subsystem"
+  },
+  "requirement_id": "ENG-E-007",
+  "run": 1,
+  "service": "eng-e-007"
+}

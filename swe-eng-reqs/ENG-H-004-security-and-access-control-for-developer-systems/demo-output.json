@@ -1,0 +1,34 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "role allow produces rbac_allow",
+    "missing role produces rbac_deny",
+    "expired exp denies",
+    "oidc_inspired simulator labeled"
+  ],
+  "message": "demo completed for OIDC-inspired RBAC (no external IdP)",
+  "ok": true,
+  "proof": {
+    "allow_decision": {
+      "allow": true,
+      "reason": "rbac_allow",
+      "action": "write",
+      "resource": "pipelines"
+    },
+    "deny_decision": {
+      "allow": false,
+      "reason": "rbac_deny",
+      "action": "write",
+      "resource": "pipelines"
+    },
+    "exp_denied": true,
+    "external_idp": false,
+    "oidc_inspired": true,
+    "rbac_allow": true,
+    "rbac_deny": true,
+    "simulator": true
+  },
+  "requirement_id": "ENG-H-004",
+  "run": 1,
+  "service": "eng-h-004"
+}

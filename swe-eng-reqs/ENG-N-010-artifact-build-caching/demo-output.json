@@ -1,0 +1,16 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "demo increments run counter",
+    "metrics expose demo_runs_total"
+  ],
+  "message": "demo completed for Artifact / build caching",
+  "ok": true,
+  "proof": {
+    "cache_hit_rate": 0,
+    "cas_enabled": true
+  },
+  "requirement_id": "ENG-N-010",
+  "run": 1,
+  "service": "eng-n-010"
+}

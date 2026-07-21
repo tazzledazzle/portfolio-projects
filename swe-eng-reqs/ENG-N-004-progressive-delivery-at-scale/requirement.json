@@ -1,0 +1,16 @@
+{
+  "id": "ENG-N-004",
+  "title": "Progressive delivery at scale",
+  "kind": "nice",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "Experience designing and operating progressive delivery systems at scale",
+  "rationale": "Canary/blue-green maturity beyond basic rollout.",
+  "demo": "Multi-environment progressive delivery with automated promotion criteria.",
+  "stack": "go+k8s",
+  "overlaps": [
+    "ENG-E-024"
+  ],
+  "soft_skill": false,
+  "slug": "eng-n-004"
+}

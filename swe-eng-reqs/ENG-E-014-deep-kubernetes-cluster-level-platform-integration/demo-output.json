@@ -1,0 +1,29 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "CIJob schedules Job child",
+    "Complete and Failed conditions derived from Job state",
+    "kind is CIJob (not ManagedWorkload)"
+  ],
+  "message": "demo completed for CIJob→Job Complete/Failed (Kind optional)",
+  "ok": true,
+  "proof": {
+    "bad_job_name": "demo-bad-1784431973732171000-job-2",
+    "complete": true,
+    "complete_and_failed_paths": true,
+    "conditions": [
+      "Ready",
+      "Complete",
+      "Failed"
+    ],
+    "crd": true,
+    "failed": true,
+    "job_scheduled": true,
+    "kind": "CIJob",
+    "kind_optional": true,
+    "ok_job_name": "demo-ok-1784431973732171000-job-1"
+  },
+  "requirement_id": "ENG-E-014",
+  "run": 1,
+  "service": "eng-e-014"
+}

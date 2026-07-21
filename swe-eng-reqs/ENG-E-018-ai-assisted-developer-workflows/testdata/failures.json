@@ -1,0 +1,19 @@
+{
+  "failures": [
+    {
+      "id": "pipeline-cache-timeout",
+      "summary": "Build failed after repeated cache-service timeouts.",
+      "findings": [
+        "cache connection timed out three times",
+        "compilation did not begin"
+      ]
+    },
+    {
+      "id": "pipeline-test-regression",
+      "summary": "Test stage found a deterministic promotion validation regression.",
+      "findings": [
+        "promotion validation expected HTTP 409 but received HTTP 200"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gradle build *)",
+      "Bash(gradle *)",
+      "Bash(wait)",
+      "Bash(./gradlew *)",
+      "Bash(git *)",
+      "Bash(bd show *)",
+      "Bash(bd ready *)",
+      "Bash(python3 *)",
+      "Skill(gsd-map-codebase)",
+      "Skill(gsd-plan-phase)",
+      "Bash(python *)",
+      "Bash(pip install *)",
+      "Bash(bash *)",
+      "Bash(bd list *)",
+      "Bash(bd close *)"
+    ]
+  }
+}

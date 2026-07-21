@@ -1,0 +1,20 @@
+{
+  "acceptance": [
+    "schedule beyond quota denied",
+    "noisy tenant rate-limited while quiet tenant schedules",
+    "missing tenant id rejected"
+  ],
+  "message": "live tenant quota + noisy-neighbor isolation demo",
+  "ok": true,
+  "proof": {
+    "noisy_neighbor_limited": true,
+    "quota_denials": 1,
+    "quota_enforced": true,
+    "rate_denials": 1,
+    "scheduled_ok": 3,
+    "tenants": 2
+  },
+  "requirement_id": "ENG-I-004",
+  "run": 1,
+  "service": "eng-i-004"
+}

@@ -1,0 +1,22 @@
+{
+  "acceptance": [
+    "≥40 simulated data centers registered",
+    "failure domains group DCs",
+    "fan-out reports partial success for unhealthy DCs",
+    "labeled multi_dc_simulator (not physical)"
+  ],
+  "message": "live multi-DC simulator demo (≥40 DCs + fan-out)",
+  "ok": true,
+  "proof": {
+    "data_centers": 42,
+    "failure_domains": 6,
+    "fanout_failed": 4,
+    "fanout_ok": true,
+    "fanout_pushed": 38,
+    "multi_dc_simulator": true,
+    "simulator": true
+  },
+  "requirement_id": "ENG-E-010",
+  "run": 1,
+  "service": "eng-e-010"
+}

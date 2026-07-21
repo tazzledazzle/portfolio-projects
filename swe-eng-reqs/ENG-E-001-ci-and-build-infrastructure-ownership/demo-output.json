@@ -1,0 +1,21 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "demo increments run counter",
+    "metrics expose demo_runs_total"
+  ],
+  "message": "demo completed for CI and build infrastructure ownership",
+  "ok": true,
+  "proof": {
+    "pipeline_stages": [
+      "lint",
+      "unit",
+      "build",
+      "publish"
+    ],
+    "retries": 1
+  },
+  "requirement_id": "ENG-E-001",
+  "run": 1,
+  "service": "eng-e-001"
+}

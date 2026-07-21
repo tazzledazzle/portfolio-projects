@@ -1,0 +1,37 @@
+{
+  "ok": true,
+  "requirement_id": "ENG-E-016",
+  "service": "eng-e-016",
+  "title": "Agent frameworks familiarity",
+  "run": 1,
+  "agent_framework_inspired": true,
+  "simulator": true,
+  "live_provider": false,
+  "goal": "explain pipeline build-42",
+  "plan_steps": 1,
+  "total_planned": 1,
+  "tools_invoked": 1,
+  "trace": [
+    {
+      "index": 1,
+      "phase": "act_observe",
+      "tool": "inspect_pipeline",
+      "observation": {
+        "isError": false,
+        "content": {
+          "pipeline": "build-42",
+          "status": "failed",
+          "finding": "test stage regression"
+        }
+      }
+    }
+  ],
+  "deterministic_eval_pass": true,
+  "max_steps": 5,
+  "acceptance": [
+    "healthz returns ok",
+    "fixture planner emits at least one step",
+    "registered tools execute through the bounded loop",
+    "trajectory passes deterministic evaluation"
+  ]
+}

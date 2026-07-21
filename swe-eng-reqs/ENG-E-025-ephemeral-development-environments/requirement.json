@@ -1,0 +1,14 @@
+{
+  "id": "ENG-E-025",
+  "title": "Ephemeral development environments",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "ephemeral development environments",
+  "rationale": "Explicit platform surface for short-lived envs.",
+  "demo": "DevEnv CRD with TTL reclaim and Ready/Expired conditions.",
+  "stack": "go+k8s",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-e-025"
+}

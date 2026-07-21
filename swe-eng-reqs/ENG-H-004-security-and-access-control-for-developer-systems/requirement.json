@@ -1,0 +1,14 @@
+{
+  "id": "ENG-H-004",
+  "title": "Security and access control for developer systems",
+  "kind": "hidden",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "artifact distribution + CI + K8s integration",
+  "rationale": "These systems are privilege amplifiers.",
+  "demo": "OIDC/RBAC model for CI/registry with policy tests.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-h-004"
+}

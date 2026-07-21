@@ -1,0 +1,19 @@
+{
+  "acceptance": [
+    "cost_per_build_usd computed server-side from resources",
+    "cache_savings_pct computed from recorded hits/misses",
+    "does not own CAS cache (N-010)"
+  ],
+  "message": "live cost-per-build + cache savings demo",
+  "ok": true,
+  "proof": {
+    "builds": 3,
+    "cache_hits": 2,
+    "cache_savings_pct": 12.6595744680851,
+    "cost_per_build_usd": 0.006841666666666667,
+    "not_cas_owner": true
+  },
+  "requirement_id": "ENG-H-002",
+  "run": 1,
+  "service": "eng-h-002"
+}

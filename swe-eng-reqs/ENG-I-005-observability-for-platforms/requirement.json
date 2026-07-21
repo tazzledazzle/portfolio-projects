@@ -1,0 +1,14 @@
+{
+  "id": "ENG-I-005",
+  "title": "Observability for platforms",
+  "kind": "implicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "scale + quality + SLO gates + postmortems",
+  "rationale": "Cannot operate 40+ DC platforms without observability.",
+  "demo": "OTel-instrumented service exporting metrics/traces with alert rules.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-i-005"
+}

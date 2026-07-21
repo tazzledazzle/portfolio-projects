@@ -1,0 +1,19 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "demo increments run counter",
+    "metrics expose demo_runs_total"
+  ],
+  "message": "demo completed for Distributed storage for artifacts",
+  "ok": true,
+  "proof": {
+    "checksum": "sha256:214009e8ffdbadaa7cca6b5ecee0486a44b5cf24740c02dd29a5d0c1722d651c",
+    "durable": true,
+    "healthy_nodes": 3,
+    "nodes": 3,
+    "replicas": 3
+  },
+  "requirement_id": "ENG-N-009",
+  "run": 1,
+  "service": "eng-n-009"
+}

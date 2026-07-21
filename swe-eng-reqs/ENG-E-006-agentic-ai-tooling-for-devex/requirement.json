@@ -1,0 +1,18 @@
+{
+  "id": "ENG-E-006",
+  "title": "Agentic AI tooling for DevEx",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "agentic AI tooling that is redefining how engineers move from idea to production",
+  "rationale": "AI is in the team charter, not optional curiosity.",
+  "demo": "MCP-backed agent tools that diagnose pipelines and propose safe actions.",
+  "stack": "python+compose",
+  "overlaps": [
+    "ENG-E-016",
+    "ENG-E-017",
+    "ENG-N-014"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-006"
+}

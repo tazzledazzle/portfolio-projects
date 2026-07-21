@@ -1,0 +1,14 @@
+{
+  "id": "ENG-N-011",
+  "title": "Artifact versioning",
+  "kind": "nice",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "versioning",
+  "rationale": "Immutability, tags, promotion of versions.",
+  "demo": "Version/promotion API with immutable digests and mutable tags.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-n-011"
+}

@@ -1,0 +1,54 @@
+{
+  "ok": true,
+  "requirement_id": "ENG-E-018",
+  "service": "eng-e-018",
+  "title": "AI-assisted developer workflows",
+  "run": 1,
+  "simulator": true,
+  "live_provider": false,
+  "stages": [
+    "ingest",
+    "retrieve",
+    "propose",
+    "approval"
+  ],
+  "workflow_id": "wf-1",
+  "failure_id": "pipeline-cache-timeout",
+  "approval_required": true,
+  "awaiting_before_approve": true,
+  "status_after_gate": "awaiting_approval",
+  "status": "approved",
+  "proposal": {
+    "action": "retry_failed_stage",
+    "mutating": true,
+    "requires_approval": true,
+    "summary": "Proposed remediation for pipeline-cache-timeout"
+  },
+  "history": [
+    "ingest",
+    "retrieve",
+    "propose",
+    "approval",
+    "approved"
+  ],
+  "dual_path": "awaiting_then_approved",
+  "path": [
+    "awaiting_approval",
+    "approved"
+  ],
+  "audit_tail": [
+    {
+      "action": "workflow_dual_path",
+      "requirement_id": "ENG-E-018",
+      "workflow_id": "wf-1",
+      "status_after_gate": "awaiting_approval",
+      "final_status": "approved"
+    }
+  ],
+  "acceptance": [
+    "healthz returns ok",
+    "stages are ingest\u2192retrieve\u2192propose\u2192approval",
+    "workflow reaches awaiting_approval before approve",
+    "approve transitions to approved"
+  ]
+}

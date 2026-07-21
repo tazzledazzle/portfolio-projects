@@ -1,0 +1,24 @@
+{
+  "pipelines": [
+    {
+      "id": "pipeline-cache-timeout",
+      "status": "failed",
+      "failed_stage": "build",
+      "error": "cache connection timed out three times",
+      "findings": [
+        "cache connection timed out three times",
+        "compilation did not begin"
+      ]
+    },
+    {
+      "id": "pipeline-flake-gate",
+      "status": "failed",
+      "failed_stage": "test",
+      "error": "flaky gate exceeded retry budget",
+      "findings": [
+        "integration suite flake rate above threshold",
+        "no promotion candidate digest available"
+      ]
+    }
+  ]
+}

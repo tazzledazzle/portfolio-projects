@@ -1,0 +1,14 @@
+{
+  "id": "ENG-H-006",
+  "title": "Long-running / high-throughput workflow orchestration",
+  "kind": "hidden",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "thousands of workflows + delivery/CI ownership",
+  "rationale": "Workflow scale implies queues, retries, durable state.",
+  "demo": "Durable workflow engine MVP with throughput numbers.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-h-006"
+}

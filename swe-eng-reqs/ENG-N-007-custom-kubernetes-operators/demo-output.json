@@ -1,0 +1,21 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "demo increments run counter",
+    "metrics expose demo_runs_total"
+  ],
+  "message": "demo completed for Custom Kubernetes operators",
+  "ok": true,
+  "proof": {
+    "conditions": [
+      "Ready"
+    ],
+    "crd": true,
+    "finalizer_cleared": true,
+    "kind": "ManagedWorkload",
+    "reconciled": true
+  },
+  "requirement_id": "ENG-N-007",
+  "run": 1,
+  "service": "eng-n-007"
+}

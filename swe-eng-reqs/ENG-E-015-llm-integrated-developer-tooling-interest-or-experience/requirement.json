@@ -1,0 +1,16 @@
+{
+  "id": "ENG-E-015",
+  "title": "LLM-integrated developer tooling interest or experience",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "Experience with or strong technical interest in LLM-integrated developer tooling",
+  "rationale": "Soft bar: real interest/experience required, not necessarily production LLM ownership.",
+  "demo": "Offline-eval LLM workflow that summarizes failing pipelines from fixtures.",
+  "stack": "python+compose",
+  "overlaps": [
+    "ENG-E-006"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-015"
+}

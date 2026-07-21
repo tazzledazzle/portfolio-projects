@@ -1,0 +1,17 @@
+{
+  "id": "ENG-E-010",
+  "title": "Multi-data-center operation (40+)",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "across 40+ data centers with diverse infrastructure profiles",
+  "rationale": "Geographic/ops complexity is explicit.",
+  "demo": "Simulated multi-DC control plane with failure domains and fan-out config.",
+  "stack": "go+compose",
+  "overlaps": [
+    "ENG-N-008",
+    "ENG-H-001"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-010"
+}

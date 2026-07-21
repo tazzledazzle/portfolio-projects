@@ -1,0 +1,31 @@
+{
+  "acceptance": [
+    "enqueue assigns partition",
+    "duplicate idempotency key → duplicate_suppressed",
+    "nack increments attempts and requeues",
+    "ack completes task"
+  ],
+  "message": "task queue demo: retries, idempotency keys, partitions",
+  "ok": true,
+  "proof": {
+    "attempts_after_nack": 1,
+    "duplicate_suppressed": true,
+    "idempotent": true,
+    "partition": 1,
+    "partitions": true,
+    "retries": true,
+    "stats": {
+      "acked": 1,
+      "duplicate_suppressed": 1,
+      "enqueued": 1,
+      "nacked": 1,
+      "partitions": 4,
+      "queue_depth": 0,
+      "tasks": 1
+    },
+    "task_id": "task-1"
+  },
+  "requirement_id": "ENG-E-019",
+  "run": 1,
+  "service": "eng-e-019"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "ENG-N-009",
+  "title": "Distributed storage for artifacts",
+  "kind": "nice",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "distributed storage, caching, versioning, or multi-region artifact distribution",
+  "rationale": "Storage-system depth behind registries.",
+  "demo": "Multi-node object storage facade with durability metadata.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-n-009"
+}

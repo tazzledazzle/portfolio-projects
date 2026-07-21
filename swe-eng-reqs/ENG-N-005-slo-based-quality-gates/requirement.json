@@ -1,0 +1,14 @@
+{
+  "id": "ENG-N-005",
+  "title": "SLO-based quality gates",
+  "kind": "nice",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "SLO-based quality gates",
+  "rationale": "Release decisions tied to service objectives.",
+  "demo": "Gate service deny/allow based on PromQL burn rate with evidence payload.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-n-005"
+}

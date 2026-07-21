@@ -1,0 +1,14 @@
+{
+  "id": "ENG-N-008",
+  "title": "Heterogeneous deployment environments",
+  "kind": "nice",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "across heterogeneous deployment environments",
+  "rationale": "Multiple runtime/cluster/profile flavors.",
+  "demo": "Environment profile abstraction that schedules the same workload across profiles.",
+  "stack": "go+compose+k8s",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-n-008"
+}

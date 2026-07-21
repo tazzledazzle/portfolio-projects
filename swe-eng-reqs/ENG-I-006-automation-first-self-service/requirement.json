@@ -1,0 +1,14 @@
+{
+  "id": "ENG-I-006",
+  "title": "Automation-first / self-service",
+  "kind": "implicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "IDP + CI/delivery ownership + high leverage",
+  "rationale": "Manual gatekeeping contradicts DevEx charter.",
+  "demo": "Self-service API that removes a ticket bottleneck with metrics.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-i-006"
+}

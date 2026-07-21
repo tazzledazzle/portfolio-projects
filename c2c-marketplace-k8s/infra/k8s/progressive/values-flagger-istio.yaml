@@ -1,0 +1,17 @@
+# Flagger Helm values — Istio fallback provider.
+# Used when PROGRESSIVE_PROVIDER=istio.
+#
+#   kubectl apply -f https://raw.githubusercontent.com/fluxcd/flagger/main/artifacts/flagger/crd.yaml
+#   helm upgrade -i flagger flagger/flagger -n istio-system -f values-flagger-istio.yaml
+
+crd:
+  create: false
+
+meshProvider: istio
+
+metricsServer: http://prometheus.c2c:9090
+
+prometheus:
+  install: false
+
+selectorLabels: app

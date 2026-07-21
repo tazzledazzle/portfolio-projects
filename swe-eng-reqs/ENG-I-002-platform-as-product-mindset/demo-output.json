@@ -1,0 +1,17 @@
+{
+  "acceptance": [
+    "SLA objectives published",
+    "adoption metrics tracked",
+    "golden-path template present"
+  ],
+  "message": "live platform-as-product demo",
+  "ok": true,
+  "proof": {
+    "adoption": true,
+    "golden_path": true,
+    "sla": true
+  },
+  "requirement_id": "ENG-I-002",
+  "run": 1,
+  "service": "eng-i-002"
+}

@@ -1,0 +1,32 @@
+{
+  "acceptance": [
+    "chaos runs in one failure domain",
+    "blast radius contained with unaffected domains/tenants",
+    "affected/unaffected sets are server-computed"
+  ],
+  "message": "live chaos blast-radius containment demo",
+  "ok": true,
+  "proof": {
+    "affected_domains": [
+      "fd-east"
+    ],
+    "affected_tenants": [
+      "tenant-a",
+      "tenant-b"
+    ],
+    "chaos_ran": true,
+    "contained": true,
+    "scenario": "partition",
+    "unaffected_domains": [
+      "fd-central",
+      "fd-west"
+    ],
+    "unaffected_tenants": [
+      "tenant-c",
+      "tenant-d"
+    ]
+  },
+  "requirement_id": "ENG-H-001",
+  "run": 1,
+  "service": "eng-h-001"
+}

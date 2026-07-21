@@ -6,6 +6,8 @@ nodes:
     extraPortMappings:
       # Expose the services on host ports without needing kubectl
       # port-forward for basic smoke testing.
+      # 30081 fronts Gloo (or Istio) gateway-proxy for listings canaries —
+      # not the listings-service NodePort directly.
       - containerPort: 30081
         hostPort: 8081
         protocol: TCP

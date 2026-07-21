@@ -1,0 +1,14 @@
+{
+  "id": "ENG-N-003",
+  "title": "Bazel-class hermetic/remote builds",
+  "kind": "nice",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "Bazel",
+  "rationale": "Hermetic/remote build systems for large codebases.",
+  "demo": "Content-addressed remote cache with hermetic input digests and hit metrics.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-n-003"
+}

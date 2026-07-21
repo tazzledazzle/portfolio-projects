@@ -7,8 +7,9 @@ Full design rationale, data flow diagrams, and known simplifications: [`docs/TDD
 ## Prerequisites
 
 - JDK 17+
-- Docker (with enough memory allocated — OpenSearch alone wants ~1GB)
+- Docker (with enough memory allocated — OpenSearch alone wants ~1GB; Gloo+Flagger+LGTM need more)
 - [kind](https://kind.sigs.k8s.io/) and `kubectl`, for the full k8s path
+- [Helm 3](https://helm.sh/) (Gloo Edge + Flagger install in `deploy-kind.sh`)
 - This repo has **no Gradle wrapper jar checked in** (binary files don't belong in a hand-written scaffold). Generate one once, locally:
   ```bash
   gradle wrapper --gradle-version 8.7
@@ -29,17 +30,38 @@ Run each of the other three services the same way, in separate terminals (or bac
 
 ## Option B: full local k8s (kind)
 
-Best for seeing the actual container-diagram topology running, and for experimenting with multiple replicas (see `infra/k8s/12-messaging.yaml`).
+Best for seeing the actual container-diagram topology running, and for experimenting with multiple replicas (see `infra/k8s/12-messaging.yaml`). Requires **Helm 3** in addition to kind/kubectl (Gloo + Flagger install).
 
 ```bash
 ./scripts/build-images.sh     # gradle installDist + docker build, all 4 services
-./scripts/deploy-kind.sh      # kind create cluster, load images, kubectl apply
+./scripts/deploy-kind.sh      # kind create cluster, load images, LGTM, Gloo+Flagger, apps
 kubectl -n c2c get pods -w    # watch until everything is Running/Ready
+kubectl -n c2c get canary     # listings-service should be Initialized/Succeeded
 ```
 
-Services are reachable at `localhost:8081`–`8084` via kind's `extraPortMappings` (no `kubectl port-forward` needed for basic testing).
+- **Listings** (`localhost:8081`) go through **Gloo Edge** gateway-proxy (NodePort 30081). Prefer `curl -H 'Host: listings.local' http://localhost:8081/...` (domain `*` is also configured so bare curls usually work).
+- **Search / messaging / payments** stay on direct NodePorts `8082`–`8084`.
+- **Grafana:** http://localhost:3000 (anonymous Viewer).
+
+Istio fallback (if Gloo is painful locally):
+
+```bash
+PROGRESSIVE_PROVIDER=istio ./scripts/deploy-kind.sh
+```
 
 To tear down: `kind delete cluster --name c2c-marketplace`.
+
+### Progressive delivery (listings canary)
+
+Flagger analyzes and promotes `listings-service` using Prometheus at `http://prometheus.c2c:9090` (existing LGTM stack — Datadog stand-in). Design notes: [`docs/plans/2026-07-20-flagger-gloo-progressive-delivery-design.md`](docs/plans/2026-07-20-flagger-gloo-progressive-delivery-design.md).
+
+```bash
+./scripts/canary-listings.sh
+# or: IMAGE_TAG=v2 ./scripts/canary-listings.sh
+# watch-only: ./scripts/canary-listings.sh --watch-only
+```
+
+During `Progressing`, Flagger steps canary weight (10% → 50%), checks Micrometer success-rate ≥ 99% and p99 ≤ 500ms, then promotes to primary. To demo rollback, generate 5xx against the canary while analysis is running (or crash the canary pods) until the failure threshold is hit.
 
 ## Exercising the end-to-end flow
 
@@ -100,4 +122,4 @@ curl -X POST "localhost:8084/orders/<order id from step 4>/confirm-delivery"
 - Kill the `search-service` pod mid-index and watch it resume from its committed Kafka offset instead of re-indexing everything or losing events.
 - Try to make `EscrowStateMachine` do something illegal (e.g. dispute an already-released order) and confirm it throws rather than silently corrupting state — then try the same thing against the HTTP API and check you get a `409`, not a `500`.
 
-See `docs/TDD.md` section 9 for what's deliberately left unbuilt (auth, API gateway, observability) and why.
+See `docs/TDD.md` section 9 for what's deliberately left unbuilt (auth, full multi-service gateway, etc.) and why. Listings canary + LGTM observability are implemented for kind demos.

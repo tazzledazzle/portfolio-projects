@@ -1,0 +1,14 @@
+{
+  "id": "ENG-I-009",
+  "title": "Support AI/GPU-adjacent developer workloads as platform consumers",
+  "kind": "implicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "CoreWeave AI cloud + DevEx serving that org",
+  "rationale": "Platforms serve AI engineers: large artifacts, long jobs\u2014not GPU kernel expertise.",
+  "demo": "Long-running job + large-artifact path with timeout/chunked upload support.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-i-009"
+}

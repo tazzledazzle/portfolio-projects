@@ -1,0 +1,21 @@
+{
+  "acceptance": [
+    "service code ships in this folder",
+    "leadership artifacts under artifacts/leadership/",
+    "hybrid_ic requires both code and leadership"
+  ],
+  "message": "demo completed for Hybrid IC + technical lead (still ships code)",
+  "ok": true,
+  "proof": {
+    "artifact_paths": [
+      "artifacts/leadership/LEAD.md",
+      "artifacts/leadership/design-review-notes.md"
+    ],
+    "code_shipped": true,
+    "hybrid_ic": true,
+    "leadership_artifacts": true
+  },
+  "requirement_id": "ENG-I-001",
+  "run": 1,
+  "service": "eng-i-001"
+}

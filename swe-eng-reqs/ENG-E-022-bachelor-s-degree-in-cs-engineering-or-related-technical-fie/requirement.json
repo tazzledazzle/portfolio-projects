@@ -1,0 +1,14 @@
+{
+  "id": "ENG-E-022",
+  "title": "Bachelor's degree in CS, Engineering, or related technical field",
+  "kind": "explicit",
+  "domain": "credential",
+  "project_type": "evidence",
+  "evidence": "Bachelor's degree in Computer Science, Engineering, or a related technical field",
+  "rationale": "Formal credential gate stated in posting.",
+  "demo": "Credential evidence kit with degree mapping notes.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-e-022"
+}

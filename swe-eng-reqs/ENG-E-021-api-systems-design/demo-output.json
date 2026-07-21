@@ -1,0 +1,20 @@
+{
+  "acceptance": [
+    "OpenAPI document present",
+    "authz default-deny",
+    "server-side rate limits",
+    "v1/v2 compat shapes"
+  ],
+  "message": "live OpenAPI authz rate-limit compat demo",
+  "ok": true,
+  "proof": {
+    "authz_enforced": true,
+    "compat_pass": true,
+    "openapi": true,
+    "openapi_inspired": true,
+    "rate_limited": true
+  },
+  "requirement_id": "ENG-E-021",
+  "run": 1,
+  "service": "eng-e-021"
+}

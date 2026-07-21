@@ -1,0 +1,72 @@
+openapi: 3.0.3
+info:
+  title: ENG-E-021 Sample Resource API
+  version: 1.0.0
+  description: Hand-authored OpenAPI contract (openapi_inspired; no OAS codegen tooling).
+servers:
+  - url: http://127.0.0.1:18521
+paths:
+  /v1/resources:
+    get:
+      summary: List resources (v1 shape)
+      operationId: listResourcesV1
+      security:
+        - ScopeAuth: [resources:read]
+      responses:
+        "200":
+          description: Resource list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    example: v1
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+  /v2/resources:
+    get:
+      summary: List resources (v2 shape)
+      operationId: listResourcesV2
+      security:
+        - ScopeAuth: [resources:read]
+      responses:
+        "200":
+          description: Resource list with metadata
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  api_version:
+                    type: string
+                    example: v2
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        display_name:
+                          type: string
+  /v1/openapi.json:
+    get:
+      summary: Serve OpenAPI document as JSON-friendly text
+      responses:
+        "200":
+          description: OpenAPI YAML/JSON document
+components:
+  securitySchemes:
+    ScopeAuth:
+      type: apiKey
+      in: header
+      name: X-Scope

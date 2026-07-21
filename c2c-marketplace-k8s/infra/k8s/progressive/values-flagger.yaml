@@ -1,0 +1,20 @@
+# Flagger Helm values — Gloo provider, existing LGTM Prometheus.
+# Install after CRDs:
+#   kubectl apply -f https://raw.githubusercontent.com/fluxcd/flagger/main/artifacts/flagger/crd.yaml
+#   helm upgrade -i flagger flagger/flagger -n gloo-system -f values-flagger.yaml
+#
+# For Istio fallback, use values-flagger-istio.yaml instead (see deploy-kind.sh).
+
+crd:
+  create: false
+
+meshProvider: gloo
+
+# Existing discrete Prometheus in namespace c2c (LGTM stand-in for Datadog).
+metricsServer: http://prometheus.c2c:9090
+
+prometheus:
+  install: false
+
+# Match listings Deployment selector (app: listings-service).
+selectorLabels: app

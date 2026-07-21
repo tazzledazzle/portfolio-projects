@@ -1,0 +1,17 @@
+{
+  "acceptance": [
+    "CLI status --json emits valid JSON",
+    "unknown command yields clear error without panic",
+    "stdout matches testdata/status.json.golden"
+  ],
+  "message": "demo completed for Developer interface quality (API/CLI UX)",
+  "ok": true,
+  "proof": {
+    "clear_errors": true,
+    "cli_json": true,
+    "golden_match": true
+  },
+  "requirement_id": "ENG-I-007",
+  "run": 1,
+  "service": "eng-i-007"
+}

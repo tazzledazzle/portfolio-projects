@@ -1,0 +1,14 @@
+{
+  "id": "ENG-E-018",
+  "title": "AI-assisted developer workflows",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "AI-assisted developer workflows",
+  "rationale": "End-to-end workflow design, not only model calls.",
+  "demo": "Workflow: ingest failure \u2192 retrieve context \u2192 propose fix \u2192 require approval.",
+  "stack": "python+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-e-018"
+}

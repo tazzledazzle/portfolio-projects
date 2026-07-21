@@ -1,0 +1,21 @@
+{
+  "acceptance": [
+    "healthz/readyz probes present",
+    "HPA-ready manifests",
+    "Dockerfile + compose parity"
+  ],
+  "message": "demo completed for Cloud-native production practice",
+  "ok": true,
+  "proof": {
+    "compose_parity": true,
+    "dockerfile": true,
+    "hpa_ready": true,
+    "probes": {
+      "liveness": "/healthz",
+      "readiness": "/readyz"
+    }
+  },
+  "requirement_id": "ENG-E-013",
+  "run": 1,
+  "service": "eng-e-013"
+}

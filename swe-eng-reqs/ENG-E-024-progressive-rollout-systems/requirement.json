@@ -1,0 +1,16 @@
+{
+  "id": "ENG-E-024",
+  "title": "Progressive rollout systems",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "progressive rollout systems",
+  "rationale": "Explicit system to design and build in What You'll Do.",
+  "demo": "Canary controller with weight steps, abort, and promote APIs.",
+  "stack": "go+k8s",
+  "overlaps": [
+    "ENG-N-004"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-024"
+}

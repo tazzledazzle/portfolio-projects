@@ -1,0 +1,14 @@
+{
+  "id": "ENG-N-006",
+  "title": "Automated multi-stage pipeline orchestration",
+  "kind": "nice",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "automated multi-stage pipeline orchestration",
+  "rationale": "Structured promote-through-environments automation.",
+  "demo": "Orchestrator that advances stages only when gates pass.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-n-006"
+}

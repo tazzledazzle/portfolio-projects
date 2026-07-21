@@ -1,0 +1,89 @@
+# Istio fallback Gateway + VirtualService shell for listings.
+# Applied only when PROGRESSIVE_PROVIDER=istio.
+# Flagger will mutate/own the weighted VirtualService for the Canary.
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: listings-gateway
+  namespace: c2c
+spec:
+  selector:
+    istio: ingress
+    app: istio-ingress
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - listings.local
+        - "*"
+---
+# Flagger Canary for listings-service (Istio provider).
+# Micrometer MetricTemplates stay the same as the Gloo path.
+apiVersion: flagger.app/v1beta1
+kind: Canary
+metadata:
+  name: listings-service
+  namespace: c2c
+spec:
+  provider: istio
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: listings-service
+  progressDeadlineSeconds: 120
+  service:
+    port: 8081
+    targetPort: 8081
+    portName: http
+    gateways:
+      - c2c/listings-gateway
+    hosts:
+      - listings.local
+      - "*"
+    trafficPolicy:
+      tls:
+        mode: DISABLE
+  analysis:
+    interval: 30s
+    threshold: 5
+    maxWeight: 50
+    stepWeight: 10
+    metrics:
+      - name: listings-success-rate
+        templateRef:
+          name: listings-success-rate
+          namespace: c2c
+        thresholdRange:
+          min: 99
+        interval: 30s
+      - name: listings-latency-p99
+        templateRef:
+          name: listings-latency-p99
+          namespace: c2c
+        thresholdRange:
+          max: 500
+        interval: 30s
+    webhooks:
+      - name: load-test
+        type: rollout
+        url: http://flagger-loadtester.c2c/
+        timeout: 15s
+        metadata:
+          type: cmd
+          cmd: >-
+            hey -z 20s -q 5 -c 2
+            -host listings.local
+            http://istio-ingress.istio-system/healthz
+      - name: acceptance-test
+        type: pre-rollout
+        url: http://flagger-loadtester.c2c/
+        timeout: 30s
+        metadata:
+          type: bash
+          cmd: >-
+            curl -sf -o /dev/null -w '%{http_code}'
+            -H 'Host: listings.local'
+            http://istio-ingress.istio-system/healthz
+            | grep -E '200|204'

@@ -1,0 +1,14 @@
+{
+  "id": "ENG-N-010",
+  "title": "Artifact / build caching",
+  "kind": "nice",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "caching",
+  "rationale": "Performance layer distinct from storage.",
+  "demo": "CAS cache with namespace isolation and LRU eviction.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-n-010"
+}

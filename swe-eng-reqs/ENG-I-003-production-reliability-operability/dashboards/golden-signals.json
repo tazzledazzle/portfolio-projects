@@ -1,0 +1,21 @@
+{
+  "title": "Platform Golden Signals",
+  "signals": [
+    {
+      "name": "latency",
+      "metric": "request_duration_seconds"
+    },
+    {
+      "name": "traffic",
+      "metric": "requests_total"
+    },
+    {
+      "name": "errors",
+      "metric": "request_errors_total"
+    },
+    {
+      "name": "saturation",
+      "metric": "resource_saturation_ratio"
+    }
+  ]
+}

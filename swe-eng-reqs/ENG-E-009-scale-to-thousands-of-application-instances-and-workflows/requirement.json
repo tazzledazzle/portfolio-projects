@@ -1,0 +1,17 @@
+{
+  "id": "ENG-E-009",
+  "title": "Scale to thousands of application instances and workflows",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "reliably serve thousands of application instances and engineering workflows",
+  "rationale": "Throughput/concurrency at workflow/instance scale is explicit.",
+  "demo": "Load simulation of 1000+ workflows with queueing, backpressure, and SLO metrics.",
+  "stack": "go+compose",
+  "overlaps": [
+    "ENG-E-010",
+    "ENG-H-006"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-009"
+}

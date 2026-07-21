@@ -1,0 +1,14 @@
+{
+  "id": "ENG-E-020",
+  "title": "Event-driven architecture design",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "event-driven architectures",
+  "rationale": "Distinct from sync request/response APIs.",
+  "demo": "NATS event bus with schema envelopes, consumers, DLQ, and replay.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-e-020"
+}

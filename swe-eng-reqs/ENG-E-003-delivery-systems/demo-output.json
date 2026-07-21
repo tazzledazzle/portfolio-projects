@@ -1,0 +1,22 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "promote advances release stage and appends audit",
+    "rollback invokes registered hooks once"
+  ],
+  "message": "demo completed for Delivery systems",
+  "ok": true,
+  "proof": {
+    "audit_entries": 3,
+    "promoted": true,
+    "rollback_invoked": true,
+    "stages": [
+      "dev",
+      "staging",
+      "prod"
+    ]
+  },
+  "requirement_id": "ENG-E-003",
+  "run": 1,
+  "service": "eng-e-003"
+}

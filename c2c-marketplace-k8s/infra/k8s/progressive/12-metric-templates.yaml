@@ -1,0 +1,60 @@
+# Micrometer-based MetricTemplates against the existing LGTM Prometheus.
+# Prefer these over Flagger's builtin Gloo Envoy queries (version-sensitive).
+#
+# Alloy maps pod label `app` → metric label `service` and adds `pod`.
+# Apps also stamp Micrometer common tag service=<name>.
+# During analysis the canary Deployment keeps name listings-service, so
+# pods match {{ target }}-[hash] (not -primary).
+apiVersion: flagger.app/v1beta1
+kind: MetricTemplate
+metadata:
+  name: listings-success-rate
+  namespace: c2c
+spec:
+  provider:
+    type: prometheus
+    address: http://prometheus.c2c:9090
+  query: |
+    sum(
+      rate(
+        http_server_requests_seconds_count{
+          service="listings-service",
+          pod=~"{{ target }}-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)",
+          status!~"5.."
+        }[{{ interval }}]
+      )
+    )
+    /
+    clamp_min(
+      sum(
+        rate(
+          http_server_requests_seconds_count{
+            service="listings-service",
+            pod=~"{{ target }}-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)"
+          }[{{ interval }}]
+        )
+      ),
+      1e-9
+    ) * 100
+---
+apiVersion: flagger.app/v1beta1
+kind: MetricTemplate
+metadata:
+  name: listings-latency-p99
+  namespace: c2c
+spec:
+  provider:
+    type: prometheus
+    address: http://prometheus.c2c:9090
+  query: |
+    histogram_quantile(
+      0.99,
+      sum by (le) (
+        rate(
+          http_server_requests_seconds_bucket{
+            service="listings-service",
+            pod=~"{{ target }}-[0-9a-zA-Z]+(-[0-9a-zA-Z]+)"
+          }[{{ interval }}]
+        )
+      )
+    ) * 1000

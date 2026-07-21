@@ -1,0 +1,16 @@
+{
+  "id": "ENG-E-017",
+  "title": "MCP-style tools familiarity",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "MCP-style tools",
+  "rationale": "Model Context Protocol style tools called out specifically.",
+  "demo": "MCP server exposing read-only DevEx tools with auth and audit log.",
+  "stack": "python+compose",
+  "overlaps": [
+    "ENG-N-015"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-017"
+}

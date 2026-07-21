@@ -1,0 +1,14 @@
+{
+  "id": "ENG-H-002",
+  "title": "Cost/efficiency as a platform constraint",
+  "kind": "hidden",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "cloud-native scale + CI/build/artifacts at AI-cloud volumes + trade-offs",
+  "rationale": "At this scale, uncontrolled CI/storage cost is existential.",
+  "demo": "Cost-per-build meter with cache hit savings report.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-h-002"
+}

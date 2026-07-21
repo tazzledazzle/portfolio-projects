@@ -1,0 +1,14 @@
+{
+  "id": "ENG-N-013",
+  "title": "JFrog / Cloudsmith / custom artifact systems",
+  "kind": "nice",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "e.g. JFrog Artifactory, Cloudsmith, or custom-built systems",
+  "rationale": "Commercial or custom registry experience.",
+  "demo": "Custom registry with retention, auth scopes, and vulnerability-scan hook stub.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-n-013"
+}

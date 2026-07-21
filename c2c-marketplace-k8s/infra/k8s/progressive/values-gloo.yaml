@@ -1,0 +1,54 @@
+# Gloo Edge OSS Helm values for kind progressive delivery.
+# Install: helm upgrade -i gloo gloo/gloo -n gloo-system --create-namespace -f values-gloo.yaml
+#
+# gateway-proxy takes NodePort 30081 so kind's existing host mapping
+# (extraPortMappings 30081 → localhost:8081) fronts listings via Gloo.
+
+gatewayProxies:
+  gatewayProxy:
+    service:
+      type: NodePort
+      httpPort: 80
+      httpsPort: 443
+      httpNodePort: 30081
+      # Keep HTTPS on an unused NodePort so it does not collide with app ports.
+      httpsNodePort: 30443
+    # Expose Envoy Prometheus metrics for Alloy annotation scraping.
+    # Gloo publishes Prometheus-format metrics on :8081 /metrics by default
+    # when stats are enabled (chart default).
+    podTemplate:
+      extraAnnotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8081"
+        prometheus.io/path: "/metrics"
+      resources:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          cpu: 500m
+          memory: 256Mi
+
+# Keep the kind footprint small — use the existing c2c LGTM stack.
+settings:
+  create: true
+
+gloo:
+  deployment:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 256Mi
+
+discovery:
+  deployment:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 256Mi

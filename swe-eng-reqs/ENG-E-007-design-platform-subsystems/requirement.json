@@ -1,0 +1,17 @@
+{
+  "id": "ENG-E-007",
+  "title": "Design platform subsystems",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "Design and build the core services... Drive architectural decisions",
+  "rationale": "Expected to own design, not only implement tickets.",
+  "demo": "ADR-backed service skeleton with documented alternatives and trade-offs.",
+  "stack": "go+compose",
+  "overlaps": [
+    "LEAD-E-004",
+    "LEAD-E-010"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-007"
+}

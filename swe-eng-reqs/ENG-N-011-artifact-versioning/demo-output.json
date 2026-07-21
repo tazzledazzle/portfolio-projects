@@ -1,0 +1,20 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "promote advances stage without changing digest",
+    "mutable tags retarget digests independently"
+  ],
+  "message": "demo completed for Artifact versioning",
+  "ok": true,
+  "proof": {
+    "digest_immutable": true,
+    "digest_unchanged": true,
+    "promoted": true,
+    "stage_after": "staging",
+    "tag_mutable": true,
+    "version_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+  },
+  "requirement_id": "ENG-N-011",
+  "run": 1,
+  "service": "eng-n-011"
+}

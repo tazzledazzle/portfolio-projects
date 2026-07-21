@@ -1,0 +1,17 @@
+{
+  "id": "ENG-E-005",
+  "title": "Internal developer platforms",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "internal developer platforms",
+  "rationale": "Platform-as-product for internal engineers.",
+  "demo": "Self-service platform API for projects, pipelines, and environments.",
+  "stack": "go+compose",
+  "overlaps": [
+    "ENG-E-021",
+    "ENG-I-002"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-005"
+}

@@ -1,0 +1,17 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "demo increments run counter",
+    "metrics expose demo_runs_total"
+  ],
+  "message": "demo completed for Bazel-class hermetic/remote builds",
+  "ok": true,
+  "proof": {
+    "bazel_compatible": true,
+    "find_missing_supported": true,
+    "hermetic_inputs": true
+  },
+  "requirement_id": "ENG-N-003",
+  "run": 1,
+  "service": "eng-n-003"
+}

@@ -1,0 +1,16 @@
+{
+  "id": "ENG-E-023",
+  "title": "Pipeline services",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "Build pipeline services",
+  "rationale": "Explicit deliverable distinct from owning CI conceptually.",
+  "demo": "Pipeline service API: submit DAG, poll stages, stream logs.",
+  "stack": "go+compose",
+  "overlaps": [
+    "ENG-E-001"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-023"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "ENG-E-001",
+  "title": "CI and build infrastructure ownership",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "DevEx owns CI (continuous integration) and build infrastructure",
+  "rationale": "Role is scoped to CI/build platforms, not general app features.",
+  "demo": "Runnable multi-stage CI orchestrator with retries, events, and metrics.",
+  "stack": "go+compose+k8s",
+  "overlaps": [
+    "ENG-N-001",
+    "ENG-N-002",
+    "ENG-N-003"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-001"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "ENG-E-021",
+  "title": "API systems design",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "and APIs",
+  "rationale": "Public/internal API contracts for platforms.",
+  "demo": "Versioned OpenAPI service with authz, rate limits, and compatibility tests.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-e-021"
+}

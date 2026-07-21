@@ -1,0 +1,14 @@
+{
+  "id": "ENG-N-015",
+  "title": "MCP servers and tool-augmented LLM workflows",
+  "kind": "nice",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "including MCP servers, tool-augmented LLM workflows",
+  "rationale": "Deeper than familiarity: implement MCP + tool-augmented flows.",
+  "demo": "MCP server + policy gateway requiring human approval for mutating tools.",
+  "stack": "python+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-n-015"
+}

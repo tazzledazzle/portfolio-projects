@@ -1,0 +1,29 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "demo increments run counter",
+    "metrics expose demo_runs_total"
+  ],
+  "message": "demo completed for Production reliability / operability",
+  "ok": true,
+  "proof": {
+    "golden_signals": [
+      "latency",
+      "traffic",
+      "errors",
+      "saturation"
+    ],
+    "runbook_count": 1,
+    "signal_metrics": {
+      "errors": "request_errors_total",
+      "latency": "request_duration_seconds",
+      "saturation": "resource_saturation_ratio",
+      "traffic": "requests_total"
+    },
+    "slo": true,
+    "slo_id": "demo-1784428898803192000"
+  },
+  "requirement_id": "ENG-I-003",
+  "run": 1,
+  "service": "eng-i-003"
+}

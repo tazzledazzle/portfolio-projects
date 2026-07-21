@@ -1,0 +1,14 @@
+{
+  "id": "ENG-N-007",
+  "title": "Custom Kubernetes operators",
+  "kind": "nice",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "custom Kubernetes operators",
+  "rationale": "Extends deep K8s into operator authorship.",
+  "demo": "Sample operator with reconcile loop, status conditions, and finalizers.",
+  "stack": "go+k8s",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-n-007"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "ENG-I-008",
+  "title": "Supply-chain awareness for build/artifacts",
+  "kind": "implicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "owns CI/build + artifact storage/distribution",
+  "rationale": "Integrity, provenance, access control inherent to ownership.",
+  "demo": "Signing + SBOM stub + least-privilege registry scopes.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-i-008"
+}

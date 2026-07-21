@@ -1,0 +1,23 @@
+{
+  "acceptance": [
+    "long_running job with timeout deadline",
+    "chunked_upload accumulates bytes_received",
+    "expired job rejects further chunks"
+  ],
+  "message": "GPU-adjacent long job + chunked upload demo",
+  "ok": true,
+  "proof": {
+    "bytes_received": 59,
+    "chunked_upload": true,
+    "chunks": 3,
+    "job_id": "job-1",
+    "long_running": true,
+    "max_chunk_bytes": 65536,
+    "not_durable_wf": true,
+    "timeout": true,
+    "timeout_rejected": true
+  },
+  "requirement_id": "ENG-I-009",
+  "run": 1,
+  "service": "eng-i-009"
+}

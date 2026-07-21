@@ -1,0 +1,14 @@
+{
+  "id": "ENG-N-001",
+  "title": "GitHub Actions at scale",
+  "kind": "nice",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "GitHub Actions, Buildkite, Bazel, or similar build systems",
+  "rationale": "Common CI product signal.",
+  "demo": "Reusable Actions-compatible workflow runner simulator with matrix + secrets model.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-n-001"
+}

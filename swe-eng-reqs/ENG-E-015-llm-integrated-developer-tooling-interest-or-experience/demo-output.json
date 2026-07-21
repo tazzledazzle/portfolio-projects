@@ -1,0 +1,32 @@
+{
+  "ok": true,
+  "requirement_id": "ENG-E-015",
+  "service": "eng-e-015",
+  "title": "LLM-integrated developer tooling interest or experience",
+  "run": 1,
+  "offline_fixture_llm": true,
+  "offline_llm": true,
+  "fixture_mode": true,
+  "live_provider": false,
+  "simulator": true,
+  "summary": "The build failed after repeated cache-service timeouts; retry with cache bypassed and inspect service health. The test stage found a deterministic regression in artifact promotion validation.",
+  "findings": [
+    "cache connection timed out three times",
+    "compilation did not begin",
+    "promotion validation expected HTTP 409 but received HTTP 200"
+  ],
+  "failures_ingested": 2,
+  "audit_tail": [
+    {
+      "action": "offline_summarize",
+      "requirement_id": "ENG-E-015",
+      "failures_ingested": 2
+    }
+  ],
+  "acceptance": [
+    "healthz returns ok",
+    "fixture pipeline failures are summarized",
+    "offline fixture LLM requires zero API keys",
+    "live provider remains disabled"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "acceptance": [
+    "workflows_simulated \u003e= 1000",
+    "backpressure when queue saturated",
+    "p99_ms and queue_depth present",
+    "not a durable workflow engine"
+  ],
+  "message": "load simulation ≥1000 workflows with backpressure and SLO latency",
+  "ok": true,
+  "proof": {
+    "accepted": 170,
+    "backpressure": true,
+    "delayed": 415,
+    "durable_workflow": false,
+    "not_durable_engine": true,
+    "p99_ms": 18,
+    "queue_depth": 128,
+    "rejected": 415,
+    "workflows_simulated": 1000
+  },
+  "requirement_id": "ENG-E-009",
+  "run": 1,
+  "service": "eng-e-009"
+}

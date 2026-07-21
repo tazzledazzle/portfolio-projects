@@ -1,0 +1,14 @@
+{
+  "id": "ENG-E-016",
+  "title": "Agent frameworks familiarity",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "such as agent frameworks, MCP-style tools, or AI-assisted developer workflows",
+  "rationale": "Agent frameworks are an explicit example of expected AI tooling fluency.",
+  "demo": "Minimal agent loop with tool registry, planning step, and deterministic eval.",
+  "stack": "python+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-e-016"
+}

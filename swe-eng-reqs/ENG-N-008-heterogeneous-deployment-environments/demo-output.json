@@ -1,0 +1,23 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "register \u003e=3 heterogeneous profiles",
+    "schedule same workload across all profiles"
+  ],
+  "message": "demo completed for Heterogeneous deployment environments",
+  "ok": true,
+  "proof": {
+    "placements": 3,
+    "profile_names": [
+      "k8s-standard",
+      "k8s-gpu",
+      "vm-bake"
+    ],
+    "profiles": 3,
+    "same_workload": true,
+    "workload": "checkout-api"
+  },
+  "requirement_id": "ENG-N-008",
+  "run": 1,
+  "service": "eng-n-008"
+}

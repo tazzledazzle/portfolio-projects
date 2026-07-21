@@ -1,0 +1,24 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "deny blocks stage advance",
+    "allow advances release/env stage after gate check"
+  ],
+  "message": "demo completed for Automated multi-stage pipeline orchestration",
+  "ok": true,
+  "proof": {
+    "blocked_on_deny": true,
+    "current_stage": "prod",
+    "gate_required": true,
+    "stages": [
+      "dev",
+      "staging",
+      "prod"
+    ],
+    "stages_advanced": 2,
+    "terminal": true
+  },
+  "requirement_id": "ENG-N-006",
+  "run": 1,
+  "service": "eng-n-006"
+}

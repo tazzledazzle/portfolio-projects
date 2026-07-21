@@ -1,0 +1,16 @@
+{
+  "id": "ENG-E-002",
+  "title": "Test experience platforms",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "scope spans ... test experience",
+  "rationale": "Test platforms are distinct from CI runners: flake visibility, quarantine, DX.",
+  "demo": "Ingest JUnit results, compute flake scores, quarantine flaky tests from gates.",
+  "stack": "go+compose",
+  "overlaps": [
+    "ENG-E-001"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-002"
+}

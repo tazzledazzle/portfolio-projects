@@ -1,0 +1,23 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "request IDs propagate on /v1/echo",
+    "structured errors omit stack traces",
+    "metrics expose request counters"
+  ],
+  "message": "demo completed for Build production platform services",
+  "ok": true,
+  "proof": {
+    "error_sample": {
+      "code": "demo_error",
+      "message": "structured error without internals"
+    },
+    "metrics_exposed": true,
+    "request_id": "req-a6536e9ec6222002",
+    "structured_error": true
+  },
+  "request_id": "req-a6536e9ec6222002",
+  "requirement_id": "ENG-E-008",
+  "run": 1,
+  "service": "eng-e-008"
+}

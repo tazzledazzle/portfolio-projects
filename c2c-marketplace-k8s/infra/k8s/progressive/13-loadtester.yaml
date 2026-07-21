@@ -1,0 +1,65 @@
+# Flagger loadtester — generates traffic through Gloo during canary analysis.
+# Official image; webhook URL is http://flagger-loadtester.c2c/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flagger-loadtester
+  namespace: c2c
+  labels:
+    app: flagger-loadtester
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flagger-loadtester
+  template:
+    metadata:
+      labels:
+        app: flagger-loadtester
+    spec:
+      containers:
+        - name: loadtester
+          image: ghcr.io/fluxcd/flagger-loadtester:0.34.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          command:
+            - ./loadtester
+            - -port=8080
+            - -log-level=info
+            - -timeout=1h
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 25m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flagger-loadtester
+  namespace: c2c
+  labels:
+    app: flagger-loadtester
+spec:
+  selector:
+    app: flagger-loadtester
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

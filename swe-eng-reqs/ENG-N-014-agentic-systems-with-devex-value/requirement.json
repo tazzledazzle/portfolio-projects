@@ -1,0 +1,14 @@
+{
+  "id": "ENG-N-014",
+  "title": "Agentic systems with DevEx value",
+  "kind": "nice",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "Direct experience building agentic systems... incorporating these capabilities into DevEx platform features with consistent value-add",
+  "rationale": "Preference for shipped agent systems with measured DevEx value.",
+  "demo": "Agent feature with offline eval and ROI narrative (time saved / MTTR).",
+  "stack": "python+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-n-014"
+}

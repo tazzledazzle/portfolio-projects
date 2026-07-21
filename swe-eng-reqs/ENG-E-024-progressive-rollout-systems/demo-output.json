@@ -1,0 +1,23 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "canary steps 0→10→50→100",
+    "abort and promote are terminal"
+  ],
+  "message": "demo completed for Progressive rollout systems",
+  "ok": true,
+  "proof": {
+    "abort_supported": true,
+    "aborted": true,
+    "canary_weights": [
+      0,
+      10,
+      50,
+      100
+    ],
+    "promoted": true
+  },
+  "requirement_id": "ENG-E-024",
+  "run": 1,
+  "service": "eng-e-024"
+}

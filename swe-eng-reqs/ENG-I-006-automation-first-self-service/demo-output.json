@@ -1,0 +1,21 @@
+{
+  "acceptance": [
+    "self-service submit removes ticket path",
+    "server-computed before/after ticket metrics"
+  ],
+  "message": "live ticket-removal self-service demo",
+  "ok": true,
+  "proof": {
+    "automation_metrics": {
+      "requests": 1,
+      "ticket_removed": true,
+      "tickets_after": 9,
+      "tickets_before": 10
+    },
+    "self_service": true,
+    "ticket_removed": true
+  },
+  "requirement_id": "ENG-I-006",
+  "run": 1,
+  "service": "eng-i-006"
+}

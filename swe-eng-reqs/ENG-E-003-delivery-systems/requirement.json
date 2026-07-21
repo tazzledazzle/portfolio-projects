@@ -1,0 +1,17 @@
+{
+  "id": "ENG-E-003",
+  "title": "Delivery systems",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "delivery systems",
+  "rationale": "Release/delivery automation is first-class DevEx ownership.",
+  "demo": "Multistage promote pipeline with audit trail and rollback hooks.",
+  "stack": "go+compose+k8s",
+  "overlaps": [
+    "ENG-N-004",
+    "ENG-N-006"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-003"
+}

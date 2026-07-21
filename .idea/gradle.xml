@@ -41,6 +41,19 @@
           </set>
         </option>
       </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/c2c-marketplace-k8s" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/c2c-marketplace-k8s" />
+            <option value="$PROJECT_DIR$/c2c-marketplace-k8s/common" />
+            <option value="$PROJECT_DIR$/c2c-marketplace-k8s/listings-service" />
+            <option value="$PROJECT_DIR$/c2c-marketplace-k8s/messaging-service" />
+            <option value="$PROJECT_DIR$/c2c-marketplace-k8s/payments-service" />
+            <option value="$PROJECT_DIR$/c2c-marketplace-k8s/search-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
     </option>
   </component>
 </project>

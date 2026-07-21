@@ -1,0 +1,17 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "demo increments run counter",
+    "metrics expose demo_runs_total"
+  ],
+  "message": "demo completed for Pipeline services",
+  "ok": true,
+  "proof": {
+    "dag_validated": true,
+    "pipeline_count": 0,
+    "sample_stages": []
+  },
+  "requirement_id": "ENG-E-023",
+  "run": 1,
+  "service": "eng-e-023"
+}

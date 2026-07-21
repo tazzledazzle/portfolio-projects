@@ -1,0 +1,16 @@
+{
+  "id": "ENG-E-014",
+  "title": "Deep Kubernetes cluster-level platform integration",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "Deep experience with Kubernetes... design platform services that integrate at that layer",
+  "rationale": "Must integrate at scheduling/packaging/cluster APIs, not only kubectl.",
+  "demo": "CIJob CRD controller that schedules Jobs and reports status conditions.",
+  "stack": "go+k8s",
+  "overlaps": [
+    "ENG-N-007"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-014"
+}

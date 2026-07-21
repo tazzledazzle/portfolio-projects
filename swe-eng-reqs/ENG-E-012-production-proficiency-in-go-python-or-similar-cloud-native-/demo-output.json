@@ -1,0 +1,18 @@
+{
+  "acceptance": [
+    "language=go",
+    "or_semantics=true (Go OR Python OR similar — Go chosen)",
+    "production_sample via net/http handlers"
+  ],
+  "message": "OR semantics satisfied with single Go production sample",
+  "ok": true,
+  "proof": {
+    "health_path": "/healthz",
+    "language": "go",
+    "or_semantics": true,
+    "production_sample": true
+  },
+  "requirement_id": "ENG-E-012",
+  "run": 1,
+  "service": "eng-e-012"
+}

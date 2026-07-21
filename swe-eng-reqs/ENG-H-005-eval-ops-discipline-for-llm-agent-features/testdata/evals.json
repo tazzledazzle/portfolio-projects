@@ -1,0 +1,18 @@
+[
+  {
+    "id": "golden-timeout-summary",
+    "kind": "golden",
+    "input": "Pipeline build-main failed after a 30 minute timeout.",
+    "candidate": "build-main failed because the job exceeded its 30 minute timeout.",
+    "expected": "pass",
+    "required_terms": ["build-main", "timeout"]
+  },
+  {
+    "id": "golden-flake-summary",
+    "kind": "golden",
+    "input": "Unit suite reported two flaky tests and no release mutation.",
+    "candidate": "The unit suite has two flaky tests; investigate without changing the release.",
+    "expected": "pass",
+    "required_terms": ["unit", "flaky"]
+  }
+]

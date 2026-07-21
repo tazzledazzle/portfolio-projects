@@ -1,0 +1,14 @@
+{
+  "id": "ENG-H-001",
+  "title": "Failure-domain / blast-radius engineering",
+  "kind": "hidden",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "40+ DCs + thousands of workflows + shared CI/artifacts",
+  "rationale": "Shared platforms fail big unless failure is contained.",
+  "demo": "Chaos scenario proving regional/tenant isolation contains blast radius.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-h-001"
+}

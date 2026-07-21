@@ -1,0 +1,14 @@
+{
+  "id": "ENG-H-005",
+  "title": "Eval/ops discipline for LLM/agent features",
+  "kind": "hidden",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "LLM/MCP/AI workflows + DevEx value nice-to-have",
+  "rationale": "Without evals, AI DevEx claims are indefensible.",
+  "demo": "Offline/online eval harness with known failure fixtures.",
+  "stack": "python+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-h-005"
+}

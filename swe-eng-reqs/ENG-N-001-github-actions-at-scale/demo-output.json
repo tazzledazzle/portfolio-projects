@@ -1,0 +1,18 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "demo increments run counter",
+    "metrics expose demo_runs_total"
+  ],
+  "message": "demo completed for GitHub Actions at scale (simulator)",
+  "ok": true,
+  "proof": {
+    "jobs_completed": 0,
+    "matrix_expanded": true,
+    "runners_registered": 1,
+    "simulator": "github-actions"
+  },
+  "requirement_id": "ENG-N-001",
+  "run": 1,
+  "service": "eng-n-001"
+}

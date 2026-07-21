@@ -1,0 +1,20 @@
+{
+  "acceptance": [
+    "dual-write keeps v1 and v2 readable",
+    "field rename name→display_name under single mutex",
+    "compat_pass when both versions present"
+  ],
+  "message": "live v1→v2 dual-write migration compat demo",
+  "ok": true,
+  "proof": {
+    "compat_pass": true,
+    "dual_write": true,
+    "field_rename": "name→display_name",
+    "item_id": "item-1",
+    "v1_readable": true,
+    "v2_readable": true
+  },
+  "requirement_id": "ENG-H-003",
+  "run": 1,
+  "service": "eng-h-003"
+}

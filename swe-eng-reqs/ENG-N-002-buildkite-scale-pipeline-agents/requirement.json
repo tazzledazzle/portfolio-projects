@@ -1,0 +1,14 @@
+{
+  "id": "ENG-N-002",
+  "title": "Buildkite-scale pipeline agents",
+  "kind": "nice",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "Buildkite",
+  "rationale": "Breadth across CI vendors valued.",
+  "demo": "Agent/queue model with dynamic pipelines and concurrency limits.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-n-002"
+}

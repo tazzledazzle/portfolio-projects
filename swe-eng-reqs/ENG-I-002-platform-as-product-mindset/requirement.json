@@ -1,0 +1,14 @@
+{
+  "id": "ENG-I-002",
+  "title": "Platform-as-product mindset",
+  "kind": "implicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "IDP + DevEx ownership + high-leverage",
+  "rationale": "Success = developer adoption/experience, not feature count.",
+  "demo": "Platform API with SLAs, adoption metrics endpoint, and golden-path template.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-i-002"
+}

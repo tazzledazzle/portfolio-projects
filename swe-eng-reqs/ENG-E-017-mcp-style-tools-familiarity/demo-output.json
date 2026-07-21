@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "requirement_id": "ENG-E-017",
+  "service": "eng-e-017",
+  "title": "MCP-style tools familiarity",
+  "run": 1,
+  "mcp_inspired": true,
+  "mcp_sdk": false,
+  "simulator": true,
+  "read_only": true,
+  "tools_listed": 2,
+  "auth_ok": true,
+  "audit_entries": 1,
+  "tools": [
+    {
+      "name": "list_pipelines",
+      "description": "List recent delivery pipelines",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      },
+      "mutating": false,
+      "read_only": true
+    },
+    {
+      "name": "get_test_flakes",
+      "description": "Read deterministic test flake counts",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "suite": {
+            "type": "string"
+          }
+        }
+      },
+      "mutating": false,
+      "read_only": true
+    }
+  ],
+  "call_result": {
+    "isError": false,
+    "content": {
+      "suite": "unit",
+      "flakes": 2,
+      "window": "fixture-7d"
+    }
+  },
+  "audit_tail": [
+    {
+      "ts": 1784434432.918179,
+      "tool": "get_test_flakes",
+      "decision": "allow",
+      "subject": "demo-reader",
+      "reason": null,
+      "arguments": {
+        "suite": "unit",
+        "token": "[REDACTED]"
+      }
+    }
+  ],
+  "acceptance": [
+    "tools/list exposes read-only tools",
+    "tools/call requires token scope",
+    "every call is audited with secret redaction",
+    "mcp_sdk=false is explicit"
+  ]
+}

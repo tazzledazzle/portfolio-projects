@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/HTTP-JSON-gRPC-ProtoBuff/saga-orchestrator/buildSrc" name="buildSrc">
+                <projects>
+                  <project path="$PROJECT_DIR$/HTTP-JSON-gRPC-ProtoBuff/saga-orchestrator/buildSrc" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/HTTP-JSON-gRPC-ProtoBuff/saga-orchestrator" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/HTTP-JSON-gRPC-ProtoBuff/saga-orchestrator" />
+            <option value="$PROJECT_DIR$/HTTP-JSON-gRPC-ProtoBuff/saga-orchestrator/buildSrc" />
+            <option value="$PROJECT_DIR$/HTTP-JSON-gRPC-ProtoBuff/saga-orchestrator/inventory-service" />
+            <option value="$PROJECT_DIR$/HTTP-JSON-gRPC-ProtoBuff/saga-orchestrator/orchestrator" />
+            <option value="$PROJECT_DIR$/HTTP-JSON-gRPC-ProtoBuff/saga-orchestrator/payment-service" />
+            <option value="$PROJECT_DIR$/HTTP-JSON-gRPC-ProtoBuff/saga-orchestrator/proto" />
+            <option value="$PROJECT_DIR$/HTTP-JSON-gRPC-ProtoBuff/saga-orchestrator/shipping-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/Kotlin/practitioner" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/Kotlin/practitioner" />
+            <option value="$PROJECT_DIR$/Kotlin/practitioner/app" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/OkHttp/okHttp" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/OkHttp/okHttp" />
+            <option value="$PROJECT_DIR$/OkHttp/okHttp/app" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/Redis/live-feed" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/Redis/live-feed" />
+            <option value="$PROJECT_DIR$/Redis/live-feed/app" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

@@ -1,0 +1,14 @@
+{
+  "id": "ENG-H-003",
+  "title": "Backward compatibility and migration craft",
+  "kind": "hidden",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "multi-team IDP/CI/artifacts; multi-quarter work",
+  "rationale": "Platforms cannot break all consumers; migrations are the job.",
+  "demo": "API v1\u2192v2 migration with dual-write and compatibility tests.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-h-003"
+}

@@ -1,0 +1,20 @@
+{
+  "failures": [
+    {
+      "id": "pipeline-cache-timeout",
+      "summary": "The build failed after repeated cache-service timeouts; retry with cache bypassed and inspect service health.",
+      "findings": [
+        "cache connection timed out three times",
+        "compilation did not begin"
+      ],
+      "api_key": "fixture-secret-must-not-flow"
+    },
+    {
+      "id": "pipeline-test-regression",
+      "summary": "The test stage found a deterministic regression in artifact promotion validation.",
+      "findings": [
+        "promotion validation expected HTTP 409 but received HTTP 200"
+      ]
+    }
+  ]
+}

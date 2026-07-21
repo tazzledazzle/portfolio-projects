@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "requirement_id": "ENG-E-006",
+  "service": "eng-e-006",
+  "title": "Agentic AI tooling for DevEx",
+  "run": 1,
+  "offline_fixture_llm": true,
+  "simulator": true,
+  "live_provider": false,
+  "execute_mutating": false,
+  "diagnosis": "Pipeline pipeline-cache-timeout is failed at stage 'build': cache connection timed out three times. Recommended focus: cache connection timed out three times.",
+  "diagnosis_detail": {
+    "pipeline_id": "pipeline-cache-timeout",
+    "status": "failed",
+    "failed_stage": "build",
+    "error": "cache connection timed out three times",
+    "findings": [
+      "cache connection timed out three times",
+      "compilation did not begin"
+    ],
+    "summary": "Pipeline pipeline-cache-timeout is failed at stage 'build': cache connection timed out three times. Recommended focus: cache connection timed out three times.",
+    "diagnosis": "Pipeline pipeline-cache-timeout is failed at stage 'build': cache connection timed out three times. Recommended focus: cache connection timed out three times.",
+    "offline_fixture_llm": true,
+    "live_provider": false
+  },
+  "proposed_actions": [
+    {
+      "name": "inspect_logs",
+      "mutating": false,
+      "requires_approval": false,
+      "description": "Read recent logs for pipeline pipeline-cache-timeout stage build"
+    },
+    {
+      "name": "retry_failed_stage",
+      "mutating": true,
+      "requires_approval": true,
+      "description": "Retry stage 'build' for pipeline pipeline-cache-timeout"
+    },
+    {
+      "name": "propose_promote",
+      "mutating": true,
+      "requires_approval": true,
+      "description": "Propose promote only after pipeline-cache-timeout is healthy"
+    }
+  ],
+  "all_mutating_require_approval": true,
+  "executed": false,
+  "pipeline_id": "pipeline-cache-timeout",
+  "audit_tail": [
+    {
+      "action": "diagnose_propose",
+      "requirement_id": "ENG-E-006",
+      "pipeline_id": "pipeline-cache-timeout",
+      "executed": false
+    }
+  ],
+  "acceptance": [
+    "healthz returns ok",
+    "pipeline fixtures produce non-empty diagnosis",
+    "mutating proposed actions require approval",
+    "demo never executes mutating actions"
+  ]
+}

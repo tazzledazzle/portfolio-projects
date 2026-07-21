@@ -1,0 +1,20 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "scope middleware denies unauthorized puts",
+    "retention deletes by keep-count without rewriting digests",
+    "scan hook returns fixture findings only"
+  ],
+  "message": "demo completed for custom registry SIMULATOR (not JFrog/Cloudsmith)",
+  "ok": true,
+  "proof": {
+    "auth_scope_enforced": true,
+    "retention_deleted": 1,
+    "scan_hook": true,
+    "simulator": true,
+    "vendor_model": "custom-registry"
+  },
+  "requirement_id": "ENG-N-013",
+  "run": 1,
+  "service": "eng-n-013"
+}

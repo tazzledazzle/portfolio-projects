@@ -1,0 +1,14 @@
+{
+  "id": "ENG-I-003",
+  "title": "Production reliability / operability",
+  "kind": "implicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "post-mortems, quality, multi-DC scale, SLO gates nice-to-have",
+  "rationale": "Platforms must be operable at CoreWeave scale.",
+  "demo": "Service with SLOs, runbooks, and golden-signal dashboards.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-i-003"
+}

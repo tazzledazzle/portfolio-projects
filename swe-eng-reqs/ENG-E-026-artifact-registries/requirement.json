@@ -1,0 +1,16 @@
+{
+  "id": "ENG-E-026",
+  "title": "Artifact registries",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "artifact registries",
+  "rationale": "Registry as a concrete system, not only storage.",
+  "demo": "OCI-inspired registry MVP with tag\u2192digest pointers.",
+  "stack": "go+compose",
+  "overlaps": [
+    "ENG-E-004"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-026"
+}

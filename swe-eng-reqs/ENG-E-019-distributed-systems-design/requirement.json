@@ -1,0 +1,14 @@
+{
+  "id": "ENG-E-019",
+  "title": "Distributed systems design",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "You think in distributed services",
+  "rationale": "Core design competency for CoreWeave-scale platforms.",
+  "demo": "Distributed task queue with retries, idempotency keys, and partition handling.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-e-019"
+}

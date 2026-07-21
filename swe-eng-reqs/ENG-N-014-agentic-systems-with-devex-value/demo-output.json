@@ -1,0 +1,33 @@
+{
+  "ok": true,
+  "requirement_id": "ENG-N-014",
+  "service": "eng-n-014",
+  "fixture_roi": true,
+  "baseline_source": "fixture",
+  "fabricated_prod": false,
+  "live_provider": false,
+  "time_saved_minutes": 36.0,
+  "mttr_improvement_pct": 35.0,
+  "narrative": "In this deterministic fixture, the assisted path saves 36 minutes and improves MTTR by 35%. These are scenario results, not production telemetry.",
+  "run": 1,
+  "assisted_path": {
+    "source": "fixture_assisted",
+    "resolution_minutes": 54.0,
+    "mttr_minutes": 78.0,
+    "trace": [
+      {
+        "stage": "diagnose",
+        "result": "identified failing test cluster"
+      },
+      {
+        "stage": "retrieve",
+        "result": "loaded matching runbook fixture"
+      },
+      {
+        "stage": "propose",
+        "result": "suggested bounded retry and owner routing"
+      }
+    ],
+    "executed_mutation": false
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "failing criteria blocks promotion",
+    "passing criteria auto-promotes to next environment"
+  ],
+  "message": "demo completed for Progressive delivery at scale",
+  "ok": true,
+  "proof": {
+    "auto_promoted": true,
+    "criteria_passed": true,
+    "current_env": "staging",
+    "env_status": {
+      "dev": "promoted",
+      "prod": "pending",
+      "staging": "active"
+    },
+    "environments": 3,
+    "promote_blocked_when_failing": true
+  },
+  "requirement_id": "ENG-N-004",
+  "run": 1,
+  "service": "eng-n-004"
+}

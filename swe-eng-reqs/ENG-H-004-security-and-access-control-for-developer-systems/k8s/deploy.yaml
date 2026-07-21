@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: devex-eng-h-004
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eng-h-004
+  namespace: devex-eng-h-004
+  labels:
+    app: eng-h-004
+    requirement: eng-h-004
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eng-h-004
+  template:
+    metadata:
+      labels:
+        app: eng-h-004
+    spec:
+      containers:
+        - name: eng-h-004
+          image: eng-h-004:local
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eng-h-004
+  namespace: devex-eng-h-004
+spec:
+  selector:
+    app: eng-h-004
+  ports:
+    - port: 80
+      targetPort: 8080

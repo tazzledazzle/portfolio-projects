@@ -1,0 +1,17 @@
+{
+  "id": "ENG-E-012",
+  "title": "Production proficiency in Go, Python, or similar cloud-native languages",
+  "kind": "explicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "Proficiency in Go, Python, or similar languages with production experience shipping services in cloud-native environments",
+  "rationale": "Language proficiency is OR (Go or Python or similar), demonstrated via production-style services.",
+  "demo": "Paired Go control-plane + Python tooling samples with compose and K8s deploy.",
+  "stack": "go+python+compose+k8s",
+  "overlaps": [
+    "ENG-E-008",
+    "ENG-E-014"
+  ],
+  "soft_skill": false,
+  "slug": "eng-e-012"
+}

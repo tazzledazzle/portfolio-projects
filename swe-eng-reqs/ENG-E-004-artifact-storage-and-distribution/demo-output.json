@@ -1,0 +1,22 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "blob put/get by sha256 digest",
+    "digest overwrite rejected (immutable)",
+    "metadata persists"
+  ],
+  "message": "demo completed for Artifact storage and distribution",
+  "ok": true,
+  "proof": {
+    "blob_count": 1,
+    "digest_form": "sha256:\u003c64hex\u003e",
+    "digest_immutable": true,
+    "metadata_keys": [
+      "demo",
+      "content-type"
+    ]
+  },
+  "requirement_id": "ENG-E-004",
+  "run": 1,
+  "service": "eng-e-004"
+}

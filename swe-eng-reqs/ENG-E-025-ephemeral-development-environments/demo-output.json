@@ -1,0 +1,23 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "demo increments run counter",
+    "metrics expose demo_runs_total"
+  ],
+  "message": "demo completed for Ephemeral development environments",
+  "ok": true,
+  "proof": {
+    "conditions": [
+      "Ready",
+      "Expired"
+    ],
+    "crd": true,
+    "expired": true,
+    "kind": "DevEnv",
+    "ready": false,
+    "ttl_reclaimed": true
+  },
+  "requirement_id": "ENG-E-025",
+  "run": 1,
+  "service": "eng-e-025"
+}

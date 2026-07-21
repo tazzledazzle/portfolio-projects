@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-E-001",
+  "title": "High-leverage technical leadership",
+  "kind": "explicit",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "This is a high-leverage technical leadership role",
+  "rationale": "Amplify others via platforms/patterns, not only personal throughput.",
+  "demo": "Evidence kit: leverage narrative + metrics of multiplied team output.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-e-001"
+}

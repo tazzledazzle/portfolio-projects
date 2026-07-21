@@ -28,10 +28,17 @@ cd infra && docker compose --profile observability up -d
 **Full k8s (kind):**
 ```bash
 ./scripts/build-images.sh    # gradle installDist + docker build for all 4 services
-./scripts/deploy-kind.sh     # kind create cluster, load images, kubectl apply
+./scripts/deploy-kind.sh     # kind create cluster, load images, kubectl apply, Gloo+Flagger
 kubectl -n c2c get pods -w
 # Grafana: http://localhost:3000 (anonymous Viewer)
+# Listings via Gloo: curl -H 'Host: listings.local' http://localhost:8081/healthz
 kind delete cluster --name c2c-marketplace   # tear down
+```
+
+**Progressive delivery (listings canary):** Flagger + Gloo Edge (default). Metrics from existing LGTM Prometheus (`http://prometheus.c2c:9090`). Design: `docs/plans/2026-07-20-flagger-gloo-progressive-delivery-design.md`.
+```bash
+./scripts/canary-listings.sh                 # build tagged image, trigger canary, watch
+PROGRESSIVE_PROVIDER=istio ./scripts/deploy-kind.sh   # Istio fallback instead of Gloo
 ```
 
 ## Tests
@@ -70,6 +77,8 @@ Four Ktor/Kotlin services, each with its own Postgres schema (no shared DB). `co
 
 **Observability (kind):** Discrete LGTM stack under `infra/k8s/observability/` — **Prometheus** (metrics; preferred over Mimir for kind memory limits; PromQL-compatible), Loki (logs), Tempo (traces), Grafana (dashboards, anonymous Viewer on `:3000`), Grafana Alloy (DaemonSet: pod scrapes via `prometheus.io/*` annotations, stdout→Loki, OTLP→Tempo). SLOs: 99.9% availability (non-5xx), 99% latency &lt; 500ms; burn alerts + runbook at `docs/runbooks/error-budget-burn.md`. Grafana anonymous Viewer is for local kind demos only — do not expose publicly.
 
+**Progressive delivery (kind):** Gloo Edge gateway-proxy owns kind NodePort `30081` → host `:8081` for listings. Flagger Canary on `listings-service` shifts weight via Gloo `RouteTable`; analysis queries Micrometer MetricTemplates against `prometheus.c2c:9090` (Datadog stand-in). Manifests under `infra/k8s/progressive/`. Search/messaging/payments remain direct NodePorts.
+
 ## Environment Variables
 
 All services read config from env vars with localhost defaults for inner-loop dev:
@@ -87,4 +96,4 @@ All services read config from env vars with localhost defaults for inner-loop de
 
 ## Known Deliberate Omissions
 
-No auth/authz — `userId` is trusted from the request body. No API gateway. Shipping (`/orders/{id}/confirm-delivery` is the only payment transition exposed). Cross-service integration tests are not built (would need a docker-compose test harness or Kafka contract tests). Observability is kind/demo-oriented (single-replica, short retention, anonymous Grafana Viewer) — not a production HA stack.
+No auth/authz — `userId` is trusted from the request body. No full API gateway for all services (Gloo fronts listings only for the Flagger canary pilot). Shipping (`/orders/{id}/confirm-delivery` is the only payment transition exposed). Cross-service integration tests are not built (would need a docker-compose test harness or Kafka contract tests). Observability and progressive delivery are kind/demo-oriented (single-replica, short retention, anonymous Grafana Viewer) — not a production HA stack.

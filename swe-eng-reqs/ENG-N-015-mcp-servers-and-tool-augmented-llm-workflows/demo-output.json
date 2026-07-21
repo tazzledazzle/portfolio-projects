@@ -1,0 +1,32 @@
+{
+  "ok": true,
+  "requirement_id": "ENG-N-015",
+  "service": "eng-n-015",
+  "mcp_inspired": true,
+  "mcp_sdk": false,
+  "policy_gateway": true,
+  "simulator": true,
+  "note": "stdlib MCP-inspired subset; not the official MCP SDK",
+  "run": 1,
+  "mutate_denied_without_approval": true,
+  "mutate_allowed_with_approval": true,
+  "audit_entries": 2,
+  "audit_tail": [
+    {
+      "decision": "deny_mutate",
+      "tool": "restart_pipeline",
+      "intent_digest": "d003d5e1fc4cad4080dad6fc5f74ff6546190ffb959f7604647b4920cfc4a264",
+      "args": {
+        "pipeline": "build-42"
+      }
+    },
+    {
+      "decision": "allow_mutate",
+      "tool": "restart_pipeline",
+      "intent_digest": "d003d5e1fc4cad4080dad6fc5f74ff6546190ffb959f7604647b4920cfc4a264",
+      "args": {
+        "pipeline": "build-42"
+      }
+    }
+  ]
+}

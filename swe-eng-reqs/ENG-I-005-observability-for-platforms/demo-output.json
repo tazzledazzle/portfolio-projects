@@ -1,0 +1,22 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "demo increments run counter",
+    "metrics expose demo_runs_total"
+  ],
+  "message": "demo completed for Observability for platforms",
+  "ok": true,
+  "proof": {
+    "alert_rules": 1,
+    "alert_status": "alert_fired",
+    "collector": "none",
+    "instrumentation_model": "otel-inspired",
+    "metrics_exported": 3,
+    "otel_inspired": true,
+    "simulator": true,
+    "spans_exported": 1
+  },
+  "requirement_id": "ENG-I-005",
+  "run": 1,
+  "service": "eng-i-005"
+}

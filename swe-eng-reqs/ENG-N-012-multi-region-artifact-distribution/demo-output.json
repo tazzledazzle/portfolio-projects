@@ -1,0 +1,24 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "demo increments run counter",
+    "metrics expose demo_runs_total"
+  ],
+  "message": "demo completed for Multi-region artifact distribution",
+  "ok": true,
+  "proof": {
+    "digest": "sha256:0aa306f705b60e906f05e0f388a2aabaaa453da99dab996512de08dc92572b5e",
+    "lag_before_sync": 100,
+    "lag_ms": 0,
+    "pending": 0,
+    "regions": [
+      "eu-west",
+      "us-east"
+    ],
+    "replicated": true,
+    "secondary_region": "eu-west"
+  },
+  "requirement_id": "ENG-N-012",
+  "run": 1,
+  "service": "eng-n-012"
+}

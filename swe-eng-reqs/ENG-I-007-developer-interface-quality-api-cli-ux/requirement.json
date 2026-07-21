@@ -1,0 +1,14 @@
+{
+  "id": "ENG-I-007",
+  "title": "Developer interface quality (API/CLI UX)",
+  "kind": "implicit",
+  "domain": "eng",
+  "project_type": "engineering",
+  "evidence": "IDP + API systems design + translation",
+  "rationale": "DevEx success is interface quality for engineers.",
+  "demo": "CLI with --json, clear errors, and golden snapshot tests.",
+  "stack": "go+compose",
+  "overlaps": [],
+  "soft_skill": false,
+  "slug": "eng-i-007"
+}

@@ -1,0 +1,18 @@
+{
+  "acceptance": [
+    "projects/pipelines/environments create+list",
+    "safe IDs reject path traversal",
+    "self_service catalog proof"
+  ],
+  "message": "live IDP catalog demo",
+  "ok": true,
+  "proof": {
+    "environments": 1,
+    "pipelines": 1,
+    "projects": 1,
+    "self_service": true
+  },
+  "requirement_id": "ENG-E-005",
+  "run": 1,
+  "service": "eng-e-005"
+}

@@ -1,0 +1,13 @@
+{
+  "fixture_metadata": {
+    "source": "synthetic portfolio fixture",
+    "production_telemetry": false,
+    "description": "Deterministic failing-pipeline resolution scenario"
+  },
+  "baseline": {
+    "scenario": "failed-build-diagnosis",
+    "resolution_minutes": 90,
+    "mttr_minutes": 120,
+    "source": "fixture"
+  }
+}

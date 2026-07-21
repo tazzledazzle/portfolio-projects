@@ -1,0 +1,24 @@
+{
+  "acceptance": [
+    "healthz returns 200",
+    "tag resolve returns digest",
+    "tag retarget leaves manifest bytes unchanged",
+    "OCI-inspired MVP (not conformance-tested)"
+  ],
+  "message": "demo completed for Artifact registries",
+  "ok": true,
+  "proof": {
+    "digest_immutable": true,
+    "label": "OCI-inspired MVP (not conformance-tested)",
+    "manifest_count": 1,
+    "oci_inspired": true,
+    "resolved_digest": "sha256:bff959e9b86e7c7473942248ddd08f3d403729eacd7cca6f5629b1c6094e837b",
+    "simulator": true,
+    "tag_count": 1,
+    "tag_mutable": true,
+    "tag_to_digest": true
+  },
+  "requirement_id": "ENG-E-026",
+  "run": 1,
+  "service": "eng-e-026"
+}
