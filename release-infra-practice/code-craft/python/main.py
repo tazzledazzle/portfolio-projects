@@ -48,6 +48,42 @@ def max_profit_schedule(jobs: list[tuple[int, int, int]]) -> int:
 
     return dp[n]
 
+
+
+from datetime import datetime, timezone
+
+def parse_and_sort_events(raw_events: list[dict]) -> list[dict]:
+    """
+    raw_events: list of dicts representing an API response. 
+    {"id": "evt_1", "timestamp": "2026-07-30T14:00:00-07:00", "type": "deploy"}
+
+    Behavior:
+        - parse each event's timestamp (ISO 8601, with or without offset)
+        - no-offset timestamps are assumed UTC
+        - Normalize everything to UTC and add "timestamp_utc" field
+        - Skips entries with missing/unparseable timestamp
+        - return events sorted asc. by normalized UTC time
+
+    O(n log n) time mostly sort
+    """
+
+    parsed = []
+    for event in raw_events:
+        ts_raw = e.get("timestamp")
+        if not ts_raw:
+            continue
+        try:
+            dt = datetime.fromisoformat(ts_raw)
+        except ValueError:
+            continue
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+            dt_utc = dt.astimezone(timezone.utc)
+            parsed.append({**e, "timestamp_utc": dt_utc})
+
+    parsed.sort(key=lambda e: e["timestamp_utc"])
+    return 
+
 if __name__ == "__main__":
     pass
 
