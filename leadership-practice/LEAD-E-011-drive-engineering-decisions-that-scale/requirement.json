@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-E-011",
+  "title": "Drive engineering decisions that scale",
+  "kind": "explicit",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "driving engineering decisions that hold up as systems and teams scale",
+  "rationale": "Scale as a first-class decision axis.",
+  "demo": "Scale-driven ADR example with numbers that changed architecture.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-e-011"
+}

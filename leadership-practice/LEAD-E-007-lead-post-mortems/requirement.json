@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-E-007",
+  "title": "Lead post-mortems",
+  "kind": "explicit",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "Lead post-mortems",
+  "rationale": "Incident learning ownership.",
+  "demo": "Blameless postmortem template + action-item tracking board.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-e-007"
+}

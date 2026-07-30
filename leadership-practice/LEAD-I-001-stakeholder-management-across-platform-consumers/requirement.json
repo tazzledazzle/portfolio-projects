@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-I-001",
+  "title": "Stakeholder management across platform consumers",
+  "kind": "implicit",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "cross-functional influence + IDP + multi-quarter work",
+  "rationale": "Competing team needs require prioritization diplomacy.",
+  "demo": "Prioritization framework used with multiple consuming teams.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-i-001"
+}

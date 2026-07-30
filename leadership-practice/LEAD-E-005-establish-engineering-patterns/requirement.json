@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-E-005",
+  "title": "Establish engineering patterns",
+  "kind": "explicit",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "establish engineering patterns",
+  "rationale": "Codify reusable solutions across teams.",
+  "demo": "Pattern catalog template with adoption tracking.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-e-005"
+}

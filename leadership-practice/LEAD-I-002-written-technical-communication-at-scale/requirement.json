@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-I-002",
+  "title": "Written technical communication at scale",
+  "kind": "implicit",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "design reviews, patterns, translation, multi-DC org",
+  "rationale": "Async docs are the lever for org-wide platforms.",
+  "demo": "RFC/ADR/runbook kit with uptake checklist.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-i-002"
+}

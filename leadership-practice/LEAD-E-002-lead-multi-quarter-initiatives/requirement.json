@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-E-002",
+  "title": "Lead multi-quarter initiatives",
+  "kind": "explicit",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "Lead multi-quarter initiatives from design through production",
+  "rationale": "Roadmap ownership spanning quarters.",
+  "demo": "Program plan template with milestones, risks, and shipped outcomes.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-e-002"
+}

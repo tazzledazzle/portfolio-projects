@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-E-006",
+  "title": "Raise the quality bar",
+  "kind": "explicit",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "consistently raise the quality bar across the team",
+  "rationale": "Quality as leadership outcome.",
+  "demo": "Quality-bar rubric + before/after defect/flake metrics worksheet.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-e-006"
+}

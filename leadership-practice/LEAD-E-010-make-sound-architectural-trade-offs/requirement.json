@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-E-010",
+  "title": "Make sound architectural trade-offs",
+  "kind": "explicit",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "making sound architectural trade-offs",
+  "rationale": "Explicit cost/benefit decisioning under uncertainty.",
+  "demo": "Decision record: options, constraints, choice, observed consequences.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-e-010"
+}

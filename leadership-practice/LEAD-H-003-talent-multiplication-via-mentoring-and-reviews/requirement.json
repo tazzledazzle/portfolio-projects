@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-H-003",
+  "title": "Talent multiplication via mentoring and reviews",
+  "kind": "hidden",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "mentoring + design reviews + patterns + high leverage",
+  "rationale": "Shapes how the team works; posting does not state hiring quota.",
+  "demo": "Evidence of raising design bar via reviews/mentorship.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-h-003"
+}

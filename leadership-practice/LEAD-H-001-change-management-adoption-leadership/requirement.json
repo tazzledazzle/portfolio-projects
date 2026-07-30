@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-H-001",
+  "title": "Change management / adoption leadership",
+  "kind": "hidden",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "IDP + patterns + cross-functional influence",
+  "rationale": "Platforms fail if unused.",
+  "demo": "Rollout plan: champions, migration waves, adoption curve.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-h-001"
+}

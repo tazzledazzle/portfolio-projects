@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-E-004",
+  "title": "Own design reviews",
+  "kind": "explicit",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "own design reviews",
+  "rationale": "Quality gate on others' designs.",
+  "demo": "Design-review facilitation checklist and sample review notes.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-e-004"
+}

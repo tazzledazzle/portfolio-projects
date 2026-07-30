@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-E-008",
+  "title": "Drive continuous improvement cycles",
+  "kind": "explicit",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "drive continuous improvement cycles that harden DevEx systems",
+  "rationale": "Systemic improvement beyond single incidents.",
+  "demo": "Improvement backlog with measured platform outcomes.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-e-008"
+}

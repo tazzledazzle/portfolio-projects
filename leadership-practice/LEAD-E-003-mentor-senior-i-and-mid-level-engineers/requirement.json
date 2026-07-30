@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-E-003",
+  "title": "Mentor Senior I and mid-level engineers",
+  "kind": "explicit",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "Mentor Senior I and mid-level engineers",
+  "rationale": "People development is required.",
+  "demo": "Mentorship playbook with feedback templates and growth stories.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-e-003"
+}

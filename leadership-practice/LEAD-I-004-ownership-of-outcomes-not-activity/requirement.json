@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-I-004",
+  "title": "Ownership of outcomes, not activity",
+  "kind": "implicit",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "multi-quarter lead + continuous improvement + quality",
+  "rationale": "Accountable for platform results over time.",
+  "demo": "Outcome narrative: goal \u2192 investments \u2192 measured results.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-i-004"
+}

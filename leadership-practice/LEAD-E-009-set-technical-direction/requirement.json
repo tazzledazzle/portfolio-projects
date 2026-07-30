@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-E-009",
+  "title": "Set technical direction",
+  "kind": "explicit",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "Set technical direction for key DevEx platform subsystems",
+  "rationale": "Direction-setting authority expected.",
+  "demo": "Tech strategy memo template teams can follow for a quarter+.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-e-009"
+}

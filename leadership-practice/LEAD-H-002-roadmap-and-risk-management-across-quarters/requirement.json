@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-H-002",
+  "title": "Roadmap and risk management across quarters",
+  "kind": "hidden",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "explicit multi-quarter leadership",
+  "rationale": "Multi-quarter work without risk/dependency management is not leadership.",
+  "demo": "Roadmap with dependencies, risks, kill criteria, delivered milestones.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-h-002"
+}

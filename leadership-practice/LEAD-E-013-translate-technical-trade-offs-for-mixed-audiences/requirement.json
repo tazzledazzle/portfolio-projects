@@ -1,0 +1,14 @@
+{
+  "id": "LEAD-E-013",
+  "title": "Translate technical trade-offs for mixed audiences",
+  "kind": "explicit",
+  "domain": "lead",
+  "project_type": "evidence",
+  "evidence": "translate complex technical trade-offs for technical and non-technical audiences alike",
+  "rationale": "Bridge engineers \u2194 PMs/execs.",
+  "demo": "Paired artifacts: eng deep-dive + exec one-pager for same decision.",
+  "stack": "",
+  "overlaps": [],
+  "soft_skill": true,
+  "slug": "lead-e-013"
+}
