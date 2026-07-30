@@ -69,7 +69,7 @@ def parse_and_sort_events(raw_events: list[dict]) -> list[dict]:
 
     parsed = []
     for event in raw_events:
-        ts_raw = e.get("timestamp")
+        ts_raw = event.get("timestamp")
         if not ts_raw:
             continue
         try:
@@ -79,7 +79,7 @@ def parse_and_sort_events(raw_events: list[dict]) -> list[dict]:
         if dt.tzinfo is None:
             dt = dt.replace(tzinfo=timezone.utc)
             dt_utc = dt.astimezone(timezone.utc)
-            parsed.append({**e, "timestamp_utc": dt_utc})
+            parsed.append({**event, "timestamp_utc": dt_utc})
 
     parsed.sort(key=lambda e: e["timestamp_utc"])
     return 
