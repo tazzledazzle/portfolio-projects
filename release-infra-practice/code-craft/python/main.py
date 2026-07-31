@@ -84,6 +84,18 @@ def parse_and_sort_events(raw_events: list[dict]) -> list[dict]:
     parsed.sort(key=lambda e: e["timestamp_utc"])
     return 
 
+
+
+def next_greater(nums: list[int]): 
+    result = [-1] * len(nums)
+    stack = []
+    for i, n in enumerate(nums):
+        while stack and nums[stack[-1]] < n:
+            result[stack.pop()] = n
+        stack.append(i)
+    return result
+
+
 if __name__ == "__main__":
     pass
 
