@@ -106,6 +106,20 @@ def minimum_feasibility(low: int, high: int, can: Callable[[int], bool])
     return low
 
 
+# backtracking with pruning
+def can_reach(nums: list[int], target: int) -> bool:
+    nums.sort(reverse=True)
+    def dfs(i: int, remaining_targets: int) -> bool:
+        if remaining_targets == 0:
+            return True
+        if i == len(nums) or remaining_targets < 0:
+            return False
+        if nums[i] > remaining_targets: # prune
+            return dfs(i + 1, remaining_targets=remaining_targets)
+        return dfs(i + 1, remaining_targets - nums[i]) or dfs(i + 1, remaining_targets)
+    return dfs(0, target)
+
+
 if __name__ == "__main__":
     pass
 
