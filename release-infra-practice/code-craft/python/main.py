@@ -95,6 +95,16 @@ def next_greater(nums: list[int]):
         stack.append(i)
     return result
 
+from collections.abc import Callable
+def minimum_feasibility(low: int, high: int, can: Callable[[int], bool])
+    while low < high:
+        middle = (low + high) // 2 # // floor division
+        if can(middle):
+            high = middle
+        else:
+            low = middle + 1
+    return low
+
 
 if __name__ == "__main__":
     pass
