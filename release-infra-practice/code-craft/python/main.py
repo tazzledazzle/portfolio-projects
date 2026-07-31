@@ -157,6 +157,29 @@ class Solution:
         # return lists as groups
         return list(anagram_map.values())
 
+
+# Subarray Sum K
+def subarraySum(nums: list[int], k: int) -> int:
+    # Hash map to store the frequency of prefix sums
+    # Base case: a prefix sum of 0 has occurred 1 time (handles subarrays starting at index 0)
+    prefix_counts = {0: 1}
+    
+    current_sum = 0
+    total_subarrays = 0
+    
+    for num in nums:
+        # Update the running prefix sum
+        current_sum += num
+        
+        # Check if (current_sum - k) exists in our history
+        diff = current_sum - k
+        if diff in prefix_counts:
+            total_subarrays += prefix_counts[diff]
+            
+        # Record the current prefix sum in the hash map
+        prefix_counts[current_sum] = prefix_counts.get(current_sum, 0) + 1
+        
+    return total_subarrays
         
 if __name__ == "__main__":
     pass
