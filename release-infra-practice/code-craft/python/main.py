@@ -119,7 +119,31 @@ def can_reach(nums: list[int], target: int) -> bool:
         return dfs(i + 1, remaining_targets - nums[i]) or dfs(i + 1, remaining_targets)
     return dfs(0, target)
 
+from heapq import *
+from collections import *
 
+# top k frequent using counter
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        # create the counter
+        counter = Counter(nums)
+        # create buckets 
+        buckets = [[] for _ in range(len(nums) + 1)]
+        # add the items to the buckets using counter.items()
+        for num, freq in counter.items(): # like a reg. dict
+            buckets[freq].append(num)
+
+        # return variable
+        result = []
+        for freq in range(len(buckets) - 1, 0, -1):
+            for num in buckets[freq]:  # add numbers to result
+                result.append(num)
+                # once size of result == k, return it
+                if len(result) == k:
+                    return result
+        return result
+
+        
 if __name__ == "__main__":
     pass
 
