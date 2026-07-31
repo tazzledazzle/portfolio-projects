@@ -143,6 +143,20 @@ class Solution:
                     return result
         return result
 
+# Group anagrams
+from collections import *
+
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        anagram_map = defaultdict(list)
+        for st in strs:
+            # sort characters for key
+            sorted_key = "".join(sorted(st))
+           # lean on stdlib
+            anagram_map[sorted_key].append(st)
+        # return lists as groups
+        return list(anagram_map.values())
+
         
 if __name__ == "__main__":
     pass
