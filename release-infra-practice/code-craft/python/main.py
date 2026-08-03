@@ -355,3 +355,36 @@ class MyQueue:
 
     def empty(self) -> bool:
         return not self.enqueue and not self.dequeue
+
+
+# Permutations
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        result = []
+
+        def backtrack(current, visited):
+            # base case
+            if len(current) == len(nums):
+                result.append(current[:])
+                return
+            
+            # explore all possible choices
+            for i in range(len(nums)):
+                if i in visited:
+                    # print(f'already seen "{i}"')
+                    continue  # skip chosen elements
+
+                # print(f'nums[i]={nums[i]}, i={i}')
+                # Make choice
+                current.append(nums[i])
+                visited.add(i)
+
+                # Recurse
+                backtrack(current, visited)
+
+                # backtrack (undo choice)
+                current.pop()
+                visited.remove(i)
+        # call function
+        backtrack([], set())
+        return result
