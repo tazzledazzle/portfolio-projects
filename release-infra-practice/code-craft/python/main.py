@@ -185,3 +185,59 @@ if __name__ == "__main__":
     pass
 
 
+class Solution:
+    def isValid(self, s: str) -> bool:
+        # create lookup key
+        pairs = {")": "(", "]": "[", "}": "{"}
+        stack = []
+        # for each character in s
+        for char in s:
+            if char in pairs:
+                top_ele = stack.pop() if stack else '#'
+                # missmatch
+                if pairs[char] != top_ele:
+                    return False
+            else:
+                # into
+                stack.append(char)
+        # valid if empty
+        return len(stack) == 0
+                    
+
+def maxProfit(prices: list[int]) -> int:
+    # edge cases
+    if not prices:
+        return 0
+
+    # establish rolling variables
+    min_price = float('inf')
+    max_profit = 0
+
+    for price in prices:
+        # track lowest purchase price seen
+        if price < min_price:
+            min_price = price
+        elif price - min_price > max_profit:
+            max_profit = price - min_price
+    return max_profit
+
+
+def isPalindrome(s: str) -> bool:
+    left, right = 0, len(s) - 1
+    
+    while left < right:
+        # Skip non-alphanumeric characters from the left
+        while left < right and not s[left].isalnum():
+            left += 1
+        # Skip non-alphanumeric characters from the right
+        while left < right and not s[right].isalnum():
+            right -= 1
+            
+        # Compare characters after converting them to lowercase
+        if s[left].lower() != s[right].lower():
+            return False
+            
+        left += 1
+        right -= 1
+        
+    return True
