@@ -388,3 +388,28 @@ class Solution:
         # call function
         backtrack([], set())
         return result
+
+def dfs(state):
+    # Termination condition.
+    if meets_termination_condition(state):
+        process_solution(state)
+        return
+    for decision in possible_decisions(state):
+        make_decision(state, decision)
+        dfs(state)
+        undo_decision(state, decision)
+
+def undo_decision(state, decision):
+    pass
+
+def make_decision(state, decision):
+    pass
+
+def possible_decisions(state):
+    pass
+
+def process_solution(state):
+    pass
+
+def meets_termination_condition(state):
+    pass
