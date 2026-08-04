@@ -6,9 +6,9 @@ using the same patterns as reported users. Grouped by round type. Languages are 
 
 
 ### A. Craft coding — build something small and working (1–5)
-1. **Idempotent deploy-trigger API.** 
+1. **Idempotent deploy-trigger API.**
 	- Build a small HTTP service (Kotlin or Python) that accepts a "trigger deployment" request keyed by an idempotency key + service name + git SHA.
-	- Duplicate requests with the same key must not trigger a second deployment. 
+	- Duplicate requests with the same key must not trigger a second deployment.
 	- Support querying deploy status.
 	- Discuss what you'd persist vs. keep in memory, and what happens if the process crashes mid-deploy.
 2. **Rate-limited rollback endpoint.**
@@ -202,9 +202,9 @@ flowchart TD
                                           │
    [Streaming Metrics] ──► [Anomaly       │
     (errors, latency)]     Detector]      │
-                              │            │
-                     spike detected        │
-                              ▼            ▼
+                              │           │
+                     spike detected       │
+                              ▼           ▼
                         [Correlation Engine] ◄── [Service Dependency Graph]
                               │
                               ▼
@@ -259,8 +259,8 @@ flowchart TD
  [CI/CD System] ──► [deploy_events]
  [Git / VCS]    ──► [commit_events]        ──┐
  [Alerting Sys] ──► [incident_events] ◄──────┤ auto-linked by
-                                              │ Correlation Engine (Q14)
-                          │                   │  (not self-reported)
+                                             │ Correlation Engine (Q14)
+                          │                  │  (not self-reported)
                           ▼
                   [Metrics Aggregator]
                   (scheduled batch job,
@@ -275,7 +275,9 @@ flowchart TD
               (per team / per service)
 ```
 
-**Trade-off worth naming:** deriving metrics from raw immutable events instead of storing computed rollups costs you query latency (recompute-on-read or scheduled batch refresh) — but it's the only way to keep the numbers trustworthy under adversarial incentives (teams whose bonus/perf review ties to DORA metrics *will* find the seams in a self-reported system).
+**Trade-off worth naming:** deriving metrics from raw immutable events instead of storing computed rollups costs you
+query latency (recompute-on-read or scheduled batch refresh) — but it's the only way to keep the numbers trustworthy
+under adversarial incentives (teams whose bonus/perf review ties to DORA metrics *will* find the seams in a self-reported system).
 
 ---
 
@@ -319,22 +321,22 @@ sequenceDiagram
                                           │
                                    acquire read lock
                                           ▼
-                                [State Lock] ◄──────────┐
-                                          │              │
-                              read state (serial=N)      │
-                                          ▼               │
-                              [Remote State Store]        │
+                                [State Lock] ◄─────────────┐
+                                          │                │
+                              read state (serial=N)        │
+                                          ▼                │
+                              [Remote State Store]         │
                                           │                │
                           compute plan, stamp serial=N     │
                                           ▼                │
                               [Structured plan diff] ──► [Reviewer]
-                                                            │
+                                                           │
                                                         approve
-                                                            ▼
+                                                           ▼
                                               acquire write lock
-                                                            │
+                                                           │
                                               check current serial
-                                          ┌─────────────────┴──────────────┐
+                                          ┌────────────────┴───────────────┐
                                     serial == N                    serial advanced
                                           │                                │
                                           ▼                                ▼
@@ -343,13 +345,17 @@ sequenceDiagram
                                           └──────────► release lock ◄──────┘
 ```
 
-**Trade-off worth naming:** rejecting on stale serial is safe but can frustrate engineers when someone else's unrelated apply invalidates your reviewed plan — the alternative (allow apply anyway) risks applying a plan computed against resources that no longer look like what it thinks they look like, which is a much worse failure mode (silent drift or destructive surprises).
+**Trade-off worth naming:** rejecting on stale serial is safe but can frustrate engineers when someone else's unrelated
+apply invalidates your reviewed plan — the alternative (allow apply anyway) risks applying a plan computed against
+resources that no longer look like what it thinks they look like,
+which is a much worse failure mode (silent drift or destructive surprises).
 
 ---
 
 ## 17. Build Cache / Remote-Execution Service for a Bazel-Like System
 
-**Core problem:** cache build/action outputs for hundreds of engineers, keyed correctly, evicted sanely, and — the hard part — never served wrong under concurrent writes.
+**Core problem:** cache build/action outputs for hundreds of engineers, keyed correctly, evicted sanely, and —
+the hard part — never served wrong under concurrent writes.
 
 **Key mechanisms**
 - **Cache key strategy:** content-addressable — key = hash of (action inputs: source file hashes, tool/compiler version, flags, environment). Same inputs → same key, deterministically, across machines. This is what makes it safe: you're not caching by "target name," you're caching by the actual content that determines the output.
@@ -388,11 +394,11 @@ flowchart TD
         [Hot Tier]     [Warm Tier]        [Remote Execution]
       (local SSD/RAM)  (regional CAS)     (sandboxed, hermetic)
               ▲              │                    │
-              │  promote      ▼                    ▼
+              │ promote      ▼                    ▼
               └────────  eviction: LRU    [Write output to cache]
                               │             (same content-hash key)
-                              ▼                    │
-                        [Cold Tier (archive)] ◄─────┘
+                              ▼                   │
+                      [Cold Tier (archive)] ◄─────┘
 ```
 
 **Trade-off worth naming:** content-addressing solves the "serve a wrong artifact" problem for free, but it only holds if actions are truly hermetic — the moment a build action has a side channel (network access, wall-clock time, unpinned dependency), your cache key stops describing your output and you get silent correctness bugs that look like flaky builds.
@@ -431,13 +437,13 @@ flowchart TD
           [Config Store] (etcd/Consul)
                  │
      streaming push (not polling)
-    ┌────────────┼────────────┐
+    ┌────────────┼─────────────┐
     ▼            ▼             ▼
 [SDK inst 1] [SDK inst 2] [SDK inst N]
     │
     ▼
 [Config fresh < TTL?]
-  ┌──────┴──────┐
+  ┌──────┴───────┐
  yes            no (stale)
   │              │
   ▼              ▼
@@ -485,7 +491,7 @@ flowchart TD
                   [Structured Matcher] ◄──── [Runbook Store + metadata tags]
                             │
                   structured match found?
-              ┌─────────────┴─────────────┐
+              ┌─────────────┴───────────────┐
             yes                            no
               │                             │
               ▼                             ▼
@@ -514,4 +520,6 @@ flowchart TD
             [Flag Runbook for Review]
 ```
 
-**Trade-off worth naming:** structured-metadata matching is fast and cheap but only as good as the tagging discipline at authoring time — semantic search is the safety net for drift and novel incidents, but it's slower and noisier, which is exactly why it should be the fallback, not the primary path.
+**Trade-off worth naming:** structured-metadata matching is fast and cheap but only as good as the tagging discipline at
+authoring time — semantic search is the safety net for drift and novel incidents, but it's slower and noisier, which is
+exactly why it should be the fallback, not the primary path.
