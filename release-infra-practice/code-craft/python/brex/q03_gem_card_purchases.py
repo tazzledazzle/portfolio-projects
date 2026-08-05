@@ -69,13 +69,16 @@ class GemCard:
         (discounted_price, gem_color_used).
         Raises ValueError if no gems remain.
         """
-        best_price, color = self.best_discount_price(amount), max(self.gems.keys(), key=self.gems.__getitem__)
-        self.gems[color] = self.gems[color] - 1
+        if not self.total_gems:
+            raise ValueError("No gems available.")
+        best_color = min(
+            (color for color, quantity in self.gems.items() if quantity > 0 ),
+            key=lambda color: apply_discount(color, amount),
+        )
+        self.gems[best_color] -= 1
+        return apply_discount(best_color, amount), best_color
 
-        return best_price, color
 
-
-        return
     @property
     def total_gems(self) -> int:
         return sum([x for x in self.gems.values()])

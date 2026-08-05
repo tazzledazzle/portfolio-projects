@@ -23,25 +23,22 @@ class Account:
 
     def can_charge(self, amount: Decimal) -> bool:
         """Return True if amount fits within available credit (considering any override)."""
-        if (self.available_credit - amount) >= 0:
-            return True
-        elif self._override_limit and self._override_limit + self.available_credit >= amount:
-            self.set_override_limit(None)
-            return True
-        return False
+        effective_limit = self._override_limit or self.credit_limit
+        return (effective_limit -  self.balance) >= amount
     def charge(self, amount: Decimal) -> bool:
         """
         Attempt to apply a charge. Returns True on success, False if declined.
         A one-time override limit is consumed on the first successful charge that
         required it, then removed.
         """
-        if self.can_charge(amount):
-            self.balance += amount
-            return True
-        elif self._override_limit and self._override_limit + self.available_credit >= amount:
-            self.set_override_limit(None)
-            return True
-        return False
+        if not self.can_charge(amount):
+            return False
+        needs_override = (self.credit_limit - self.balance) < amount
+        self.balance += amount
+        if needs_override:
+            self._override_limit = None
+        return True
+
     def set_override_limit(self, new_limit: Decimal) -> None:
         """Apply a temporary single-use credit-limit override."""
         self._override_limit = new_limit
@@ -82,7 +79,7 @@ class CreditService:
 
     def charge(self, account_id: str, amount: Decimal) -> bool:
         if self.can_charge(account_id, amount):
-            self._accounts[account_id].balance += amount
+            self._accounts[account_id].charge(amount)
             return True
         else:
             return False
