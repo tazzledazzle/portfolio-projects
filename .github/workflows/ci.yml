@@ -65,7 +65,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '23'
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
       - run: ./gradlew ktlintCheck test --no-daemon
 
   bazel:
