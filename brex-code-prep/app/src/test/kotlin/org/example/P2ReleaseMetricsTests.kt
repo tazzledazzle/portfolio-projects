@@ -19,5 +19,39 @@ class P2ReleaseMetricsTests {
             assertEquals(3, report.events.size)
             assertTrue(report.rejected.isEmpty())
         }
+
+        @Test
+        fun `bad timestamp line is rejected not thrown`() {
+            val lines = listOf(
+                "not-a-timestamp service=ledger event=DEPLOY_SUCCEEDED deploy=d1"
+            )
+            val report = ReleaseLog.parse(lines)
+            assertTrue(report.events.isEmpty())
+            assertEquals(1, report.rejected.size)
+        }
+
+        @Test
+        fun `unknown event type is rejected`() {
+            val lines = listOf(
+                "2026-08-01T09:00:00Z service=ledger event=EXPLODED"
+            )
+            val report = ReleaseLog.parse(lines)
+            assertTrue(report.events.isEmpty())
+            assertEquals(1, report.rejected.size)
+        }
+
+        @Test
+        fun `comment lines and blank lines are silently skipped`(){
+            val lines = listOf(
+                "# this is a comment",
+                "",
+                "2026-08-01T09:00:00Z service=ledger event=DEPLOY_SUCCEEDED deploy=d1"
+            )
+            val report = ReleaseLog.parse(lines)
+            assertEquals(1, report.events.size)
+            assertTrue(report.rejected.isEmpty())
+        }
+
+
     }
 }
