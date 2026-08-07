@@ -11,4 +11,3 @@ plugins {
 }
 
 rootProject.name = "brex-code-prep"
-include("app")
