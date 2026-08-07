@@ -1,3 +1,4 @@
+package org.example
 /*
  * P1 — Deployment Dependency Scheduler
  *
@@ -20,9 +21,7 @@ data class Job(
 sealed interface ScheduleResult {
     /** waves[0] can all start immediately; waves[i] needs everything in waves[0..i-1]. */
     data class Ok(val waves: List<List<String>>) : ScheduleResult
-
     data class CycleDetected(val cycle: List<String>) : ScheduleResult
-
     data class MissingDependency(val job: String, val missing: String) : ScheduleResult
 }
 
