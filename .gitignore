@@ -74,3 +74,5 @@ bazel-multibuild/**/bazel-*
 *.db
 .beads-credential-key
 .beads/proxieddb/
+/release-infra-practice/.idea/workspace.xml
+/.mcp.json
