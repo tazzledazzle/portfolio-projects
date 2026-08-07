@@ -3,6 +3,7 @@ package org.example
 import org.junit.jupiter.api.Nested
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class P1SchedulerTests {
     @Nested // @Nested lets us group by scenario cleanly
@@ -26,5 +27,24 @@ class P1SchedulerTests {
             assertEquals(listOf("x", "y", "z"), result.waves[0])
         }
 
+        @Test
+        fun `diamond dependency resolves correctly`() {
+            // proto -> common-lib -> ledger \
+            //       -> card-auth     -> web
+            val jobs = listOf(
+                Job("proto"),
+                Job("common-lib", dependsOn = listOf("proto")),
+                Job("ledger", dependsOn = listOf("common-lib")),
+                Job("card-auth", dependsOn = listOf("common-lib")),
+                Job("web", dependsOn = listOf("ledger", "card-auth")),
+            )
+            val result = DeployScheduler(jobs).plan() as ScheduleResult.Ok
+            val order = result.waves.flatten()
+            assertTrue(order.indexOf("proto") < order.indexOf("common-lib"))
+            assertTrue(order.indexOf("common-lib") < order.indexOf("ledger"))
+            assertTrue(order.indexOf("ledger") < order.indexOf("web"))
+            assertTrue(order.indexOf("card-auth") < order.indexOf("web"))
+            assertEquals(listOf("web"), result.waves.last())
+        }
     }
 }
