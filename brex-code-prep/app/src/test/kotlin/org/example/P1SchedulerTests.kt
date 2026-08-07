@@ -88,4 +88,51 @@ class P1SchedulerTests {
             assertEquals(ScheduleResult.MissingDependency("a", "ghost"), result)
         }
     }
+
+    @Nested
+    inner class Simulation {
+
+        private val graph = listOf(
+            Job("proto",      durationSec = 10),
+            Job("common-lib", durationSec = 30, dependsOn = listOf("proto")),
+            Job("ledger",     durationSec = 60, dependsOn = listOf("common-lib")),
+            Job("card-auth",  durationSec = 45, dependsOn = listOf("common-lib", "proto")),
+            Job("web",        durationSec = 20, dependsOn = listOf("ledger", "card-auth")),
+            Job("docs",       durationSec = 5)
+        )
+        private val scheduler = DeployScheduler(graph)
+
+        @Test
+        fun `unlimited workers gives critical-path makespan`() {
+            assertEquals(120, scheduler.simulate(99).makespanSec)
+        }
+
+        @Test
+        fun `single worker serializes all work`() {
+            assertEquals(170, scheduler.simulate(1).makespanSec)
+        }
+
+        @Test
+        fun `two workers sits between bounds`() {
+            val makespan = scheduler.simulate(2).makespanSec
+            assertTrue(makespan in 120..170, "expected 120..170 but got $makespan")
+        }
+
+        @Test
+        fun `all jobs appear in starts and finishes`() {
+            val timeline = scheduler.simulate(2)
+            val names = graph.map { it.name }.toSet()
+            assertEquals(names, timeline.starts.keys)
+            assertEquals(names, timeline.finishes.keys)
+        }
+
+        @Test
+        fun `finish is always after start for every job`() {
+            val timeline = scheduler.simulate(2)
+            for ((name, start) in timeline.starts) {
+                assertTrue(timeline.finishes.getValue(name) > start,
+                    "$name: finish must be after start")
+            }
+        }
+    }
 }
