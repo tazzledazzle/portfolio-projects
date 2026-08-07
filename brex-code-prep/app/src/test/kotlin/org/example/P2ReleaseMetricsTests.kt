@@ -52,6 +52,22 @@ class P2ReleaseMetricsTests {
             assertTrue(report.rejected.isEmpty())
         }
 
+        @Test
+        fun `out-of-order events are sorted by timestamp`() {
+            val lines = listOf(
+                "2026-08-01T10:00:00Z service=ledger event=DEPLOY_SUCCEEDED deploy=d2",
+                "2026-08-01T09:00:00Z service=ledger event=DEPLOY_SUCCEEDED deploy=d1"
+            )
+            val report = ReleaseLog.parse(lines)
+            assertEquals("d1", report.events[0].deployId)
+            assertEquals("d2", report.events[1].deployId)
+        }
 
+        @Test
+        fun `empty input returns empty report`(){
+            val report = ReleaseLog.parse(emptyList())
+            assertTrue(report.events.isEmpty())
+            assertTrue(report.rejected.isEmpty())
+        }
     }
 }
