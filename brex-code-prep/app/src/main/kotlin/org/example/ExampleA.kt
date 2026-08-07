@@ -1,7 +1,6 @@
 package org.example
 
 import java.time.*
-import java.time.format.DateTimeParseException
 
 // ============ 1. DATA MODELING ============
 
@@ -84,11 +83,11 @@ fun collectionsDemo(deploys: List<Deploy>) {
 
 // ============ 3. PARSING ============
 
-data class ParseReport<T>(val parsed: List<T>, val rejected: List<Pair<Int, String>>)
+data class ParseReporter<T>(val parsed: List<T>, val rejected: List<Pair<Int, String>>)
 
 object LogParser {
     // "2026-08-01T09:00:00Z id=d1 service=ledger env=production tags=a,b"
-    fun parse(lines: List<String>): ParseReport<Deploy> {
+    fun parse(lines: List<String>): ParseReporter<Deploy> {
         val parsed = mutableListOf<Deploy>()
         val rejected = mutableListOf<Pair<Int, String>>()
 
@@ -118,7 +117,7 @@ object LogParser {
             val tags = fields["tags"]?.split(",")?.filter { it.isNotBlank() }?.toSet() ?: emptySet()
             parsed += Deploy(id, ServiceId(svc), at, env, tags)
         }
-        return ParseReport(parsed.sortedBy { it.at }, rejected)
+        return ParseReporter(parsed.sortedBy { it.at }, rejected)
     }
 }
 

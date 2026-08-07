@@ -1,3 +1,4 @@
+package org.example
 /*
  * P2 - Release Event Log -> DORA Metrics
  *
