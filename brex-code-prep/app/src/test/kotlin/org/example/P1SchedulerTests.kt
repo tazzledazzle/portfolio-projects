@@ -59,4 +59,33 @@ class P1SchedulerTests {
             assertEquals(listOf(listOf("solo")), result.waves)
         }
     }
+
+    @Nested
+    inner class ErrorCases {
+
+        @Test
+        fun `cycle of three is detected and named`() {
+            val jobs = listOf(
+                Job("a", dependsOn = listOf("c")),
+                Job("b", dependsOn = listOf("a")),
+                Job("c", dependsOn = listOf("b")),
+                Job("standalone")
+            )
+            val result = DeployScheduler(jobs).plan() as ScheduleResult.CycleDetected
+            assertEquals(setOf("a", "b", "c"), result.cycle.toSet())
+        }
+
+        @Test
+        fun `self-loop is a cycle`() {
+            val jobs = listOf(Job("a", dependsOn = listOf("a")))
+            assertTrue(DeployScheduler(jobs).plan() is ScheduleResult.CycleDetected)
+        }
+
+        @Test
+        fun `unknown dependency is MissingDependency not a cycle`() {
+            val jobs = listOf(Job("a", dependsOn = listOf("ghost")))
+            val result = DeployScheduler(jobs).plan()
+            assertEquals(ScheduleResult.MissingDependency("a", "ghost"), result)
+        }
+    }
 }
