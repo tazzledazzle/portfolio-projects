@@ -46,5 +46,17 @@ class P1SchedulerTests {
             assertTrue(order.indexOf("card-auth") < order.indexOf("web"))
             assertEquals(listOf("web"), result.waves.last())
         }
+
+        @Test
+        fun `empty graph returns no waves`(){
+            val result = DeployScheduler(emptyList()).plan() as ScheduleResult.Ok
+            assertTrue(result.waves.isEmpty())
+        }
+
+        @Test
+        fun `single node with deps is wave 0`(){
+            val result = DeployScheduler(listOf(Job("solo"))).plan() as ScheduleResult.Ok
+            assertEquals(listOf(listOf("solo")), result.waves)
+        }
     }
 }
